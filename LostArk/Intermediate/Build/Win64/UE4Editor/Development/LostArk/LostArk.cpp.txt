@@ -1,0 +1,2 @@
+C:\Users\arkchimy\Documents\LostArkLike\LostArk\Intermediate\Build\Win64\UE4Editor\Development\LostArk\Definitions.LostArk.h
+C:\Users\arkchimy\Documents\LostArkLike\LostArk\Source\LostArk\LostArk.h

@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\LostArk.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F0DA35D2-AE4E-4056-A878-E631DCB76800}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\LostArk.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\LostArkEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{9755372F-2396-43DD-A1A1-874EDC72F01C}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\LostArk">
+      <UniqueIdentifier>{1AB4E08B-8256-4F08-A9DC-A6A88F5D3564}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\LostArk\LostArk.Build.cs">
+      <Filter>Source\LostArk</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\LostArk\LostArk.cpp">
+      <Filter>Source\LostArk</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LostArk\LostArk.h">
+      <Filter>Source\LostArk</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\LostArk\LostArkCharacter.cpp">
+      <Filter>Source\LostArk</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LostArk\LostArkCharacter.h">
+      <Filter>Source\LostArk</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\LostArk\LostArkGameMode.cpp">
+      <Filter>Source\LostArk</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LostArk\LostArkGameMode.h">
+      <Filter>Source\LostArk</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\LostArk\LostArkPlayerController.cpp">
+      <Filter>Source\LostArk</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LostArk\LostArkPlayerController.h">
+      <Filter>Source\LostArk</Filter>
+    </ClInclude>
+    <Filter Include="Source\LostArk\Attacker">
+      <UniqueIdentifier>{00796ABF-F756-45B1-97C6-6B7835470793}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\LostArk\Attacker\ACPlayer.cpp">
+      <Filter>Source\LostArk\Attacker</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LostArk\Attacker\ACPlayer.h">
+      <Filter>Source\LostArk\Attacker</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
