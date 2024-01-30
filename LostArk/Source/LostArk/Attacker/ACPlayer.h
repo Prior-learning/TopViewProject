@@ -22,6 +22,9 @@ public:
 	FORCEINLINE class UCameraComponent* GetCamera() { return mCamera; }
 	FORCEINLINE class USpringArmComponent* GetSpring() { return mSpring; }
 
+private:
+	void OnMoveForward(float Axis);
+	void OnMoveRight(float Axis);
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")
 		class UCameraComponent* mCamera;

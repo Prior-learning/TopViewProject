@@ -33,7 +33,7 @@ AACPlayer::AACPlayer()
 	mSpring = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring"));
 	mSpring->SetupAttachment(RootComponent);
 	mSpring->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when character does
-	mSpring->TargetArmLength = 800.f;
+	mSpring->TargetArmLength = 1800.f;
 	mSpring->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
 	mSpring->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
 
@@ -73,7 +73,7 @@ void AACPlayer::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (CursorToWorld != nullptr)
 	{
-		if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
+		/*if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
 		{
 			if (UWorld* World = GetWorld())
 			{
@@ -86,7 +86,7 @@ void AACPlayer::Tick(float DeltaTime)
 				FQuat SurfaceRotation = HitResult.ImpactNormal.ToOrientationRotator().Quaternion();
 				CursorToWorld->SetWorldLocationAndRotation(HitResult.Location, SurfaceRotation);
 			}
-		}
+		}*/
 		
 		if (APlayerController* PC = Cast<APlayerController>(GetController()))
 		{
@@ -100,10 +100,26 @@ void AACPlayer::Tick(float DeltaTime)
 	}
 }
 
+void AACPlayer::OnMoveForward(float Axis)
+{
+	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
+	FVector direction = FQuat(rotator).GetForwardVector().GetSafeNormal2D();
+
+	AddMovementInput(direction, Axis);
+}
+void AACPlayer::OnMoveRight(float Axis)
+{
+	FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
+	FVector direction = FQuat(rotator).GetRightVector().GetSafeNormal2D();
+
+	AddMovementInput(direction, Axis);
+}
 // Called to bind functionality to input
 void AACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAxis("MoveForward", this, &AACPlayer::OnMoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AACPlayer::OnMoveRight);
 }
 
