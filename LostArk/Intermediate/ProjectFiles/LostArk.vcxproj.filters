@@ -3,7 +3,7 @@
   <ItemGroup>
     <None Include="..\..\LostArk.uproject" />
     <Filter Include="Source">
-      <UniqueIdentifier>{F0DA35D2-AE4E-4056-A878-E631DCB76800}</UniqueIdentifier>
+      <UniqueIdentifier>{5B2D95AE-DFD3-407E-8E50-35037180109C}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Source\LostArk.Target.cs">
       <Filter>Source</Filter>
@@ -12,7 +12,7 @@
       <Filter>Source</Filter>
     </None>
     <Filter Include="Config">
-      <UniqueIdentifier>{9755372F-2396-43DD-A1A1-874EDC72F01C}</UniqueIdentifier>
+      <UniqueIdentifier>{4E0987F6-E485-4DCB-844B-1749AD872C13}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Config\DefaultEditor.ini">
       <Filter>Config</Filter>
@@ -30,7 +30,7 @@
       <Filter>Config</Filter>
     </None>
     <Filter Include="Source\LostArk">
-      <UniqueIdentifier>{1AB4E08B-8256-4F08-A9DC-A6A88F5D3564}</UniqueIdentifier>
+      <UniqueIdentifier>{C675EE5F-597F-4067-ADAD-68673FA3A5AF}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Source\LostArk\LostArk.Build.cs">
       <Filter>Source\LostArk</Filter>
@@ -60,12 +60,18 @@
       <Filter>Source\LostArk</Filter>
     </ClInclude>
     <Filter Include="Source\LostArk\Attacker">
-      <UniqueIdentifier>{00796ABF-F756-45B1-97C6-6B7835470793}</UniqueIdentifier>
+      <UniqueIdentifier>{9AAC99F6-EFFF-4F4C-8F3E-CD6C3E5A1505}</UniqueIdentifier>
     </Filter>
     <ClCompile Include="..\..\Source\LostArk\Attacker\ACPlayer.cpp">
       <Filter>Source\LostArk\Attacker</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\LostArk\Attacker\ACPlayer.h">
+      <Filter>Source\LostArk\Attacker</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\LostArk\Attacker\CPlayer.cpp">
+      <Filter>Source\LostArk\Attacker</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\LostArk\Attacker\CPlayer.h">
       <Filter>Source\LostArk\Attacker</Filter>
     </ClInclude>
   </ItemGroup>
