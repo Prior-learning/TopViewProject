@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "LostArk",
+			"Path": "C:\\Users\\arkchimy\\Documents\\LostArkLike\\LostArk\\Source\\LostArk.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "LostArkEditor",
+			"Path": "C:\\Users\\arkchimy\\Documents\\LostArkLike\\LostArk\\Source\\LostArkEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
