@@ -21,8 +21,8 @@ void EmptyLinkFunctionForGeneratedCodeLostArk_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0xCB2B9E83,
-				0x74139A63,
+				0x26060097,
+				0x87D7F575,
 				METADATA_PARAMS(nullptr, 0)
 			};
 			UE4CodeGen_Private::ConstructUPackage(ReturnPackage, PackageParams);
