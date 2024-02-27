@@ -1,4 +1,5 @@
 #include "CEnemyAnimInstance.h"
+#include "../Global.h"
 #include "GameFramework/Character.h"
 
 void UCEnemyAnimInstance::NativeBeginPlay()
@@ -10,6 +11,8 @@ void UCEnemyAnimInstance::NativeBeginPlay()
 
 void UCEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
+
+	CheckNull(OwnerCharacter);
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
 	Speed = OwnerCharacter->GetVelocity().Size2D();

@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "CPlayer.h"
 
@@ -17,7 +15,7 @@
 #include "Materials/Material.h"
 #include "Engine/World.h"
 
-// Sets default values
+
 ACPlayer::ACPlayer()
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
