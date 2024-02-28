@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/ConstructorHelpers.h"
+#include "AIController.h"
 #include "Engine/World.h"
 
 class LOSTARK_API CHelpers
@@ -68,5 +69,10 @@ public:
 		for (AActor* actor : actors)
 			OutActors.Add(Cast<T>(actor));
 	}
-
+	template<typename T>
+	static void CreatePerception(AAIController* InActor, T** InComponent, FName InName)
+	{
+		*InComponent = InActor->CreateOptionalDefaultSubobject<T>(InName);
+		//InActor->SetRootComponent((*InComponent));
+	}
 };
