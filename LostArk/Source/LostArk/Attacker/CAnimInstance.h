@@ -13,8 +13,6 @@ class LOSTARK_API UCAnimInstance : public UAnimInstance
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
 		float Speed;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
-		float Direction;
 
 public:
 	virtual void NativeBeginPlay() override;
