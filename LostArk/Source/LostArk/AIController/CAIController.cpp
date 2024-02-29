@@ -1,5 +1,7 @@
 #include "CAIController.h"
 #include "../Global.h"
+#include "../Attacker/CEnemy.h"
+#include "../Attacker/CPlayer.h"
 
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
@@ -15,6 +17,9 @@ ACAIController::ACAIController()
 
 	CHelpers::CreateActorComponent<UAIPerceptionComponent>(this, &Perception, "PerCeption");
 
+	CHelpers::GetAsset<UBehaviorTree>(&mBehaviorTree, TEXT("BehaviorTree'/Game/AActor/Enemy/Ai_Controller/BT_Chase.BT_Chase'"));
+	CHelpers::GetAsset<UBlackboardData>(&mBlackBoard, TEXT("BlackboardData'/Game/AActor/Enemy/Ai_Controller/BB_Chase.BB_Chase'"));
+
 	SetPerception();
 }
 
@@ -28,14 +33,33 @@ ACAIController::~ACAIController()
 void ACAIController::BeginPlay()
 {
 	Super::BeginPlay();
-
+	mOwner = Cast<ACEnemy>(GetPawn());
+	CheckNull(mOwner);
 }
 
 
 void ACAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+	RunAI();
+}
 
+void ACAIController::RunAI()
+{
+	if (UseBlackboard(mBlackBoard, Blackboard))
+	{
+		CLog::Print("RunAi");
+		CheckNull(mBehaviorTree);
+		RunBehaviorTree(mBehaviorTree);
+	}
+}
+
+void ACAIController::StopAI()
+{
+	UBehaviorTreeComponent* BehaviorTreeComponent = Cast<UBehaviorTreeComponent>(BrainComponent);
+	if (nullptr == BehaviorTreeComponent) return;
+
+	BehaviorTreeComponent->StopTree(EBTStopMode::Safe);
 }
 
 
@@ -64,17 +88,16 @@ void ACAIController::SetPerception()
 
 void ACAIController::OnTargetDetected(AActor* Actor, FAIStimulus Stimulus)
 {
-	return;
-
+	
 	if (Stimulus.WasSuccessfullySensed())
 	{
-		//Blackboard->SetValueAsObject("TargetActor", Actor);
+		ACPlayer* target = Cast<ACPlayer>(Actor);
+		CheckNull(target);
 
-		//UKismetSystemLibrary::K2_ClearTimerHandle(this, target_handler);
-
-		
+		CLog::Print("find player");
+		Blackboard->SetValueAsObject("Target", Actor);
 	}
 	else
-		target_handler = UKismetSystemLibrary::K2_SetTimer(this, "Update_Target", 5.0f, false);
+		Blackboard->SetValueAsObject("Target", nullptr);
 }
 

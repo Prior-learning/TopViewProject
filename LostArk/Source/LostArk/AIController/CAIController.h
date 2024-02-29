@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -21,10 +19,6 @@ public:
 	~ACAIController();
 	virtual void BeginPlay() override;
 
-public:
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-		UAIPerceptionComponent* Perception;
-
 protected:
 
 	UFUNCTION()
@@ -33,12 +27,23 @@ protected:
 public:
 	virtual FGenericTeamId GetGenericTeamId()const  override { return TeamID; }
 
-protected:
-	virtual void OnPossess(APawn* InPawn) override;
-
 	virtual void SetPerception();
 
 protected:
+	virtual void OnPossess(APawn* InPawn) override;
+	void RunAI();
+	void StopAI();
+
+
+protected:
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+		UAIPerceptionComponent* Perception;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		class UBehaviorTree* mBehaviorTree;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		class UBlackboardData* mBlackBoard;
 
 
 	class UAISenseConfig_Sight* SightConfig;
@@ -67,5 +72,8 @@ protected:
 
 
 	FGenericTeamId TeamID;
+
+private:
+	class ACEnemy* mOwner;
 
 };
