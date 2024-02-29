@@ -96,8 +96,13 @@ void ACAIController::OnTargetDetected(AActor* Actor, FAIStimulus Stimulus)
 
 		CLog::Print("find player");
 		Blackboard->SetValueAsObject("Target", Actor);
+		Blackboard->SetValueAsVector("MovePos", mOwner->GetActorLocation());
+		Blackboard->SetValueAsEnum("State", 2);
 	}
-	else
+	else 
+	{
 		Blackboard->SetValueAsObject("Target", nullptr);
+		Blackboard->SetValueAsEnum("State", 0);
+	}
 }
 
