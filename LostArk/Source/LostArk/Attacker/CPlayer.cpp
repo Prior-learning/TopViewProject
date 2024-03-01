@@ -67,14 +67,12 @@ ACPlayer::ACPlayer()
 
 }
 
-// Called when the game starts or when spawned
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -107,6 +105,16 @@ void ACPlayer::Tick(float DeltaTime)
 	}
 }
 
+bool ACPlayer::IsUnarmed()
+{
+	return mPlayerState->IsUnarmed();
+}
+
+bool ACPlayer::IsPrimary()
+{
+	return mPlayerState->IsPrimary();
+}
+
 void ACPlayer::Move_Cursor(float Axis)
 {
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
@@ -121,6 +129,9 @@ void ACPlayer::Move_Cursor(float Axis)
 		direction.Y = direction.Y / distance;
 		AddMovementInput(direction, Axis);
 	}
+}
+void ACPlayer::OnEquip1()
+{
 }
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

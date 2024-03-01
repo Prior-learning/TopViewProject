@@ -15,7 +15,9 @@ protected:
 		float Speed;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
 		float Direction;
-
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
+		bool bPrimary;
+	
 public:
 	virtual void NativeBeginPlay() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;

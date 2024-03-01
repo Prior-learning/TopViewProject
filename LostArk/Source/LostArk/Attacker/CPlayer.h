@@ -22,9 +22,13 @@ public:
 public:
 	FORCEINLINE class UCameraComponent* GetCamera() { return mCamera; }
 	FORCEINLINE class USpringArmComponent* GetSpring() { return mSpring; }
+public:
+	bool IsUnarmed();
+	bool IsPrimary();
 
 private:
 	void Move_Cursor(float Axis);
+	void OnEquip1();
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")
 		class UCameraComponent* mCamera;
