@@ -34,4 +34,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UDecalComponent* CursorToWorld;
 
+	UPROPERTY(VisibleDefaultsOnly)
+		class UCPlayerStateComponent* mPlayerState;
+
 };

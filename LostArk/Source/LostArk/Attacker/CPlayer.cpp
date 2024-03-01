@@ -1,5 +1,7 @@
 
 #include "CPlayer.h"
+#include "../Global.h"
+
 
 #include "UObject/ConstructorHelpers.h"
 
@@ -10,6 +12,8 @@
 #include "Components/DecalComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
+#include "../ActorComponent/CPlayerStateComponent.h"
+
 
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Materials/Material.h"
@@ -19,7 +23,6 @@
 ACPlayer::ACPlayer()
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
-
 
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationPitch = false;
@@ -58,6 +61,9 @@ ACPlayer::ACPlayer()
 
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	CHelpers::CreateActorComponent<UCPlayerStateComponent>(this, &mPlayerState, "PlayerStateComponent");
+
 
 }
 
