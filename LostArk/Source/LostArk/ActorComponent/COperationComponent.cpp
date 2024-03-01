@@ -21,7 +21,6 @@ void UCOperationComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	return;
-	CheckFalse(IsIdleMode());
 	
 	ACharacter* owner = Cast<ACharacter>(GetOwner());
 	CheckNull(owner);

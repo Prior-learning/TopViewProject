@@ -31,6 +31,7 @@ public:
 
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
+	virtual void Tick(float DeltaTime) override;
 	void RunAI();
 	void StopAI();
 
@@ -67,13 +68,12 @@ protected:
 	FString Enemy_Type = "Melee";
 	FTimerHandle target_handler;
 
-	class UCStateComponent* State;
-	class UOperation_Context* Context;
-
+	class UCEnemyStateComponent* mState;
 
 	FGenericTeamId TeamID;
 
 private:
 	class ACEnemy* mOwner;
+    class ACPlayer *target;
 
 };

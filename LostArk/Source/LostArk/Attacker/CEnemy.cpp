@@ -2,7 +2,6 @@
 #include "../Global.h"
 #include "Components/CapsuleComponent.h"
 #include "../ActorComponent/CEnemyStateComponent.h"
-#include "../ActorComponent/COperationComponent.h"
 ACEnemy::ACEnemy()
 {
  	
@@ -12,7 +11,7 @@ ACEnemy::ACEnemy()
 	GetMesh()->SetRelativeLocation({ 0.f, 0.f, -90.f });
 	GetMesh()->SetRelativeRotation(FRotator( 0.f,0.f,-90.f ));
 
-	CHelpers::CreateActorComponent<UCEnemyStateComponent>(this,&mState,"StateComponent");
+	CHelpers::CreateActorComponent<UCEnemyStateComponent>(this,&mState,"StateComponent1");
 }
 
 

@@ -3,6 +3,8 @@
 #include "../Attacker/CEnemy.h"
 #include "../Attacker/CPlayer.h"
 
+#include "../ActorComponent/CEnemyStateComponent.h"
+
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -35,6 +37,8 @@ void ACAIController::BeginPlay()
 	Super::BeginPlay();
 	mOwner = Cast<ACEnemy>(GetPawn());
 	CheckNull(mOwner);
+
+	mState = CHelpers::GetComponent<UCEnemyStateComponent>(mOwner);
 }
 
 
@@ -44,11 +48,17 @@ void ACAIController::OnPossess(APawn* InPawn)
 	RunAI();
 }
 
+void ACAIController::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+    CheckNull(target);
+    mState->OperationSelect(target);
+}
+
 void ACAIController::RunAI()
 {
 	if (UseBlackboard(mBlackBoard, Blackboard))
 	{
-		CLog::Print("RunAi");
 		CheckNull(mBehaviorTree);
 		RunBehaviorTree(mBehaviorTree);
 	}
@@ -91,18 +101,17 @@ void ACAIController::OnTargetDetected(AActor* Actor, FAIStimulus Stimulus)
 	
 	if (Stimulus.WasSuccessfullySensed())
 	{
-		ACPlayer* target = Cast<ACPlayer>(Actor);
+        target = Cast<ACPlayer>(Actor);
 		CheckNull(target);
 
 		CLog::Print("find player");
 		Blackboard->SetValueAsObject("Target", Actor);
 		Blackboard->SetValueAsVector("MovePos", mOwner->GetActorLocation());
-		Blackboard->SetValueAsEnum("State", 2);
 	}
 	else 
 	{
 		Blackboard->SetValueAsObject("Target", nullptr);
-		Blackboard->SetValueAsEnum("State", 0);
+        target = nullptr;
 	}
 }
 
