@@ -19,5 +19,5 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	Speed = OwnerCharacter->GetVelocity().Size2D();
 	Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
-	bPrimary = Player->IsPrimary();
+	AnimWeaponType = Player->GetWeaponType();
 }

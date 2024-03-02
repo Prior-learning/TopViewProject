@@ -10,7 +10,7 @@
 UENUM(BlueprintType)
 enum class E_WeaponType : uint8
 {
-	UnArmed , Primary
+	UnArmed , Primary//....추가예정
 };
 
 UENUM()
@@ -59,12 +59,8 @@ public:
 	void Clear(const E_State& action);
 
 public:
-	//EnemyComponent 를 만든 방식을 참고.
 	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsUnarmed() { return mWeaponType == E_WeaponType::UnArmed; }
-
-	UFUNCTION(BlueprintPure)
-		FORCEINLINE bool IsPrimary() { return mWeaponType == E_WeaponType::Primary; }
+		FORCEINLINE E_WeaponType GetWeaponType() { return mWeaponType; }
 
 	void SetUnarmed() { mWeaponType = E_WeaponType::UnArmed; }
 	void SetPrimary() { mWeaponType = E_WeaponType::Primary; }

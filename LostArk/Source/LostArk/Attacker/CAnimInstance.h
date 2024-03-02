@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "../ActorComponent/CPlayerStateComponent.h"
 #include "CAnimInstance.generated.h"
 
 
@@ -16,7 +17,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
 		float Direction;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
-		bool bPrimary;
+		E_WeaponType AnimWeaponType;
 	
 public:
 	virtual void NativeBeginPlay() override;

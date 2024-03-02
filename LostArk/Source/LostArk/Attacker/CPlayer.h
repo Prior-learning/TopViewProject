@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "CPlayer.generated.h"
 
+
 UCLASS()
 class LOSTARK_API ACPlayer : public ACharacter
 {
@@ -23,8 +24,10 @@ public:
 	FORCEINLINE class UCameraComponent* GetCamera() { return mCamera; }
 	FORCEINLINE class USpringArmComponent* GetSpring() { return mSpring; }
 public:
-	bool IsUnarmed();
-	bool IsPrimary();
+	UFUNCTION(BlueprintCallable)
+		E_WeaponType GetWeaponType();
+	
+
 
 private:
 	void Move_Cursor(float Axis);
@@ -40,5 +43,6 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCPlayerStateComponent* mPlayerState;
+	E_WeaponType mPlayerWeaponType;
 
 };
