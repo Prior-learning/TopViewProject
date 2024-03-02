@@ -60,6 +60,9 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
     void SetActionMode();
     void SetDeathMode();
 
+
+    void SetMode(BYTE num);
+
   protected:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Status") 
     float mAttackRange = 0.f; // 어느 정도 가까워져야 공격을 할껀지
@@ -71,5 +74,8 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
   protected:
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
         EStateEnemyType mState;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+        class UAnimMontage *AttackMontage;
     float mCurrentCooltime = 0.f;
 };

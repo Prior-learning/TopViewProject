@@ -51,7 +51,9 @@ void ACAIController::OnPossess(APawn* InPawn)
 void ACAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    CheckNull(target);
+    if (target == nullptr)
+		target = Cast<ACPlayer>(Blackboard->GetValueAsObject("Target"));
+	
     mState->OperationSelect(target);
 }
 
@@ -101,17 +103,15 @@ void ACAIController::OnTargetDetected(AActor* Actor, FAIStimulus Stimulus)
 	
 	if (Stimulus.WasSuccessfullySensed())
 	{
+        CLog::Print("find player");
+
         target = Cast<ACPlayer>(Actor);
 		CheckNull(target);
-
-		CLog::Print("find player");
+        CheckNull(mOwner);
+		
 		Blackboard->SetValueAsObject("Target", Actor);
 		Blackboard->SetValueAsVector("MovePos", mOwner->GetActorLocation());
 	}
-	else 
-	{
-		Blackboard->SetValueAsObject("Target", nullptr);
-        target = nullptr;
-	}
+	
 }
 

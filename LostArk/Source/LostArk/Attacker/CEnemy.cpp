@@ -11,15 +11,13 @@ ACEnemy::ACEnemy()
 	GetMesh()->SetRelativeLocation({ 0.f, 0.f, -90.f });
 	GetMesh()->SetRelativeRotation(FRotator( 0.f,0.f,-90.f ));
 
-	CHelpers::CreateActorComponent<UCEnemyStateComponent>(this,&mState,"StateComponent1");
+	CHelpers::CreateActorComponent<UCEnemyStateComponent>(this,&mState,"Statecddsdsomp");
 }
 
 
 void ACEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
-
 }
 
 

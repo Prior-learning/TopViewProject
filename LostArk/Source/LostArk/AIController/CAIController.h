@@ -74,6 +74,6 @@ protected:
 
 private:
 	class ACEnemy* mOwner;
-    class ACPlayer *target;
+    class ACPlayer* target;
 
 };
