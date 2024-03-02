@@ -70,7 +70,8 @@ ACPlayer::ACPlayer()
 void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CheckNull(mPlayerState);
+	mPlayerState->SetUnarmed();
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -105,14 +106,11 @@ void ACPlayer::Tick(float DeltaTime)
 	}
 }
 
-bool ACPlayer::IsUnarmed()
-{
-	return mPlayerState->IsUnarmed();
-}
 
-bool ACPlayer::IsPrimary()
+
+E_WeaponType ACPlayer::GetWeaponType()
 {
-	return mPlayerState->IsPrimary();
+	return mPlayerState->GetWeaponType();
 }
 
 void ACPlayer::Move_Cursor(float Axis)
