@@ -13,6 +13,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "../ActorComponent/CPlayerStateComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 #include "HeadMountedDisplayFunctionLibrary.h"
@@ -72,6 +73,8 @@ void ACPlayer::BeginPlay()
 	Super::BeginPlay();
 	CheckNull(mPlayerState);
 	mPlayerState->SetUnarmed();
+	mPlayerState->UnSetAiming();
+
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -102,8 +105,11 @@ void ACPlayer::Tick(float DeltaTime)
 			FRotator CursorR = CursorFV.Rotation();
 			CursorToWorld->SetWorldLocation(TraceHitResult.Location);
 			CursorToWorld->SetWorldRotation(CursorR);
+
 		}
 	}
+	if (IsAiming() == true)
+		Look_Mouse();
 }
 
 
@@ -111,6 +117,38 @@ void ACPlayer::Tick(float DeltaTime)
 E_WeaponType ACPlayer::GetWeaponType()
 {
 	return mPlayerState->GetWeaponType();
+}
+
+bool ACPlayer::IsAiming()
+{
+	return mPlayerState->IsAiming();
+}
+
+void ACPlayer::Move_Forward(float Axis)
+{
+	FVector Direction = FVector::ForwardVector;
+	AddMovementInput(Direction, Axis);
+}
+
+void ACPlayer::Move_Right(float Axis)
+{
+	FVector Direction = FVector::RightVector;
+	AddMovementInput(Direction, Axis);
+}
+
+void ACPlayer::Look_Mouse()
+{
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		FHitResult TraceHitResult;
+		PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
+		FVector Cursor_pos = TraceHitResult.Location;
+		FVector pos = GetActorLocation();
+		FVector direction = Cursor_pos - pos;
+		FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(pos, FVector(Cursor_pos.X, Cursor_pos.Y, pos.Z));
+		SetActorRotation(LookRotation);
+	}
+
 }
 
 void ACPlayer::Move_Cursor(float Axis)
@@ -130,11 +168,33 @@ void ACPlayer::Move_Cursor(float Axis)
 }
 void ACPlayer::OnEquip1()
 {
+	if (GetWeaponType() == E_WeaponType::UnArmed)
+		mPlayerState->SetPrimary();
+	else
+		mPlayerState->SetUnarmed();
+
+}
+void ACPlayer::OnAim()
+{
+	if(IsAiming() == false)
+	mPlayerState->SetAiming();
+}
+void ACPlayer::OffAim()
+{
+	if(IsAiming() == true)
+	mPlayerState->UnSetAiming();
 }
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("Mouse_RB", this, &ACPlayer::Move_Cursor);
+	//PlayerInputComponent->BindAxis("Mouse_RB", this, &ACPlayer::Move_Cursor);
+	PlayerInputComponent->BindAxis("MoveForward", this, &ACPlayer::Move_Forward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ACPlayer::Move_Right);
+
+	PlayerInputComponent->BindAction("Equip1", EInputEvent::IE_Pressed, this, &ACPlayer::OnEquip1);
+	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ACPlayer::OnAim);
+	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ACPlayer::OffAim);
+
 }
 

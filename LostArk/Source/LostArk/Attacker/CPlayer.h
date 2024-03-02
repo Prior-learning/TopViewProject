@@ -26,12 +26,22 @@ public:
 public:
 	UFUNCTION(BlueprintCallable)
 		E_WeaponType GetWeaponType();
-	
-
+	UFUNCTION(BlueprintCallable)
+		bool IsAiming();
 
 private:
+	UFUNCTION()
+		void Move_Forward(float Axis);
+	UFUNCTION()
+		void Move_Right(float Axis);
+	UFUNCTION()
+		void Look_Mouse();
+
 	void Move_Cursor(float Axis);
 	void OnEquip1();
+	void OnAim();
+	void OffAim();
+
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")
 		class UCameraComponent* mCamera;
@@ -43,6 +53,7 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCPlayerStateComponent* mPlayerState;
+	
 	E_WeaponType mPlayerWeaponType;
 
 };

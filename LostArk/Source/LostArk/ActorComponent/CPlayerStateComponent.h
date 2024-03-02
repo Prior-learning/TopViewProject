@@ -17,7 +17,6 @@ UENUM()
 enum class E_State : uint16
 {
 	Idle,
-	Equip,
 	Attack,
 	Run,
 	Aim,
@@ -29,13 +28,12 @@ enum class E_State : uint16
 enum E_WHY_BLOCKED : uint64
 {
 	NONE = 0,
-	EQUIPING = 1 << 1,
-	ATTACKING = 1 << 2,
-	RUNNING = 1 << 3,
-	AIMING = 1 << 4,
-	DASHING = 1 << 5,
-	RELOADING = 1 << 6,
-	DEAD = 1 << 7,
+	ATTACKING = 1 << 1,
+	RUNNING = 1 << 2,
+	AIMING = 1 << 3,
+	DASHING = 1 << 4,
+	RELOADING = 1 << 5,
+	DEAD = 1 << 6,
 };
 
 //enum class E_State : uint16;
@@ -64,10 +62,15 @@ public:
 
 	void SetUnarmed() { mWeaponType = E_WeaponType::UnArmed; }
 	void SetPrimary() { mWeaponType = E_WeaponType::Primary; }
+	
+	void SetAiming() { bAiming = true; }
+	void UnSetAiming() { bAiming = false; }
+	bool IsAiming() { return bAiming; }
 
 private:
 	TMap<E_State, uint64> P_State;
 	E_WeaponType mWeaponType;
+	bool bAiming;
 	
 };
 
