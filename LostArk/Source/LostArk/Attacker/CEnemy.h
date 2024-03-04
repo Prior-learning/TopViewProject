@@ -20,7 +20,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 		TArray<FVector> mPatrolPos;
 private:
 	UPROPERTY(VisibleDefaultsOnly)
