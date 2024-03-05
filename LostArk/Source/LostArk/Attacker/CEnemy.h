@@ -2,28 +2,41 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "../Combat/ICombat.h"
 #include "CEnemy.generated.h"
 
 
 UCLASS()
-class LOSTARK_API ACEnemy : public ACharacter
+class LOSTARK_API ACEnemy : public ACharacter, public IICombat
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-public:
-	ACEnemy();
+  public:
+    ACEnemy();
 
-protected:
-	virtual void BeginPlay() override;
-public:	
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+  protected:
+    virtual void BeginPlay() override;
 
-protected:
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
-		TArray<FVector> mPatrolPos;
-private:
-	UPROPERTY(VisibleDefaultsOnly)
-		class UCEnemyStateComponent* mState;
+  public:
+    virtual void Tick(float DeltaTime) override;
+    virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
+  protected:
+    UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+    TArray<FVector> mPatrolPos;
+
+  protected:
+    UPROPERTY(VisibleDefaultsOnly)
+    class UCEnemyStateComponent *mState;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    TSubclassOf<class ACWeapon> mWeaponClass;
+
+    //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    class ACWeapon* mWeapon;
+
+  private:
+    virtual void CreateWeapon() override;
+    virtual void OnCollision() override;
+    virtual void OffCollision() override ;
 };

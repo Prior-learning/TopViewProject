@@ -2,6 +2,8 @@
 #include "../Global.h"
 #include "Components/CapsuleComponent.h"
 #include "../ActorComponent/CEnemyStateComponent.h"
+#include "../Combat/CMelee.h"
+#include "../Combat/CWeapon.h"
 ACEnemy::ACEnemy()
 {
  	
@@ -18,6 +20,7 @@ ACEnemy::ACEnemy()
 void ACEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+    CreateWeapon();
 }
 
 
@@ -34,3 +37,23 @@ void ACEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+
+void ACEnemy::CreateWeapon()
+{
+    CheckNull(mWeaponClass);
+
+	mWeapon = ACMelee::CreateWeapon(GetWorld(), mWeaponClass, this);
+
+}
+
+void ACEnemy::OnCollision()
+{
+    CheckNull(mWeapon);
+    mWeapon->OnCollision();
+}
+
+void ACEnemy::OffCollision()
+{
+    CheckNull(mWeapon);
+    mWeapon->OffCollision();
+}

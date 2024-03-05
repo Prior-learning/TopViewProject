@@ -19,7 +19,8 @@ class UICombat : public UInterface
 class LOSTARK_API IICombat
 {
 	GENERATED_BODY()
-
-	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+    virtual void CreateWeapon() = 0;
+	virtual void OnCollision() = 0;
+    virtual void OffCollision() = 0;
 };
