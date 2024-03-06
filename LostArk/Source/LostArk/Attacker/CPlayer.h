@@ -20,7 +20,11 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-public:
+
+	  virtual float TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
+                             AActor *DamageCauser) override;
+
+  public:
 	FORCEINLINE class UCameraComponent* GetCamera() { return mCamera; }
 	FORCEINLINE class USpringArmComponent* GetSpring() { return mSpring; }
 public:

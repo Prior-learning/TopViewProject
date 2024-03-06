@@ -15,11 +15,11 @@ void UCMontageComponent::BeginPlay()
     TArray<FMontageData *> datas;
     DataTable->GetAllRows<FMontageData>("", datas);
 
-    for (int32 i = 0; i < (int16)E_State::Max; i++)
+    for (int32 i = 0; i < (int16)EMontage_State::Max; i++)
     {
         for (FMontageData *data : datas)
         {
-            if ((E_State)i == data->Type)
+            if ((EMontage_State)i == data->Type)
             {
                 Datas[i] = data;
 
@@ -29,12 +29,9 @@ void UCMontageComponent::BeginPlay()
     }     // for(i)
 		
 }
-void UCMontageComponent::PlayRoll()
-{
-    PlayAnimMontage(E_State::Roll);
-}
 
-void UCMontageComponent::PlayAnimMontage(E_State InState)
+
+void UCMontageComponent::PlayAnimMontage(EMontage_State InState)
 {
     ACharacter *character = Cast<ACharacter>(GetOwner());
 

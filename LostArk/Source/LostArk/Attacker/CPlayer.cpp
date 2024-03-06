@@ -199,13 +199,14 @@ void ACPlayer::OffAim()
 }
 void ACPlayer::BeginRoll()
 {
+	//checktrue로 변경해도 될듯
     if (!mPlayerState->IsContains(E_State::Roll))
     {
         FVector start = GetActorLocation();
         FVector from = start + GetVelocity().GetSafeNormal2D();
         SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, from));
         GetCharacterMovement()->MaxWalkSpeed = 1200;
-        mMontages->PlayRoll();
+        //mMontages->PlayRoll();
         mPlayerState->Add(E_State::Aim, E_WHY_BLOCKED::ROLLING);
         mPlayerState->Add(E_State::Attack, E_WHY_BLOCKED::ROLLING);
         mPlayerState->Add(E_State::Reload, E_WHY_BLOCKED::ROLLING);
@@ -213,16 +214,6 @@ void ACPlayer::BeginRoll()
 
     }
 }
-void ACPlayer::BeginFire()
-{
-
-}
-
-void ACPlayer::EndFire()
-{
-
-}
-
 void ACPlayer::EndRoll()
 {
     GetCharacterMovement()->MaxWalkSpeed = 600;
@@ -230,6 +221,19 @@ void ACPlayer::EndRoll()
     mPlayerState->Remove(E_State::Attack, E_WHY_BLOCKED::ROLLING);
     mPlayerState->Remove(E_State::Reload, E_WHY_BLOCKED::ROLLING);
     mPlayerState->Remove(E_State::Roll, E_WHY_BLOCKED::ROLLING);
+}
+void ACPlayer::BeginFire()
+{
+    CheckTrue(mPlayerState->IsContains(E_State::Attack));
+    CheckFalse(IsAiming());
+    mPlayerState->Add(E_State::Reload, E_WHY_BLOCKED::ATTACKING);
+
+
+}
+
+void ACPlayer::EndFire()
+{
+    mPlayerState->Remove(E_State::Reload, E_WHY_BLOCKED::ATTACKING);
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -247,4 +251,16 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, this, &ACPlayer::BeginFire);
     PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Released, this, &ACPlayer::EndFire);
 }
+
+float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
+                           AActor *DamageCauser)
+{
+    Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+    CLog::Print(DamageCauser->GetFName().ToString() + " takeDamage");
+    return 10.f;
+}
+
+
+           
+
 
