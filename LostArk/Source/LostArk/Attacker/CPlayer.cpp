@@ -213,6 +213,16 @@ void ACPlayer::BeginRoll()
 
     }
 }
+void ACPlayer::BeginFire()
+{
+
+}
+
+void ACPlayer::EndFire()
+{
+
+}
+
 void ACPlayer::EndRoll()
 {
     GetCharacterMovement()->MaxWalkSpeed = 600;
@@ -221,6 +231,7 @@ void ACPlayer::EndRoll()
     mPlayerState->Remove(E_State::Reload, E_WHY_BLOCKED::ROLLING);
     mPlayerState->Remove(E_State::Roll, E_WHY_BLOCKED::ROLLING);
 }
+
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -233,5 +244,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ACPlayer::OnAim);
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ACPlayer::OffAim);
     PlayerInputComponent->BindAction("Roll", EInputEvent::IE_Pressed, this, &ACPlayer::BeginRoll);
+    PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, this, &ACPlayer::BeginFire);
+    PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Released, this, &ACPlayer::EndFire);
 }
 

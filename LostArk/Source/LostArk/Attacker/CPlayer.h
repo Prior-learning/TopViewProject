@@ -42,6 +42,9 @@ private:
 	void OnAim();
 	void OffAim();
     void BeginRoll();
+    void BeginFire();
+    void EndFire();
+
 
 public:
     void EndRoll();
