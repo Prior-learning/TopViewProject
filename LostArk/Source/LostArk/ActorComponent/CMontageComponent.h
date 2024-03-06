@@ -3,9 +3,19 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Engine/DataTable.h"
-#include "CPlayerStateComponent.h"
 #include "CMontageComponent.generated.h"
 
+//
+UENUM()
+enum class EMontage_State : uint16
+{
+    Attack,
+    Hitted,
+    Roll,
+    Reload,
+    Dead,
+    Max
+};
 USTRUCT(BlueprintType)
 struct FMontageData : public FTableRowBase
 {
@@ -13,7 +23,7 @@ struct FMontageData : public FTableRowBase
 
   public:
     UPROPERTY(EditAnywhere)
-    E_State Type;
+    EMontage_State Type;
 
     UPROPERTY(EditAnywhere)
     class UAnimMontage *AnimMontage;
@@ -33,20 +43,18 @@ class LOSTARK_API UCMontageComponent : public UActorComponent
 public:	
 	UCMontageComponent();
 
-    void PlayRoll();
-
 protected:
 	virtual void BeginPlay() override;
 
 private:
-  void PlayAnimMontage(E_State InState);
+    void PlayAnimMontage(EMontage_State InState);
 
-private:
+protected:
     
     UPROPERTY(EditDefaultsOnly, Category = "DataTable")
     UDataTable *DataTable;
 
-   	FMontageData *Datas[(int16)E_State::Max];
+   	FMontageData *Datas[(int16)EMontage_State::Max];
 
 
 		
