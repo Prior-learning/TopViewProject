@@ -21,18 +21,21 @@ class LOSTARK_API ACMelee : public ACWeapon
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     class UBoxComponent *mCollider;
 
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="attach")
     FName mAttachBone;
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
+    float mPower = 1.f;
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
+    FDamageEvent mDamageEvent;
 
   public:
     static ACMelee *CreateWeapon(class UWorld *world, TSubclassOf<class ACWeapon> classof, class ACharacter *owner);
 
-
-   // virtual void BeginPlay(); override;
+    virtual void BeginPlay() override;
 
     virtual void OnCollision() override;
     virtual void OffCollision() override;
-
 
    private:
     UFUNCTION()
@@ -44,5 +47,8 @@ class LOSTARK_API ACMelee : public ACWeapon
     void OnComponentEndOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
                                UPrimitiveComponent *OtherComp, int32 OtherBodyIndex);
 
-   
+   private:
+    TArray<class ACharacter *> OverlapActors;
+
+    class AController *mController;
 };

@@ -21,6 +21,7 @@ class LOSTARK_API IICombat
 	GENERATED_BODY()
 public:
     virtual void CreateWeapon() = 0;
+
 	virtual void OnCollision() = 0;
     virtual void OffCollision() = 0;
 };

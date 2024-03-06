@@ -37,6 +37,13 @@ void ACEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
+                         AActor *DamageCauser)
+{
+    CLog::Print(DamageAmount);
+	return 10.f;
+}
+
 
 void ACEnemy::CreateWeapon()
 {
