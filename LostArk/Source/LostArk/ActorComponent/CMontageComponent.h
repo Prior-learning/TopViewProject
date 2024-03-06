@@ -46,7 +46,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
+public:
     void PlayAnimMontage(EMontage_State InState);
 
 protected:
