@@ -41,6 +41,10 @@ private:
 	void OnEquip1();
 	void OnAim();
 	void OffAim();
+    void BeginRoll();
+
+public:
+    void EndRoll();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")
@@ -53,6 +57,9 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCPlayerStateComponent* mPlayerState;
+
+	UPROPERTY(VisibleDefaultsOnly)
+        class UCMontageComponent *mMontages;
 	
 	E_WeaponType mPlayerWeaponType;
 

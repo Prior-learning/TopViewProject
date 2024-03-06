@@ -13,9 +13,10 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "../ActorComponent/CPlayerStateComponent.h"
+#include "../ActorComponent/CMontageComponent.h"
+
+
 #include "Kismet/KismetMathLibrary.h"
-
-
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Materials/Material.h"
 #include "Engine/World.h"
@@ -64,6 +65,7 @@ ACPlayer::ACPlayer()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
 	CHelpers::CreateActorComponent<UCPlayerStateComponent>(this, &mPlayerState, "PlayerStateComponent");
+    CHelpers::CreateActorComponent<UCMontageComponent>(this, &mMontages, "Montage");
 
 
 }
@@ -126,14 +128,18 @@ bool ACPlayer::IsAiming()
 
 void ACPlayer::Move_Forward(float Axis)
 {
-	FVector Direction = FVector::ForwardVector;
-	AddMovementInput(Direction, Axis);
+	//FVector Direction = FVector::ForwardVector;
+    FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
+    FVector direction = FQuat(rotator).GetForwardVector();
+    AddMovementInput(direction, Axis);
 }
 
 void ACPlayer::Move_Right(float Axis)
 {
-	FVector Direction = FVector::RightVector;
-	AddMovementInput(Direction, Axis);
+	//FVector Direction = FVector::RightVector;
+    FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
+    FVector direction = FQuat(rotator).GetRightVector();
+    AddMovementInput(direction, Axis);
 }
 
 void ACPlayer::Look_Mouse()
@@ -176,13 +182,44 @@ void ACPlayer::OnEquip1()
 }
 void ACPlayer::OnAim()
 {
-	if(IsAiming() == false)
-	mPlayerState->SetAiming();
+
+    if (!mPlayerState->IsContains(E_State::Aim) &&!IsAiming() && GetWeaponType() != E_WeaponType::UnArmed)
+    {
+        mPlayerState->SetAiming();
+        GetCharacterMovement()->MaxWalkSpeed = 250;
+    }
 }
 void ACPlayer::OffAim()
 {
-	if(IsAiming() == true)
-	mPlayerState->UnSetAiming();
+    if (IsAiming())
+    {
+        mPlayerState->UnSetAiming();
+        GetCharacterMovement()->MaxWalkSpeed = 600;
+    }
+}
+void ACPlayer::BeginRoll()
+{
+    if (!mPlayerState->IsContains(E_State::Roll))
+    {
+        FVector start = GetActorLocation();
+        FVector from = start + GetVelocity().GetSafeNormal2D();
+        SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, from));
+        GetCharacterMovement()->MaxWalkSpeed = 1200;
+        mMontages->PlayRoll();
+        mPlayerState->Add(E_State::Aim, E_WHY_BLOCKED::ROLLING);
+        mPlayerState->Add(E_State::Attack, E_WHY_BLOCKED::ROLLING);
+        mPlayerState->Add(E_State::Reload, E_WHY_BLOCKED::ROLLING);
+        mPlayerState->Add(E_State::Roll, E_WHY_BLOCKED::ROLLING);
+
+    }
+}
+void ACPlayer::EndRoll()
+{
+    GetCharacterMovement()->MaxWalkSpeed = 600;
+    mPlayerState->Remove(E_State::Aim, E_WHY_BLOCKED::ROLLING);
+    mPlayerState->Remove(E_State::Attack, E_WHY_BLOCKED::ROLLING);
+    mPlayerState->Remove(E_State::Reload, E_WHY_BLOCKED::ROLLING);
+    mPlayerState->Remove(E_State::Roll, E_WHY_BLOCKED::ROLLING);
 }
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -195,6 +232,6 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Equip1", EInputEvent::IE_Pressed, this, &ACPlayer::OnEquip1);
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ACPlayer::OnAim);
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ACPlayer::OffAim);
-
+    PlayerInputComponent->BindAction("Roll", EInputEvent::IE_Pressed, this, &ACPlayer::BeginRoll);
 }
 

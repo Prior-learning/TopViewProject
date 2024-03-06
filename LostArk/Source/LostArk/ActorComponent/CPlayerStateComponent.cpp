@@ -13,6 +13,7 @@ void UCPlayerStateComponent::Initialize()
 
 void UCPlayerStateComponent::Destroy()
 {
+    P_State.Empty();
 }
 
 void UCPlayerStateComponent::Add(const E_State& action, const E_WHY_BLOCKED& reason)
@@ -47,4 +48,5 @@ void UCPlayerStateComponent::Clear(const E_State& action)
 {
 	P_State.Remove(action);
 }
+
 
