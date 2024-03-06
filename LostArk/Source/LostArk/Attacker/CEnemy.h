@@ -21,6 +21,9 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat
     virtual void Tick(float DeltaTime) override;
     virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
+
+    virtual float TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
+                            AActor *DamageCauser) override;
   protected:
     UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
     TArray<FVector> mPatrolPos;
@@ -28,6 +31,9 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat
   protected:
     UPROPERTY(VisibleDefaultsOnly)
     class UCEnemyStateComponent *mState;
+    UPROPERTY(VisibleDefaultsOnly)
+    class UCEMontageComponent *mMontagecomp;
+
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     TSubclassOf<class ACWeapon> mWeaponClass;
