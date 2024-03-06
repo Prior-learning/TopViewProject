@@ -20,9 +20,10 @@ enum class E_State : uint16
 	Attack,
 	Run,
 	Aim,
-	Dash,
+	Roll,
 	Reload,
 	Dead,
+	Max
 };
 
 enum E_WHY_BLOCKED : uint64
@@ -31,7 +32,7 @@ enum E_WHY_BLOCKED : uint64
 	ATTACKING = 1 << 1,
 	RUNNING = 1 << 2,
 	AIMING = 1 << 3,
-	DASHING = 1 << 4,
+	ROLLING = 1 << 4,
 	RELOADING = 1 << 5,
 	DEAD = 1 << 6,
 };
@@ -66,6 +67,7 @@ public:
 	void SetAiming() { bAiming = true; }
 	void UnSetAiming() { bAiming = false; }
 	bool IsAiming() { return bAiming; }
+
 
 private:
 	TMap<E_State, uint64> P_State;
