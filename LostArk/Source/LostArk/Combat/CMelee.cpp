@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 
 #include "../Global.h"
+#include "../Combat/ICombat.h"
 using namespace std;
 
 
@@ -23,14 +24,21 @@ ACMelee *ACMelee::CreateWeapon(UWorld *world, TSubclassOf<class ACWeapon> classo
    
     ACMelee *temp = world->SpawnActor<ACMelee>(classof, params);
     temp->AttachToComponent(owner->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),temp->mAttachBone);
+
+    temp->mController = owner->GetController();
+
     return temp;
 }
 
-//void ACMelee::BeginPlay()
-//{
-// /*   component->OnComponentBeginOverlap.AddDynamic(this, &ACAttachment::OnComponentBeginOverlap);
-//    component->OnComponentEndOverlap.AddDynamic(this, &ACAttachment::OnComponentEndOverlap);*/
-//}
+void ACMelee::BeginPlay()
+{
+
+    OverlapActors.Reserve(6); // ´ë·« 6
+
+    mCollider->OnComponentBeginOverlap.AddDynamic(this, &ACMelee::OnComponentBeginOverlap);
+    mCollider->OnComponentEndOverlap.AddDynamic(this, &ACMelee::OnComponentEndOverlap);
+
+}
 
 void ACMelee::OnCollision()
 {
@@ -46,12 +54,30 @@ void ACMelee::OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent, 
                                       UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                       const FHitResult &SweepResult)
 {
-    CLog::Log("Overlap Begin");
+    CheckTrue(OtherComp->GetOwner() == this->GetOwner());
+
+    ACharacter *hitedActor = Cast<ACharacter>(OtherComp->GetOwner());
+    CheckNull(hitedActor);
+    
+    OverlapActors.AddUnique(hitedActor);
 }
 
 void ACMelee::OnComponentEndOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
                                     UPrimitiveComponent *OtherComp, int32 OtherBodyIndex)
 {
-    CLog::Log("Overlap End");
+    CheckTrue(OtherComp->GetOwner() == this->GetOwner());
+    ACharacter *hitedActor = Cast<ACharacter>(OtherComp->GetOwner());
+    CheckNull(hitedActor);
+
+    int idx = -2; 
+    if (OverlapActors.Find(hitedActor, idx))
+    {
+        OverlapActors.RemoveAt(idx);
+  
+        CLog::Log(OverlappedComponent->GetFName().ToString());
+        CLog::Log(OtherComp->GetFName().ToString());
+        hitedActor->TakeDamage(mPower, mDamageEvent, mController, this);
+        
+    }
 }
 

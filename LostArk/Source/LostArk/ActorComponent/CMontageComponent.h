@@ -41,7 +41,7 @@ protected:
 private:
   void PlayAnimMontage(E_State InState);
 
-private:
+protected:
     
     UPROPERTY(EditDefaultsOnly, Category = "DataTable")
     UDataTable *DataTable;
