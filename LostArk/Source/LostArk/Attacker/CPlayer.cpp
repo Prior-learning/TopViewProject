@@ -206,7 +206,7 @@ void ACPlayer::BeginRoll()
         FVector from = start + GetVelocity().GetSafeNormal2D();
         SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, from));
         GetCharacterMovement()->MaxWalkSpeed = 1200;
-        //mMontages->PlayRoll();
+        mMontages->PlayAnimMontage(EMontage_State::Roll);
         mPlayerState->Add(E_State::Aim, E_WHY_BLOCKED::ROLLING);
         mPlayerState->Add(E_State::Attack, E_WHY_BLOCKED::ROLLING);
         mPlayerState->Add(E_State::Reload, E_WHY_BLOCKED::ROLLING);
