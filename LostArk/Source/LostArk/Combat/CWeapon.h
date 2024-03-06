@@ -13,7 +13,8 @@ class LOSTARK_API ACWeapon : public AActor
 	
 public:	
 	// Sets default values for this actor's properties
-	ACWeapon();
+    ACWeapon();
+    virtual ~ACWeapon(){};
 
 protected:
 	// Called when the game starts or when spawned
@@ -23,4 +24,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+public:
+    virtual void OnCollision(){};
+	virtual void OffCollision(){};
 };
