@@ -4,6 +4,7 @@
 #include "../ActorComponent/CEnemyStateComponent.h"
 #include "../Combat/CMelee.h"
 #include "../Combat/CWeapon.h"
+#include "../ActorComponent/CEMontageComponent.h"
 ACEnemy::ACEnemy()
 {
  	
@@ -14,6 +15,7 @@ ACEnemy::ACEnemy()
 	GetMesh()->SetRelativeRotation(FRotator( 0.f,0.f,-90.f ));
 
 	CHelpers::CreateActorComponent<UCEnemyStateComponent>(this,&mState,"Statecddsdsomp");
+    CHelpers::CreateActorComponent<UCEMontageComponent>(this, &mMontageComp, "MontageComp");
 }
 
 
@@ -40,7 +42,9 @@ void ACEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
                          AActor *DamageCauser)
 {
-    CLog::Print(DamageAmount);
+    mState->IsApproachMode();
+    mMontageComp->PlayAnimMontage(EMontage_State::Hitted);
+
 	return 10.f;
 }
 

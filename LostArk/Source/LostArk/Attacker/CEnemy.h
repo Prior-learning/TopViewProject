@@ -32,7 +32,7 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat
     UPROPERTY(VisibleDefaultsOnly)
     class UCEnemyStateComponent *mState;
     UPROPERTY(VisibleDefaultsOnly)
-    class UCEMontageComponent *mMontagecomp;
+    class UCEMontageComponent *mMontageComp;
 
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)

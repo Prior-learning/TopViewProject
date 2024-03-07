@@ -5,7 +5,6 @@
 #include "CEMontageComponent.generated.h"
 
 
-
 UCLASS()
 class LOSTARK_API UCEMontageComponent : public UCMontageComponent
 {
@@ -15,8 +14,6 @@ class LOSTARK_API UCEMontageComponent : public UCMontageComponent
 
   protected:
     virtual void BeginPlay() override;
-
-
 
 };
 

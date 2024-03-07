@@ -15,6 +15,9 @@
 #include "../ActorComponent/CPlayerStateComponent.h"
 #include "../ActorComponent/CMontageComponent.h"
 
+#include "../Combat/CWeapon.h"
+#include "../Combat/CGun.h"
+
 
 #include "Kismet/KismetMathLibrary.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
@@ -66,7 +69,7 @@ ACPlayer::ACPlayer()
 
 	CHelpers::CreateActorComponent<UCPlayerStateComponent>(this, &mPlayerState, "PlayerStateComponent");
     CHelpers::CreateActorComponent<UCMontageComponent>(this, &mMontages, "Montage");
-
+    mTickTimer = 0;
 
 }
 
@@ -76,6 +79,9 @@ void ACPlayer::BeginPlay()
 	CheckNull(mPlayerState);
 	mPlayerState->SetUnarmed();
 	mPlayerState->UnSetAiming();
+    mPlayerState->UnSetFiring();
+	CreateWeapon();
+    //TeamID = FGenericTeamId(C_ID);
 
 }
 
@@ -112,6 +118,17 @@ void ACPlayer::Tick(float DeltaTime)
 	}
 	if (IsAiming() == true)
 		Look_Mouse();
+    //현재틱을 계속 업데이트
+    
+	if (mPlayerState->IsFiring())
+    {
+        mTickTimer += DeltaTime;
+    }
+    if (mTickTimer >= mGun->GetFireRate())
+    {
+        mTickTimer = 0;
+        Fire();
+    }
 }
 
 
@@ -174,10 +191,18 @@ void ACPlayer::Move_Cursor(float Axis)
 }
 void ACPlayer::OnEquip1()
 {
-	if (GetWeaponType() == E_WeaponType::UnArmed)
-		mPlayerState->SetPrimary();
-	else
-		mPlayerState->SetUnarmed();
+    if (GetWeaponType() == E_WeaponType::UnArmed)
+    {
+        mPlayerState->SetPrimary();
+        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
+                                mGun->GetHandSocket());
+    }
+    else
+    {
+        mPlayerState->SetUnarmed();
+        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
+                                mGun->GetHolsterSocket());
+    }
 
 }
 void ACPlayer::OnAim()
@@ -222,18 +247,38 @@ void ACPlayer::EndRoll()
     mPlayerState->Remove(E_State::Reload, E_WHY_BLOCKED::ROLLING);
     mPlayerState->Remove(E_State::Roll, E_WHY_BLOCKED::ROLLING);
 }
+void ACPlayer::CreateWeapon()
+{
+    CheckNull(mWeaponClass);
+
+    mGun = ACGun::CreateWeapon(GetWorld(), mWeaponClass, this);
+}
+void ACPlayer::OnCollision()
+{
+	//인터페이스라서 오버라이드만 해둠
+}
+void ACPlayer::OffCollision()
+{
+    //인터페이스라서 오버라이드만 해둠
+}
 void ACPlayer::BeginFire()
 {
     CheckTrue(mPlayerState->IsContains(E_State::Attack));
     CheckFalse(IsAiming());
+    mPlayerState->SetFiring();
     mPlayerState->Add(E_State::Reload, E_WHY_BLOCKED::ATTACKING);
-
-
 }
 
 void ACPlayer::EndFire()
 {
+    mPlayerState->UnSetFiring();
     mPlayerState->Remove(E_State::Reload, E_WHY_BLOCKED::ATTACKING);
+}
+
+void ACPlayer::Fire()
+{
+    mGun->Fire();
+    mMontages->PlayAnimMontage(EMontage_State::Attack);
 }
 
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -257,6 +302,7 @@ float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, 
 {
     Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
     CLog::Print(DamageCauser->GetFName().ToString() + " takeDamage");
+    mMontages->PlayAnimMontage(EMontage_State::Hitted);
     return 10.f;
 }
 

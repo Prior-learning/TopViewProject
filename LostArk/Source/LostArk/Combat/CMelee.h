@@ -26,8 +26,6 @@ class LOSTARK_API ACMelee : public ACWeapon
     FName mAttachBone;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
     float mPower = 1.f;
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
-    FDamageEvent mDamageEvent;
 
   public:
     static ACMelee *CreateWeapon(class UWorld *world, TSubclassOf<class ACWeapon> classof, class ACharacter *owner);
