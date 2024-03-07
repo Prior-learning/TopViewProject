@@ -4,7 +4,7 @@
 
 ACGun::ACGun()
 {
-    CHelpers::CreateComponent<UStaticMeshComponent>(this, &mesh, "SkeletalMesh");
+    CHelpers::CreateComponent<USkeletalMeshComponent>(this, &mesh, "SkeletalMesh");
     RootComponent = mesh;
 
 
