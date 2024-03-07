@@ -17,9 +17,28 @@ class LOSTARK_API ACGun : public ACWeapon
     class USkeletalMeshComponent *mesh;
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    FName mAttachBone;
+    FName mRifleHand;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    FName mRifleHolster;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    class UParticleSystem *FlashParticle;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	class UParticleSystem *EjectParticle;
+
+
+
 
   public:
     static ACGun *CreateWeapon(class UWorld *world, TSubclassOf<class ACWeapon> classof, class ACharacter *owner);
-	
+   
+    void Fire();
+    float GetFireRate(){return FireRate;}
+    FName GetHandSocket(){return mRifleHand;}
+    FName GetHolsterSocket(){return mRifleHolster;}
+
+  private:
+    float FireRate;
 };
