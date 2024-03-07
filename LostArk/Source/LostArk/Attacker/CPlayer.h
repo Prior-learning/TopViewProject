@@ -1,12 +1,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "../Combat/ICombat.h"
 #include "GameFramework/Character.h"
 #include "CPlayer.generated.h"
 
 
 UCLASS()
-class LOSTARK_API ACPlayer : public ACharacter
+class LOSTARK_API ACPlayer : public ACharacter,public IICombat
 {
 	GENERATED_BODY()
 
@@ -46,12 +47,19 @@ private:
 	void OnAim();
 	void OffAim();
     void BeginRoll();
-    void BeginFire();
+	void BeginFire();
     void EndFire();
+    void Fire();
 
 
 public:
     void EndRoll();
+  //virtual FGenericTeamId GetGenericTeamId() const override{return TeamID;}
+
+private:
+  virtual void CreateWeapon() override;
+  virtual void OnCollision() override;
+  virtual void OffCollision() override;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")
@@ -67,7 +75,13 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly)
         class UCMontageComponent *mMontages;
-	
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+        TSubclassOf<class ACWeapon> mWeaponClass;
+
+    class ACGun *mGun;
+    //FGenericTeamId TeamID;
 	E_WeaponType mPlayerWeaponType;
+	float mTickTimer;
 
 };

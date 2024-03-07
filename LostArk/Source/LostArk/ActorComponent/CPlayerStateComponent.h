@@ -68,11 +68,16 @@ public:
 	void UnSetAiming() { bAiming = false; }
 	bool IsAiming() { return bAiming; }
 
+	void SetFiring(){bFiring = true;}
+    void UnSetFiring(){bFiring = false;}
+    bool IsFiring(){return bFiring;}
+
 
 private:
 	TMap<E_State, uint64> P_State;
 	E_WeaponType mWeaponType;
 	bool bAiming;
+    bool bFiring;
 	
 };
 
