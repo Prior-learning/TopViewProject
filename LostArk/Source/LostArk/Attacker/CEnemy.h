@@ -28,7 +28,7 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat, public IGenericT
 
     virtual FGenericTeamId GetGenericTeamId() const override
     {
-        return TeamID;
+        return mTeamID;
     }
   protected:
     UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
@@ -54,5 +54,5 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat, public IGenericT
     virtual void OffCollision() override ;
 
 
-    FGenericTeamId TeamID = 1;
+    FGenericTeamId mTeamID = 1;
 };

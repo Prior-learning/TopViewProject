@@ -17,7 +17,7 @@ class LOSTARK_API ACMelee : public ACWeapon
 
   protected:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    class UStaticMeshComponent *mesh;
+    class USkeletalMeshComponent *mesh;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     class UBoxComponent *mCollider;
 

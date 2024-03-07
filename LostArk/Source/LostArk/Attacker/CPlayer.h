@@ -2,12 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "../Combat/ICombat.h"
+#include "GenericTeamAgentInterface.h"
 #include "GameFramework/Character.h"
 #include "CPlayer.generated.h"
 
 
 UCLASS()
-class LOSTARK_API ACPlayer : public ACharacter,public IICombat
+class LOSTARK_API ACPlayer : public ACharacter, public IICombat, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -54,7 +55,7 @@ private:
 
 public:
     void EndRoll();
-  //virtual FGenericTeamId GetGenericTeamId() const override{return TeamID;}
+    virtual FGenericTeamId GetGenericTeamId() const override{return mTeamID;}
 
 private:
   virtual void CreateWeapon() override;
@@ -80,7 +81,7 @@ protected:
         TSubclassOf<class ACWeapon> mWeaponClass;
 
     class ACGun *mGun;
-    //FGenericTeamId TeamID;
+    FGenericTeamId mTeamID = 0;
 	E_WeaponType mPlayerWeaponType;
 	float mTickTimer;
 

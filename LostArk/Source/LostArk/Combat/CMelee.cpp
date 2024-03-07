@@ -10,7 +10,7 @@ using namespace std;
 
 ACMelee::ACMelee()
 {
-    CHelpers::CreateComponent<UStaticMeshComponent>(this, &mesh, "SkeletalMesh");
+    CHelpers::CreateComponent<USkeletalMeshComponent>(this, &mesh, "SkeletalMesh");
     CHelpers::CreateComponent<UBoxComponent>(this, &mCollider, "Collider", mesh);
 
     RootComponent = mesh;

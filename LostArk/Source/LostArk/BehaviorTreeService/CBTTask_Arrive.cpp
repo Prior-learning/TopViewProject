@@ -13,11 +13,9 @@ EBTNodeResult::Type UCBTTask_Arrive::ExecuteTask(UBehaviorTreeComponent &OwnerCo
         FVector current = self->GetActorLocation();
 
         float distance = sqrt(pow(movepos.X - current.X, 2) + pow(movepos.Y - current.Y, 2));
-        CLog::Print(current);
         if (distance <= mNearDistance)
         {
             OwnerComp.GetBlackboardComponent()->SetValueAsEnum("State", 0);
-            CLog::Log("Arrive");
             return EBTNodeResult::Succeeded;
         }
         return EBTNodeResult::Failed;

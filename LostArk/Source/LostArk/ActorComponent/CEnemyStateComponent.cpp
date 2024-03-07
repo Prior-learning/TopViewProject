@@ -75,11 +75,16 @@ void UCEnemyStateComponent::SetActionMode()
 
     else if ( mCurrentCooltime <= 0)
     {
-        CLog::Print("Attack");
+        CLog::Log("Attack");
+
+        ACharacter *owner = Cast<ACharacter>(GetOwner());
+        AAIController *controller = Cast<AAIController>(owner->GetController());
+
+        controller->ClearFocus(EAIFocusPriority::Default);
 
         mState = EStateEnemyType::Action;
         SetMode(BYTE(EStateEnemyType::Action));
-        ACharacter *owner = Cast<ACharacter>(GetOwner());
+       
         owner->PlayAnimMontage(AttackMontage);
         mCurrentCooltime = mCooltime;
     }
