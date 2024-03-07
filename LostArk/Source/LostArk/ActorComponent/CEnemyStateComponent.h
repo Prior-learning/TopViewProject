@@ -54,6 +54,7 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsDeathMode(){ return mState == EStateEnemyType::Death;}
     
+
     void SetIdleMode();
     void SetApproachMode();
     void SetStrafeMode();

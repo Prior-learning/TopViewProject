@@ -22,7 +22,7 @@ void UCEnemyStateComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
     if ( 0 < mCurrentCooltime  )
         mCurrentCooltime -= DeltaTime;
-
+  
 }
 
 void UCEnemyStateComponent::OperationSelect(const AActor* target)
@@ -37,6 +37,7 @@ void UCEnemyStateComponent::OperationSelect(const AActor* target)
 
     if (distance <= mAttackRange)
         SetActionMode();
+    
     else
         SetApproachMode();
     

@@ -4,11 +4,6 @@
 #include "CMontageComponent.h"
 #include "CEMontageComponent.generated.h"
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/Dorong
 UCLASS()
 class LOSTARK_API UCEMontageComponent : public UCMontageComponent
 {

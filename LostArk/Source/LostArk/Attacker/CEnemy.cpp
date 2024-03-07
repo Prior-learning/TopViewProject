@@ -16,6 +16,7 @@ ACEnemy::ACEnemy()
 
 	CHelpers::CreateActorComponent<UCEnemyStateComponent>(this,&mState,"Statecddsdsomp");
     CHelpers::CreateActorComponent<UCEMontageComponent>(this, &mMontageComp, "MontageComp");
+
 }
 
 
