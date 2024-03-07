@@ -8,6 +8,23 @@
 using namespace std;
 
 
+ACMelee *ACMelee::CreateWeapon(UWorld *world, TSubclassOf<class ACWeapon> classof, ACharacter *owner)
+{
+    //FTransform transform;
+    FActorSpawnParameters params;
+    params.Owner = owner;
+
+    ACMelee *temp = world->SpawnActor<ACMelee>(classof, params);
+    /*ACMelee *temp = world->SpawnActorDeferred<ACMelee>(classof, transform);
+    UGameplayStatics::FinishSpawningActor(temp, transform);*/
+    temp->AttachToComponent(owner->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
+                            temp->mAttachBone);
+
+    temp->mController = owner->GetController();
+
+    return temp;
+}
+
 ACMelee::ACMelee()
 {
     CHelpers::CreateComponent<USkeletalMeshComponent>(this, &mesh, "SkeletalMesh");
@@ -16,29 +33,15 @@ ACMelee::ACMelee()
     RootComponent = mesh;
 }
 
-
-ACMelee *ACMelee::CreateWeapon(UWorld *world, TSubclassOf<class ACWeapon> classof , ACharacter *owner)
-{
-    FActorSpawnParameters params;
-    params.Owner = owner;
-   
-    ACMelee *temp = world->SpawnActor<ACMelee>(classof, params);
-    temp->AttachToComponent(owner->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),temp->mAttachBone);
-
-    temp->mController = owner->GetController();
-
-    return temp;
-}
-
 void ACMelee::BeginPlay()
 {
-
+    Super::BeginPlay();
     OverlapActors.Reserve(6); // ´ë·« 6
 
     mCollider->OnComponentBeginOverlap.AddDynamic(this, &ACMelee::OnComponentBeginOverlap);
     mCollider->OnComponentEndOverlap.AddDynamic(this, &ACMelee::OnComponentEndOverlap);
-
 }
+
 
 void ACMelee::OnCollision()
 {

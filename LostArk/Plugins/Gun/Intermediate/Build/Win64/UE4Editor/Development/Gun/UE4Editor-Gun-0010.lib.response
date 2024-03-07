@@ -6,7 +6,7 @@
 /NAME:"UE4Editor-Gun-0010.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"C:\TeamProject2\LostArk\Intermediate\Build\Win64\LostArkEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
-"C:\TeamProject2\LostArk\Plugins\Gun\Intermediate\Build\Win64\UE4Editor\Development\Gun\Gun.cpp.obj"
-"C:\TeamProject2\LostArk\Plugins\Gun\Intermediate\Build\Win64\UE4Editor\Development\Gun\Default.rc2.res"
-/OUT:"C:\TeamProject2\LostArk\Plugins\Gun\Intermediate\Build\Win64\UE4Editor\Development\Gun\UE4Editor-Gun-0010.lib"
+"C:\Users\arkchimy\Documents\quarter-view_project\LostArk\Intermediate\Build\Win64\LostArkEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"C:\Users\arkchimy\Documents\quarter-view_project\LostArk\Plugins\Gun\Intermediate\Build\Win64\UE4Editor\Development\Gun\Gun.cpp.obj"
+"C:\Users\arkchimy\Documents\quarter-view_project\LostArk\Plugins\Gun\Intermediate\Build\Win64\UE4Editor\Development\Gun\Default.rc2.res"
+/OUT:"C:\Users\arkchimy\Documents\quarter-view_project\LostArk\Plugins\Gun\Intermediate\Build\Win64\UE4Editor\Development\Gun\UE4Editor-Gun-0010.lib"
