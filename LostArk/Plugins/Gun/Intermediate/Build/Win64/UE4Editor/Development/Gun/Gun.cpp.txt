@@ -1,2 +1,2 @@
-C:\Users\arkchimy\Documents\quarter-view_project\LostArk\Plugins\Gun\Intermediate\Build\Win64\UE4Editor\Development\Gun\Definitions.Gun.h
-C:\Users\arkchimy\Documents\quarter-view_project\LostArk\Plugins\Gun\Source\Gun\Public\Gun.h
+C:\TeamProject2\LostArk\Plugins\Gun\Intermediate\Build\Win64\UE4Editor\Development\Gun\Definitions.Gun.h
+C:\TeamProject2\LostArk\Plugins\Gun\Source\Gun\Public\Gun.h
