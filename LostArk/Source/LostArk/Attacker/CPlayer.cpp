@@ -276,7 +276,7 @@ void ACPlayer::EndFire()
 
 void ACPlayer::Fire()
 {
-    mGun->Fire();
+    mGun->Fire(this);
     mMontages->PlayAnimMontage(EMontage_State::Attack);
 }
 

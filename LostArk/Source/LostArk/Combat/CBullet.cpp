@@ -1,9 +1,19 @@
 #include "CBullet.h"
+#include "../Global.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+
 
 ACBullet::ACBullet()
 {
-	PrimaryActorTick.bCanEverTick = true;
+    CHelpers::CreateComponent(this, &StaticMesh, "Mesh");
+    RootComponent = StaticMesh;
 
+	Projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
+    Projectile->SetUpdatedComponent(GetRootComponent());
+    Projectile->InitialSpeed = 24000;
+    Projectile->MaxSpeed = 24000;
+    Projectile->bRotationFollowsVelocity = false;
+    Projectile->bShouldBounce = false;
 }
 
 void ACBullet::BeginPlay()
@@ -12,9 +22,9 @@ void ACBullet::BeginPlay()
 	
 }
 
-void ACBullet::Tick(float DeltaTime)
+void ACBullet::Fire(const FVector &Direction)
 {
-	Super::Tick(DeltaTime);
-
+    Projectile->Velocity = Direction * Projectile->InitialSpeed;
 }
+
 

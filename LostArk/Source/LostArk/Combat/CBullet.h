@@ -15,7 +15,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    class UStaticMeshComponent *StaticMesh;
+
+	UPROPERTY(VisibleDefaultsOnly)
+    class UProjectileMovementComponent *Projectile;
+
 public:	
-	virtual void Tick(float DeltaTime) override;
+	void Fire(const FVector& Direction);
 
 };
