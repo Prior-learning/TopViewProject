@@ -13,5 +13,15 @@
 				"AIModule"
 			]
 		}
+	],
+	"Plugins": [
+		{
+			"Name": "asset",
+			"Enabled": false
+		},
+		{
+			"Name": "Gun",
+			"Enabled": false
+		}
 	]
 }

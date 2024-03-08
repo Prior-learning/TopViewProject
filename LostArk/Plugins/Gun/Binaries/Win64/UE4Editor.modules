@@ -2,6 +2,10 @@
 	"BuildId": "17155196",
 	"Modules": 
 	{
+<<<<<<< HEAD
 		"Gun": "UE4Editor-Gun-0003.dll"
+=======
+		"Gun": "UE4Editor-Gun.dll"
+>>>>>>> origin/Dorong
 	}
 }
