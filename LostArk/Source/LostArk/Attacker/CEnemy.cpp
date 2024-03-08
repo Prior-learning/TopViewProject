@@ -45,11 +45,12 @@ void ACEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
                          AActor *DamageCauser)
 {
-
+    if (mState->IsDeathMode())
+        return 0.f;
     mState->Take_Damage(DamageAmount);
-
     mMontageComp->PlayAnimMontage(EMontage_State::Hitted);
 
+    
 	return 10.f;
 }
 

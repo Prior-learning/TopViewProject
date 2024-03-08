@@ -47,7 +47,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-    void PlayAnimMontage(EMontage_State InState);
+    virtual void PlayAnimMontage(EMontage_State InState);
 
 protected:
     

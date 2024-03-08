@@ -33,7 +33,7 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
 
   public:
     UCEnemyStateComponent();
-
+    virtual void BeginPlay() override;
   public:
     // Called every frame
     virtual void TickComponent(float DeltaTime, ELevelTick TickType,
@@ -83,13 +83,13 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
 
   protected:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Status")
-    float mAttackRange = 0.f; // 어느 정도 가까워져야 공격을 할껀지
+    float mAttackRange = 120.f; // 어느 정도 가까워져야 공격을 할껀지
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Status")
-    float mCooltime = 0.f; // 공격 쿨타임
+    float mCooltime = 3.f; // 공격 쿨타임
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Status")
-    float MaxHp = 10.f;
+    float MaxHp = 3.f;
 
   protected:
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
@@ -100,5 +100,5 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
 
   private:
     float mHp = 0.f;
-    float mCurrentCooltime = 0.f;
+    float mCurrentCooltime = 3.f;
 };

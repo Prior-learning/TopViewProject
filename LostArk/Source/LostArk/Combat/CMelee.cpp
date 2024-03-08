@@ -77,8 +77,7 @@ void ACMelee::OnComponentEndOverlap(UPrimitiveComponent *OverlappedComponent, AA
     {
         OverlapActors.RemoveAt(idx);
         FDamageEvent mDamageEvent;
-        CLog::Log(OverlappedComponent->GetFName().ToString());
-        CLog::Log(OtherComp->GetFName().ToString());
+     
         hitedActor->TakeDamage(mPower, mDamageEvent, mController, this);
         
     }
