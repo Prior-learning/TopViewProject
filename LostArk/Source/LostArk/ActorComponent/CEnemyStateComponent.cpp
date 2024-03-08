@@ -12,7 +12,7 @@
 
 UCEnemyStateComponent::UCEnemyStateComponent()
 {
-
+    mHp = MaxHp;
 }
 
 void UCEnemyStateComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -41,6 +41,14 @@ void UCEnemyStateComponent::OperationSelect(const AActor* target)
     else
         SetApproachMode();
     
+}
+
+void UCEnemyStateComponent::Take_Damage(float DamageAmount)
+{
+    mHp -= DamageAmount;
+
+    if (mHp <= 0)
+        SetDeathMode();
 }
 
 void UCEnemyStateComponent::SetIdleMode()
