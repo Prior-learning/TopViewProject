@@ -1,6 +1,7 @@
 #include "CEnemyAnimInstance.h"
 #include "../Global.h"
 #include "GameFramework/Character.h"
+#include "../ActorComponent/CEnemyStateComponent.h"
 
 void UCEnemyAnimInstance::NativeBeginPlay()
 {
@@ -18,4 +19,8 @@ void UCEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	Speed = OwnerCharacter->GetVelocity().Size2D();
 	Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
 	Pitch = OwnerCharacter->GetBaseAimRotation().Pitch;
+
+	UCEnemyStateComponent* state = CHelpers::GetComponent<UCEnemyStateComponent>(OwnerCharacter);
+    if (!!state)
+		bDeath = state->IsDeathMode();
 }

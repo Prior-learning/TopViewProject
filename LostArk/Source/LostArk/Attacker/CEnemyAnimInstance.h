@@ -20,6 +20,10 @@ protected:
 		float Direction;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
 		float Pitch;
-private:
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
+        bool bDeath;
+
+      private:
 	class ACharacter* OwnerCharacter;
 };
