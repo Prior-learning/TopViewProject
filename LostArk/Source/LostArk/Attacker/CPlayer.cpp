@@ -300,7 +300,8 @@ float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, 
                            AActor *DamageCauser)
 {
     Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-    
+    UE_LOG(LogTemp, Warning, TEXT("[CPlayer::TakeDamage]"));
+
     mMontages->PlayAnimMontage(EMontage_State::Hitted);
     return 10.f;
 }

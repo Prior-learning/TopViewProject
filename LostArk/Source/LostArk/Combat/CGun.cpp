@@ -31,25 +31,25 @@ void ACGun::Fire(ACharacter *owner)
     UWorld *world = GetWorld();
 
     FVector start, end, direction;
-    //방향
     direction = owner->GetActorForwardVector();
-    FTransform transform = mesh->GetComponentToWorld();
-    FVector meshLocation = transform.GetLocation();
+    FVector meshLocation = mesh->GetSocketLocation("MuzzleFlash");
     start = meshLocation + direction;
-    FVector endDirection = direction * 1000;
+    FVector endDirection = direction * 2000;
     end = meshLocation + endDirection;
     if (world)
     {
         ACBullet *bullet = world->SpawnActor<ACBullet>(mBullet);
         if (bullet)
         {
-            bullet->SetActorLocation(start);
-            bullet->SetActorRotation(direction.Rotation());
+            
 
             if (direction.Normalize())
             {
-                // 정규화에 성공하면 Fire 함수에 넣어준다.
+                bullet->SetActorLocation(start);
+                bullet->SetActorRotation(direction.Rotation());
                 bullet->Fire(direction);
+                UE_LOG(LogTemp, Warning, TEXT("[CRifle::Fire]"));
+
             }
 
         }
