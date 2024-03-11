@@ -15,18 +15,6 @@ class LOSTARK_API ACMelee : public ACWeapon
     ACMelee();
     virtual ~ACMelee(){};
 
-  protected:
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    class UStaticMeshComponent *mesh;
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    class UBoxComponent *mCollider;
-
-
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="attach")
-    FName mAttachBone;
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
-    float mPower = 1.f;
-
   public:
     static ACMelee *CreateWeapon(class UWorld *world, TSubclassOf<class ACWeapon> classof, class ACharacter *owner);
 
@@ -35,7 +23,7 @@ class LOSTARK_API ACMelee : public ACWeapon
     virtual void OnCollision() override;
     virtual void OffCollision() override;
 
-   private:
+  private:
     UFUNCTION()
     void OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
                                  UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
@@ -45,7 +33,18 @@ class LOSTARK_API ACMelee : public ACWeapon
     void OnComponentEndOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
                                UPrimitiveComponent *OtherComp, int32 OtherBodyIndex);
 
-   private:
+  protected:
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    class USkeletalMeshComponent *mesh;
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    class UBoxComponent *mCollider;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "attach")
+    FName mAttachBone;
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
+    float mPower = 1.f;
+
+  private:
     TArray<class ACharacter *> OverlapActors;
 
     class AController *mController;

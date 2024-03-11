@@ -25,7 +25,8 @@ protected:
 		void OnTargetDetected(class AActor* Actor, FAIStimulus Stimulus);
 
 public:
-	virtual FGenericTeamId GetGenericTeamId()const  override { return TeamID; }
+    virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor &Other) const override;
+	
 
 	virtual void SetPerception();
 
@@ -61,19 +62,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Perception")
 		float AILastSeenLocation = 1200.f;
 
-
-	void Set_TeamId(int32 val) { TeamID = val; }
-
 protected:
 	FString Enemy_Type = "Melee";
 	FTimerHandle target_handler;
 
 	class UCEnemyStateComponent* mState;
 
-	FGenericTeamId TeamID;
-
 private:
 	class ACEnemy* mOwner;
-    class ACPlayer* target;
+    class AActor* target;
 
 };

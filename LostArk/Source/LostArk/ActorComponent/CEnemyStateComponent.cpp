@@ -22,7 +22,7 @@ void UCEnemyStateComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
     if ( 0 < mCurrentCooltime  )
         mCurrentCooltime -= DeltaTime;
-
+  
 }
 
 void UCEnemyStateComponent::OperationSelect(const AActor* target)
@@ -37,6 +37,7 @@ void UCEnemyStateComponent::OperationSelect(const AActor* target)
 
     if (distance <= mAttackRange)
         SetActionMode();
+    
     else
         SetApproachMode();
     
@@ -74,11 +75,16 @@ void UCEnemyStateComponent::SetActionMode()
 
     else if ( mCurrentCooltime <= 0)
     {
-        CLog::Print("Attack");
+        CLog::Log("Attack");
+
+        ACharacter *owner = Cast<ACharacter>(GetOwner());
+        AAIController *controller = Cast<AAIController>(owner->GetController());
+
+        controller->ClearFocus(EAIFocusPriority::Default);
 
         mState = EStateEnemyType::Action;
         SetMode(BYTE(EStateEnemyType::Action));
-        ACharacter *owner = Cast<ACharacter>(GetOwner());
+       
         owner->PlayAnimMontage(AttackMontage);
         mCurrentCooltime = mCooltime;
     }

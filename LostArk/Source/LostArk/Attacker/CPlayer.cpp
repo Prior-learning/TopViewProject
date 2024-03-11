@@ -81,7 +81,6 @@ void ACPlayer::BeginPlay()
 	mPlayerState->UnSetAiming();
     mPlayerState->UnSetFiring();
 	CreateWeapon();
-    //TeamID = FGenericTeamId(C_ID);
 
 }
 
@@ -277,7 +276,7 @@ void ACPlayer::EndFire()
 
 void ACPlayer::Fire()
 {
-    mGun->Fire();
+    mGun->Fire(this);
     mMontages->PlayAnimMontage(EMontage_State::Attack);
 }
 
@@ -301,7 +300,8 @@ float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, 
                            AActor *DamageCauser)
 {
     Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-    CLog::Print(DamageCauser->GetFName().ToString() + " takeDamage");
+    UE_LOG(LogTemp, Warning, TEXT("[CPlayer::TakeDamage]"));
+
     mMontages->PlayAnimMontage(EMontage_State::Hitted);
     return 10.f;
 }

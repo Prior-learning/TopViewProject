@@ -3,11 +3,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "../Combat/ICombat.h"
+#include "GenericTeamAgentInterface.h"
 #include "CEnemy.generated.h"
 
 
 UCLASS()
-class LOSTARK_API ACEnemy : public ACharacter, public IICombat
+class LOSTARK_API ACEnemy : public ACharacter, public IICombat, public IGenericTeamAgentInterface
 {
     GENERATED_BODY()
 
@@ -24,6 +25,11 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat
 
     virtual float TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
                             AActor *DamageCauser) override;
+
+    virtual FGenericTeamId GetGenericTeamId() const override
+    {
+        return mTeamID;
+    }
   protected:
     UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
     TArray<FVector> mPatrolPos;
@@ -31,6 +37,7 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat
   protected:
     UPROPERTY(VisibleDefaultsOnly)
     class UCEnemyStateComponent *mState;
+
     UPROPERTY(VisibleDefaultsOnly)
     class UCEMontageComponent *mMontageComp;
 
@@ -45,4 +52,7 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat
     virtual void CreateWeapon() override;
     virtual void OnCollision() override;
     virtual void OffCollision() override ;
+
+
+    FGenericTeamId mTeamID = 1;
 };

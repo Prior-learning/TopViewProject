@@ -17,6 +17,9 @@ class LOSTARK_API ACGun : public ACWeapon
     class USkeletalMeshComponent *mesh;
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    TSubclassOf<class ACBullet> mBullet;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     FName mRifleHand;
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
@@ -34,10 +37,11 @@ class LOSTARK_API ACGun : public ACWeapon
   public:
     static ACGun *CreateWeapon(class UWorld *world, TSubclassOf<class ACWeapon> classof, class ACharacter *owner);
    
-    void Fire();
+    void Fire(ACharacter *owner);
     float GetFireRate(){return FireRate;}
     FName GetHandSocket(){return mRifleHand;}
     FName GetHolsterSocket(){return mRifleHolster;}
+
 
   private:
     float FireRate;
