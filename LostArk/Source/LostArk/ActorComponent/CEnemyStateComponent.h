@@ -15,16 +15,7 @@ enum class EStateEnemyType : uint8
     Death,    // 사망
     Max,
 };
-/*
-   // == 코드 작성자 :
-   Arkchimy
 
-         어떤 상태를 검사할 지  직관성을 늘리기 위해 분별하여 만듬
-        + EStateEnemyType 자료형을 다른 class에 참조시키지 않도록 하기위해
-        get set 전부
-          State별로 구현하였음.
-
-    */
 //typedef float Statustype; // 변경 용의
 UCLASS()
 class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
@@ -42,7 +33,7 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
 
   public:
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsIdleMode()
+    FORCEINLINE bool IsIdleMode() 
     {
         return mState == EStateEnemyType::Idle;
     }
@@ -69,6 +60,10 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
     FORCEINLINE bool IsDeathMode()
     {
         return mState == EStateEnemyType::Death;
+    }
+    virtual bool IsAimMode()
+    {
+        return false;
     }
 
     void Take_Damage(float DamageAmount);
@@ -100,5 +95,5 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
 
   private:
     float mHp = 0.f;
-    float mCurrentCooltime = 3.f;
+    float mCurrentCooltime = 3.f; //
 };
