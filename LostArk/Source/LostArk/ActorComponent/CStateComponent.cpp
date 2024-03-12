@@ -2,21 +2,17 @@
 
 UCStateComponent::UCStateComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+    PrimaryComponentTick.bCanEverTick = true;
 }
 
 void UCStateComponent::BeginPlay()
 {
-	Super::BeginPlay();
-	
+    Super::BeginPlay();
 }
-
 
 // Called every frame
-void UCStateComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UCStateComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                     FActorComponentTickFunction *ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
-

@@ -11,9 +11,9 @@ class LOSTARK_API UCEMontageComponent : public UCMontageComponent
   public:
     UCEMontageComponent() = default;
 
-  protected:
+  public:
     virtual void BeginPlay() override;
-
+    virtual void PlayAnimMontage(EMontage_State InState);
 };
 
 

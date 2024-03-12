@@ -8,22 +8,6 @@
 using namespace std;
 
 
-ACMelee *ACMelee::CreateWeapon(UWorld *world, TSubclassOf<class ACWeapon> classof, ACharacter *owner)
-{
-    //FTransform transform;
-    FActorSpawnParameters params;
-    params.Owner = owner;
-
-    ACMelee *temp = world->SpawnActor<ACMelee>(classof, params);
-    /*ACMelee *temp = world->SpawnActorDeferred<ACMelee>(classof, transform);
-    UGameplayStatics::FinishSpawningActor(temp, transform);*/
-    temp->AttachToComponent(owner->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
-                            temp->mAttachBone);
-
-    temp->mController = owner->GetController();
-
-    return temp;
-}
 
 ACMelee::ACMelee()
 {
@@ -77,8 +61,7 @@ void ACMelee::OnComponentEndOverlap(UPrimitiveComponent *OverlappedComponent, AA
     {
         OverlapActors.RemoveAt(idx);
         FDamageEvent mDamageEvent;
-        CLog::Log(OverlappedComponent->GetFName().ToString());
-        CLog::Log(OtherComp->GetFName().ToString());
+     
         hitedActor->TakeDamage(mPower, mDamageEvent, mController, this);
         
     }

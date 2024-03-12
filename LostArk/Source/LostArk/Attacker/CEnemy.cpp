@@ -2,9 +2,11 @@
 #include "../Global.h"
 #include "Components/CapsuleComponent.h"
 #include "../ActorComponent/CEnemyStateComponent.h"
+#include "../ActorComponent/CEMontageComponent.h"
+
 #include "../Combat/CMelee.h"
 #include "../Combat/CWeapon.h"
-#include "../ActorComponent/CEMontageComponent.h"
+
 ACEnemy::ACEnemy()
 {
  	
@@ -43,9 +45,12 @@ void ACEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
                          AActor *DamageCauser)
 {
-    mState->IsApproachMode();
+    if (mState->IsDeathMode())
+        return 0.f;
+    mState->Take_Damage(DamageAmount);
     mMontageComp->PlayAnimMontage(EMontage_State::Hitted);
 
+    
 	return 10.f;
 }
 
@@ -54,7 +59,7 @@ void ACEnemy::CreateWeapon()
 {
     CheckNull(mWeaponClass);
 
-	mWeapon = ACMelee::CreateWeapon(GetWorld(), mWeaponClass, this);
+	mWeapon = ACWeapon::CreateWeapon(GetWorld(), mWeaponClass, this);
 
 }
 
