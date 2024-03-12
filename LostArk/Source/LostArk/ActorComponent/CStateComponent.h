@@ -1,28 +1,37 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "CStateComponent.generated.h"
 
+UENUM(BlueprintType)
+enum class E_WeaponType : uint8
+{
+    UnArmed,
+    Primary //....추가예정
+};
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(Abstract)
 class LOSTARK_API UCStateComponent : public UActorComponent
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
-	UCStateComponent();
+  public:
+    UCStateComponent();
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+  protected:
+    virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+  public:
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+                               FActorComponentTickFunction *ThisTickFunction) override;
 
-		
+  public: 
+    virtual bool IsAimMode() PURE_VIRTUAL(UCStateComponent::IsAimMode(), return false;);
+    virtual bool IsDeathMode() PURE_VIRTUAL(UCStateComponent::IsDeathMode(), return false;);
+
+    E_WeaponType GetWeaponType(){return mWeaponType;}
+  protected:
+    E_WeaponType mWeaponType;
 };

@@ -1,24 +1,26 @@
 #include "CAnimInstance.h"
-#include "CPlayer.h"
+#include "../ActorComponent/CStateComponent.h"
+#include "../Global.h"
 #include "GameFramework/Character.h"
 
 void UCAnimInstance::NativeBeginPlay()
 {
-	Super::NativeBeginPlay();
+    Super::NativeBeginPlay();
 
-	OwnerCharacter = Cast<ACharacter>(TryGetPawnOwner());
-	Player = Cast<ACPlayer>(OwnerCharacter);
+    OwnerCharacter = Cast<ACharacter>(TryGetPawnOwner());
 }
 
 void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
-	Super::NativeUpdateAnimation(DeltaSeconds);
-	
-	if (OwnerCharacter == 0)
-		return;
+    CheckNull(OwnerCharacter);
+    Super::NativeUpdateAnimation(DeltaSeconds);
 
-	Speed = OwnerCharacter->GetVelocity().Size2D();
-	Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
-	AnimWeaponType = Player->GetWeaponType();
-	bAiming = Player->IsAiming();
+    Speed = OwnerCharacter->GetVelocity().Size2D();
+    Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
+    UCStateComponent *state = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
+    CheckNull(state); 
+
+    AnimWeaponType = state->GetWeaponType();
+    bAiming = state->IsAimMode();
+    bDeath = state->IsDeathMode();
 }

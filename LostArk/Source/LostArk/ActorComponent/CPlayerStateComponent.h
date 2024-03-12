@@ -7,11 +7,7 @@
 //                    코드 작성자 == Dorong               //
 //비트 플래그를 사용해 상태관리를 해보기 위해 예제를 보고 수정하여 작성함.
 
-UENUM(BlueprintType)
-enum class E_WeaponType : uint8
-{
-	UnArmed , Primary//....추가예정
-};
+
 
 UENUM()
 enum class E_State : uint16
@@ -72,10 +68,12 @@ public:
     void UnSetFiring(){bFiring = false;}
     bool IsFiring(){return bFiring;}
 
+	virtual bool IsAimMode(){return bAiming;}
+    virtual bool IsDeathMode() {return 0;}
 
-private:
-	TMap<E_State, uint64> P_State;
-	E_WeaponType mWeaponType;
+  private:
+	TMap<E_State, uint64> P_State;// 멀티스레드 환경에서 되도록 Mutex lock 
+	
 	bool bAiming;
     bool bFiring;
 	
