@@ -59,7 +59,7 @@ void ACEnemy::CreateWeapon()
 {
     CheckNull(mWeaponClass);
 
-	mWeapon = ACMelee::CreateWeapon(GetWorld(), mWeaponClass, this);
+	mWeapon = ACWeapon::CreateWeapon(GetWorld(), mWeaponClass, this);
 
 }
 

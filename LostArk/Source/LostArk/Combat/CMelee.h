@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "CoreMinimal.h"
 #include "CWeapon.h"
 #include "CMelee.generated.h"
@@ -16,7 +17,7 @@ class LOSTARK_API ACMelee : public ACWeapon
     virtual ~ACMelee(){};
 
   public:
-    static ACMelee *CreateWeapon(class UWorld *world, TSubclassOf<class ACWeapon> classof, class ACharacter *owner);
+ 
 
     virtual void BeginPlay() override;
 
@@ -35,17 +36,9 @@ class LOSTARK_API ACMelee : public ACWeapon
 
   protected:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    class USkeletalMeshComponent *mesh;
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     class UBoxComponent *mCollider;
-
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "attach")
-    FName mAttachBone;
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
-    float mPower = 1.f;
 
   private:
     TArray<class ACharacter *> OverlapActors;
-
-    class AController *mController;
+    
 };

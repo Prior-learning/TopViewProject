@@ -249,8 +249,8 @@ void ACPlayer::EndRoll()
 void ACPlayer::CreateWeapon()
 {
     CheckNull(mWeaponClass);
-
-    mGun = ACGun::CreateWeapon(GetWorld(), mWeaponClass, this);
+	// 업캐스팅 다운캐스팅...은 너무 위험하고 다형성이없음
+    mGun = Cast<ACGun>(ACWeapon::CreateWeapon(GetWorld(), mWeaponClass, this));
 }
 void ACPlayer::OnCollision()
 {

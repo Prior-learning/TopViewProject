@@ -14,7 +14,8 @@ void UCMontageComponent::BeginPlay()
     CheckNull(DataTable);
     TArray<FMontageData *> datas;
     DataTable->GetAllRows<FMontageData>("", datas);
-
+ 
+    
     for (int32 i = 0; i < (int16)EMontage_State::Max; i++)
     {
         for (FMontageData *data : datas)
@@ -25,8 +26,8 @@ void UCMontageComponent::BeginPlay()
 
                 continue;
             }
-        } // for(data)
-    }     // for(i)
+        } 
+    }     
 		
 }
 

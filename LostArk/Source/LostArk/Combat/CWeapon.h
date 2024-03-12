@@ -17,14 +17,32 @@ public:
     virtual ~ACWeapon(){};
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 public:
+    static ACWeapon *CreateWeapon(class UWorld *world, TSubclassOf<class ACWeapon> classof, class ACharacter *owner);
     virtual void OnCollision(){};
 	virtual void OffCollision(){};
+
+
+  protected:
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    class USkeletalMeshComponent *mesh;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    class UParticleSystem * mHitParticle;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "attach")
+    FName mAttachBone; // 처음에 Attach 되는 Bone
+
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
+    float mPower = 1.f;
+
+    class AController *mController;
+
+
 };
