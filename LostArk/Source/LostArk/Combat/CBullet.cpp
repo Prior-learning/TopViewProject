@@ -16,8 +16,8 @@ ACBullet::ACBullet()
 
 	Projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
     Projectile->SetUpdatedComponent(GetRootComponent());
-    Projectile->InitialSpeed = 12000;
-    Projectile->MaxSpeed = 12000;
+    Projectile->InitialSpeed = 10000;
+    Projectile->MaxSpeed = 10000;
     Projectile->bRotationFollowsVelocity = false;
     Projectile->bShouldBounce = false;
 }
@@ -61,7 +61,7 @@ void ACBullet::OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent,
     CLog::Log(OtherComp->GetFName().ToString());
     hitedActor->TakeDamage(mBulletDamage, mDamageEvent, mController, this);
 
-    Destroy();
+    TempDelete();
 }
 //메쉬 자체와 충돌할때 인듯?
 void ACBullet::OnHit(UPrimitiveComponent *HitComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp,
@@ -71,7 +71,7 @@ void ACBullet::OnHit(UPrimitiveComponent *HitComponent, AActor *OtherActor, UPri
     ACharacter *hitedActor = Cast<ACharacter>(OtherComp->GetOwner());
     CheckNull(hitedActor);
 
-    Destroy();
+    TempDelete();
 }
  
 
