@@ -52,6 +52,10 @@ private:
     void EndFire();
     void Fire();
 
+    void InitMovement();
+    void InitCamera();
+    void InitCursor();
+
 
 public:
     void EndRoll();

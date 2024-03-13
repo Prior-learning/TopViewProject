@@ -60,7 +60,7 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsDeathMode() const override {return mState == EStateEnemyType::Death;}
 
-    virtual bool IsAimMode() const override { return false; }
+    virtual bool IsAimMode() const override {  return false; }
 
     void Take_Damage(float DamageAmount);
 
