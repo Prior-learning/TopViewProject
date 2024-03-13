@@ -69,12 +69,16 @@ void UCEnemyStateComponent::Remove(const EStateEnemyType &action, const E_WHY_BL
 
 const bool UCEnemyStateComponent::IsContains(const EStateEnemyType &action)
 {
-    return false;
+    if (!mP_State.Contains(action))
+        return false;
+    return true;
 }
 
 void UCEnemyStateComponent::Clear(const EStateEnemyType &action)
 {
 }
+
+
 
 void UCEnemyStateComponent::Take_Damage(float DamageAmount)
 {
@@ -86,7 +90,8 @@ void UCEnemyStateComponent::Take_Damage(float DamageAmount)
 
 void UCEnemyStateComponent::SetIdleMode()
 {
-    CheckTrue(IsDeathMode());
+    CheckFalse(IsContains(EStateEnemyType::Idle));
+
     mState = EStateEnemyType::Idle;
     SetMode(BYTE(EStateEnemyType::Idle));
 }

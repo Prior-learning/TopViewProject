@@ -46,21 +46,21 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
 
   public:
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsIdleMode() const{return mState == EStateEnemyType::Idle; }
+    FORCEINLINE bool IsIdleMode() const  {return mState == EStateEnemyType::Idle; }
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsApproachMode() const{return mState == EStateEnemyType::Approach;}
+    FORCEINLINE bool IsApproachMode() const  {return mState == EStateEnemyType::Approach;}
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsStrafeMode() const{return mState == EStateEnemyType::Strafe; }
+    FORCEINLINE bool IsStrafeMode() const  {return mState == EStateEnemyType::Strafe; }
 
     UFUNCTION(BlueprintPure) 
-    FORCEINLINE bool IsActionMode() const{return mState == EStateEnemyType::Action;}
+    FORCEINLINE bool IsActionMode() const  {return mState == EStateEnemyType::Action;}
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsDeathMode() const{return mState == EStateEnemyType::Death;}
+    FORCEINLINE bool IsDeathMode() const override {return mState == EStateEnemyType::Death;}
 
-    virtual bool IsAimMode() const{ return false; }
+    virtual bool IsAimMode() const override { return false; }
 
     void Take_Damage(float DamageAmount);
 

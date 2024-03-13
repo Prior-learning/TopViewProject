@@ -10,6 +10,9 @@ void UCEMontageComponent::BeginPlay()
     TArray<FMontageData *> datas;
     DataTable->GetAllRows<FMontageData>("", datas);
 
+
+    // 데이터가 들어있는 만큼 검사를하고
+
     for (int32 i = 0; i < datas.Num(); i++)
     {
         for (FMontageData *data : datas)
@@ -17,6 +20,7 @@ void UCEMontageComponent::BeginPlay()
             Datas2[int16(data->Type)].Emplace(data);
         }
     }
+
 }
 
 void UCEMontageComponent::PlayAnimMontage(EMontage_State InState)

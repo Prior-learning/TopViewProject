@@ -28,8 +28,8 @@ class LOSTARK_API UCStateComponent : public UActorComponent
                                FActorComponentTickFunction *ThisTickFunction) override;
 
   public: 
-    virtual bool IsAimMode() PURE_VIRTUAL(UCStateComponent::IsAimMode(), return false;);
-    virtual bool IsDeathMode() PURE_VIRTUAL(UCStateComponent::IsDeathMode(), return false;);
+    virtual bool IsAimMode() const PURE_VIRTUAL(UCStateComponent::IsAimMode(), return false;);
+    virtual bool IsDeathMode() const PURE_VIRTUAL(UCStateComponent::IsDeathMode(), return false;);
 
     E_WeaponType GetWeaponType(){return mWeaponType;}
   protected:
