@@ -2,24 +2,34 @@
 #include "../Global.h"
 #include "GameFramework/Character.h"
 
+
 void UCEMontageComponent::BeginPlay()
 {
     Super::BeginPlay();
+    CheckNull(DataTable);
+    TArray<FMontageData *> datas;
+    DataTable->GetAllRows<FMontageData>("", datas);
+
+    for (int32 i = 0; i < datas.Num(); i++)
+    {
+        for (FMontageData *data : datas)
+        {
+            Datas2[int16(data->Type)].Emplace(data);
+        }
+    }
 }
 
 void UCEMontageComponent::PlayAnimMontage(EMontage_State InState)
 {
     ACharacter *character = Cast<ACharacter>(GetOwner());
 
-    // Notify -> 다른 montage 실행이 안됌
-    // NotifyState-> 이건 다른걸로 해도 되더라구요
+    int idx = rand() % Datas2[(int16)InState].Num();
+    const FMontageData *data = Datas2[(int16)InState][idx];
 
-    const FMontageData *data = Datas[(int16)InState];
     if (!!data)
     {
         if (!!data->AnimMontage)
         {
-            
             character->PlayAnimMontage(data->AnimMontage, data->PlayRatio, data->StartSection);
         }
     }

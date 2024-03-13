@@ -9,6 +9,7 @@
 
 
 #include "Animation/AnimMontage.h"
+#include "../Combat/ICombat.h"
 
 UCEnemyStateComponent::UCEnemyStateComponent()
 {
@@ -19,6 +20,9 @@ void UCEnemyStateComponent::BeginPlay()
 {
     Super::BeginPlay();
     mHp = MaxHp;
+
+    ACharacter *owner = Cast<ACharacter>(GetOwner());
+    controller = Cast<AAIController>(owner->GetController());
 }
 
 void UCEnemyStateComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -47,6 +51,29 @@ void UCEnemyStateComponent::OperationSelect(const AActor* target)
     else
         SetApproachMode();
     
+}
+
+void UCEnemyStateComponent::Add(const EStateEnemyType &action, const E_WHY_BLOCKED &reason)
+{
+    if (!mP_State.Contains(action))
+        mP_State.Emplace(action);
+    mP_State[action] |= reason;
+}
+
+void UCEnemyStateComponent::Remove(const EStateEnemyType &action, const E_WHY_BLOCKED &reason)
+{
+    if (!mP_State.Contains(action))
+        return;
+    mP_State[action] &= ~reason;
+}
+
+const bool UCEnemyStateComponent::IsContains(const EStateEnemyType &action)
+{
+    return false;
+}
+
+void UCEnemyStateComponent::Clear(const EStateEnemyType &action)
+{
 }
 
 void UCEnemyStateComponent::Take_Damage(float DamageAmount)
@@ -95,17 +122,15 @@ void UCEnemyStateComponent::SetActionMode()
 
     else if ( mCurrentCooltime <= 0)
     {
-      
-
-        ACharacter *owner = Cast<ACharacter>(GetOwner());
-        AAIController *controller = Cast<AAIController>(owner->GetController());
-
-        controller->ClearFocus(EAIFocusPriority::Default);
+        controller->ClearFocus(EAIFocusPriority::Default);// 수정하기
 
         mState = EStateEnemyType::Action;
         SetMode(BYTE(EStateEnemyType::Action));
+        
+        IICombat *combat = Cast<IICombat>(GetOwner());
        
-        owner->PlayAnimMontage(AttackMontage);
+        combat->Attack();
+
         mCurrentCooltime = mCooltime ;
     }
 }
@@ -114,14 +139,12 @@ void UCEnemyStateComponent::SetDeathMode()
 {
     mState = EStateEnemyType::Death;
 
+    controller->ClearFocus(EAIFocusPriority::Default);
     SetMode(BYTE(EStateEnemyType::Death));
 }
 
 void UCEnemyStateComponent::SetMode(BYTE num)
 {
-    ACharacter *owner = Cast<ACharacter>(GetOwner());
-    AAIController *controller = Cast<AAIController>(owner->GetController());
     CheckNull(controller);
-
     controller->GetBlackboardComponent()->SetValueAsEnum("State", num);
 }

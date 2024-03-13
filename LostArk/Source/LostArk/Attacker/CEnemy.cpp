@@ -11,11 +11,8 @@ ACEnemy::ACEnemy()
 {
  	
 	PrimaryActorTick.bCanEverTick = true;
-	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
-	GetMesh()->SetRelativeLocation({ 0.f, 0.f, -90.f });
-	GetMesh()->SetRelativeRotation(FRotator( 0.f,0.f,-90.f ));
-
+    InitInfo();
 	CHelpers::CreateActorComponent<UCEnemyStateComponent>(this,&mState,"Statecddsdsomp");
     CHelpers::CreateActorComponent<UCEMontageComponent>(this, &mMontageComp, "MontageComp");
 
@@ -39,7 +36,6 @@ void ACEnemy::Tick(float DeltaTime)
 void ACEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
@@ -73,4 +69,17 @@ void ACEnemy::OffCollision()
 {
     CheckNull(mWeapon);
     mWeapon->OffCollision();
+}
+
+void ACEnemy::Attack()
+{
+    mMontageComp->PlayAnimMontage(EMontage_State::Attack);
+}
+
+void ACEnemy::InitInfo()
+{
+    GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+
+    GetMesh()->SetRelativeLocation({0.f, 0.f, -90.f});
+    GetMesh()->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
 }

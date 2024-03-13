@@ -25,4 +25,6 @@ public:
 
 	virtual void OnCollision() = 0;
     virtual void OffCollision() = 0;
+    virtual void Attack() = 0;
+
 };

@@ -48,11 +48,13 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat, public IGenericT
     //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     class ACWeapon* mWeapon;
 
-  private:
+  public:
     virtual void CreateWeapon() override;
     virtual void OnCollision() override;
     virtual void OffCollision() override ;
+    virtual void Attack() override;
 
+    void InitInfo();
 
     FGenericTeamId mTeamID = 1;
 };

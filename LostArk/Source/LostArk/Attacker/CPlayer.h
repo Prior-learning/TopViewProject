@@ -61,6 +61,7 @@ private:
   virtual void CreateWeapon() override;
   virtual void OnCollision() override;
   virtual void OffCollision() override;
+  virtual void Attack() override{};
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")
