@@ -35,8 +35,12 @@ protected:
 
 public:	
 	void TempCreate(UWorld *world, TSubclassOf<class ACBullet> classof, ACharacter *owner);
-	void Fire(const FVector& Direction);
+    void Fire(const FVector& Direction);
     void TempDelete();
+
+    void Init();
+    void Activate();
+    void Deactivate();
 
 private:
     //컴포넌트 overlap
@@ -44,10 +48,10 @@ private:
     void OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
                                  UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                  const FHitResult &SweepResult);
-    //blocking collision 이 있는 경우(mesh 끼리 겹치지 않는) 경우의 event는 hit을 사용.
-    UFUNCTION()
-    void OnHit(UPrimitiveComponent *HitComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp,
-               FVector NormalImpulse, const FHitResult &Hit);
 
+   
+    
     class AController *mController;
+
+    TArray<class ACharacter *> HittedCharacter;
 };
