@@ -27,6 +27,8 @@
 
 ACPlayer::ACPlayer()
 {
+	//CameraInit();
+	//CursorCreate();
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
 	bUseControllerRotationYaw = false;

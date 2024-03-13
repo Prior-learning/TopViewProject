@@ -56,6 +56,6 @@ protected:
 
    	FMontageData *Datas[(int16)EMontage_State::Max];
 
-
+    TArray<FMontageData*> Datas2[(int16)EMontage_State::Max];
 		
 };
