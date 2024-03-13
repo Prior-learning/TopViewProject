@@ -19,7 +19,13 @@ UCEnemyStateComponent::UCEnemyStateComponent()
 void UCEnemyStateComponent::BeginPlay()
 {
     Super::BeginPlay();
+
     mHp = MaxHp;
+    Add(EStateEnemyType::Idle, E_WHY_BLOCKED::NONE);
+    Add(EStateEnemyType::Approach, E_WHY_BLOCKED::NONE);
+    Add(EStateEnemyType::Strafe, E_WHY_BLOCKED::NONE);
+    Add(EStateEnemyType::Action, E_WHY_BLOCKED::NONE);
+    Add(EStateEnemyType::Death, E_WHY_BLOCKED::NONE);
 
     ACharacter *owner = Cast<ACharacter>(GetOwner());
     controller = Cast<AAIController>(owner->GetController());
@@ -60,11 +66,13 @@ void UCEnemyStateComponent::Add(const EStateEnemyType &action, const E_WHY_BLOCK
     mP_State[action] |= reason;
 }
 
-void UCEnemyStateComponent::Remove(const EStateEnemyType &action, const E_WHY_BLOCKED &reason)
+void UCEnemyStateComponent::Remove( const E_WHY_BLOCKED &reason)
 {
-    if (!mP_State.Contains(action))
-        return;
-    mP_State[action] &= ~reason;
+    mP_State[EStateEnemyType::Idle] &= ~reason;
+    mP_State[EStateEnemyType::Approach] &= ~reason;
+    mP_State[EStateEnemyType::Strafe] &= ~reason;
+    mP_State[EStateEnemyType::Action] &= ~reason;
+    mP_State[EStateEnemyType::Death] &= ~reason;
 }
 
 const bool UCEnemyStateComponent::IsContains(const EStateEnemyType &action)
@@ -83,44 +91,51 @@ void UCEnemyStateComponent::Clear(const EStateEnemyType &action)
 void UCEnemyStateComponent::Take_Damage(float DamageAmount)
 {
     mHp -= DamageAmount;
-
+    
     if (mHp <= 0)
         SetDeathMode();
+
 }
 
 void UCEnemyStateComponent::SetIdleMode()
 {
-    CheckFalse(IsContains(EStateEnemyType::Idle));
+    
+    CheckTrue(FlagCheck(EStateEnemyType::Idle, E_WHY_BLOCKED::DEATEH));
 
-    mState = EStateEnemyType::Idle;
-    SetMode(BYTE(EStateEnemyType::Idle));
+    Remove(E_WHY_BLOCKED::ATTACKING);
+    Remove(E_WHY_BLOCKED::MOVE);
+    Remove(E_WHY_BLOCKED::HITTED);
+
+    SetMode(EStateEnemyType::Idle,E_WHY_BLOCKED::NONE);
 }
 
 void UCEnemyStateComponent::SetApproachMode()
 {
-    CheckTrue(IsDeathMode());
-    CheckFalse(IsIdleMode());
-    mState = EStateEnemyType::Approach;
+    CheckTrue(FlagCheck(EStateEnemyType::Approach, E_WHY_BLOCKED::DEATEH));
+    CheckTrue(FlagCheck(EStateEnemyType::Approach, E_WHY_BLOCKED::MOVE));
+    CheckTrue(FlagCheck(EStateEnemyType::Approach, E_WHY_BLOCKED::ATTACKING));
 
-    SetMode(BYTE(EStateEnemyType::Approach));
+    SetMode(EStateEnemyType::Approach, E_WHY_BLOCKED::MOVE);
 
 }
 
 void UCEnemyStateComponent::SetStrafeMode()
 {
-    CheckTrue(IsDeathMode());
-    CheckFalse(IsIdleMode());
 
-    mState = EStateEnemyType::Strafe;
-    SetMode(BYTE(EStateEnemyType::Strafe));
+    CheckTrue(FlagCheck(EStateEnemyType::Strafe, E_WHY_BLOCKED::DEATEH));
+    CheckTrue(FlagCheck(EStateEnemyType::Strafe, E_WHY_BLOCKED::MOVE));
+    CheckTrue(FlagCheck(EStateEnemyType::Strafe, E_WHY_BLOCKED::ATTACKING));
+
+    SetMode(EStateEnemyType::Strafe,E_WHY_BLOCKED::MOVE);
 
 }
 
 void UCEnemyStateComponent::SetActionMode()
 {
-    CheckTrue(IsDeathMode());
-    CheckTrue(IsActionMode());
-  
+    CheckTrue(FlagCheck(EStateEnemyType::Action, E_WHY_BLOCKED::DEATEH));
+    CheckTrue(FlagCheck(EStateEnemyType::Action, E_WHY_BLOCKED::ATTACKING));
+    CheckTrue(FlagCheck(EStateEnemyType::Action, E_WHY_BLOCKED::MOVE));
+
     // 공격 쿨타임이 남아있다면
     if (0 < mCurrentCooltime)
         SetStrafeMode();
@@ -128,12 +143,9 @@ void UCEnemyStateComponent::SetActionMode()
     else if ( mCurrentCooltime <= 0)
     {
         controller->ClearFocus(EAIFocusPriority::Default);// 수정하기
-
-        mState = EStateEnemyType::Action;
-        SetMode(BYTE(EStateEnemyType::Action));
+        SetMode(EStateEnemyType::Action, E_WHY_BLOCKED::ATTACKING);
         
         IICombat *combat = Cast<IICombat>(GetOwner());
-       
         combat->Attack();
 
         mCurrentCooltime = mCooltime ;
@@ -142,14 +154,25 @@ void UCEnemyStateComponent::SetActionMode()
 
 void UCEnemyStateComponent::SetDeathMode()
 {
-    mState = EStateEnemyType::Death;
-
     controller->ClearFocus(EAIFocusPriority::Default);
-    SetMode(BYTE(EStateEnemyType::Death));
+
+    SetMode(EStateEnemyType::Death, E_WHY_BLOCKED::DEATEH);
 }
 
-void UCEnemyStateComponent::SetMode(BYTE num)
+void UCEnemyStateComponent::SetMode(const EStateEnemyType &type, const E_WHY_BLOCKED& reason)
 {
     CheckNull(controller);
-    controller->GetBlackboardComponent()->SetValueAsEnum("State", num);
+    mState = type;
+    controller->GetBlackboardComponent()->SetValueAsEnum("State", BYTE(type));
+
+    Add(EStateEnemyType::Idle, reason);
+    Add(EStateEnemyType::Approach, reason);
+    Add(EStateEnemyType::Strafe, reason);
+    Add(EStateEnemyType::Action, reason);
+    Add(EStateEnemyType::Death, reason);
+}
+
+bool UCEnemyStateComponent::FlagCheck(const EStateEnemyType &action, const E_WHY_BLOCKED &reason)
+{     
+    return reason == (mP_State[action] & reason);
 }
