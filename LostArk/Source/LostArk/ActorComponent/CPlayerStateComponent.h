@@ -59,21 +59,24 @@ public:
 
 	void SetUnarmed() { mWeaponType = E_WeaponType::UnArmed; }
 	void SetPrimary() { mWeaponType = E_WeaponType::Primary; }
-	
-	void SetAiming() { bAiming = true; }
-	void UnSetAiming() { bAiming = false; }
-	bool IsAiming() { return bAiming; }
-
-	void SetFiring(){bFiring = true;}
-    void UnSetFiring(){bFiring = false;}
-    bool IsFiring(){return bFiring;}
+	bool IsFireMode(){return bFiring;}
 
 	virtual bool IsAimMode() const override {return bAiming;}
     virtual bool IsDeathMode() const override {return 0;}
 
-  private:
+public:
+    void SetRoll();
+    void UnSetRoll();
+    void SetAim();
+    void UnSetAim();
+    void SetFire();
+    void UnSetFire();
+    void SetReload();
+    void UnSetReload();
+ 
+private:
 	TMap<E_State, uint64> P_State;// 멀티스레드 환경에서 되도록 Mutex lock 
-	
+
 	bool bAiming;
     bool bFiring;
 	

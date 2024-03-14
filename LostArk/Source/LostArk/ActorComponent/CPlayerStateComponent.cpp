@@ -2,8 +2,9 @@
 
 
 UCPlayerStateComponent::UCPlayerStateComponent() 
+: bFiring(false), bAiming(false)
 {
-
+   
 }
 
 void UCPlayerStateComponent::Initialize()
@@ -50,3 +51,51 @@ void UCPlayerStateComponent::Clear(const E_State& action)
 }
 
 
+
+void UCPlayerStateComponent::SetRoll()
+{
+    Add(E_State::Aim, E_WHY_BLOCKED::ROLLING);
+    Add(E_State::Attack, E_WHY_BLOCKED::ROLLING);
+    Add(E_State::Reload, E_WHY_BLOCKED::ROLLING);
+    Add(E_State::Roll, E_WHY_BLOCKED::ROLLING);
+}
+
+void UCPlayerStateComponent::UnSetRoll()
+{
+    Remove(E_State::Aim, E_WHY_BLOCKED::ROLLING);
+    Remove(E_State::Attack, E_WHY_BLOCKED::ROLLING);
+    Remove(E_State::Reload, E_WHY_BLOCKED::ROLLING);
+    Remove(E_State::Roll, E_WHY_BLOCKED::ROLLING);
+}
+
+void UCPlayerStateComponent::SetAim()
+{
+    bAiming = true;
+    Add(E_State::Reload, E_WHY_BLOCKED::AIMING);
+}
+
+void UCPlayerStateComponent::UnSetAim()
+{
+    bAiming = false;
+    Remove(E_State::Reload, E_WHY_BLOCKED::AIMING);
+}
+
+void UCPlayerStateComponent::SetFire()
+{
+    bFiring = true;
+    Add(E_State::Reload, E_WHY_BLOCKED::ATTACKING);
+}
+
+void UCPlayerStateComponent::UnSetFire()
+{
+    bFiring = false;
+    Remove(E_State::Reload, E_WHY_BLOCKED::ATTACKING);
+}
+
+void UCPlayerStateComponent::SetReload()
+{
+}
+
+void UCPlayerStateComponent::UnSetReload()
+{
+}
