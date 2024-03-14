@@ -36,7 +36,6 @@ void ACGun::Fire(ACharacter *owner)
                 bullet->SetActorLocation(start);
                 bullet->SetActorRotation(direction.Rotation());
                 bullet->Fire(direction);
-                UE_LOG(LogTemp, Warning, TEXT("[CRifle::Fire]"));
 
             }
 

@@ -16,7 +16,7 @@ void UCAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
     Super::NativeUpdateAnimation(DeltaSeconds);
 
     Speed = OwnerCharacter->GetVelocity().Size2D();
-    Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetControlRotation());
+    Direction = CalculateDirection(OwnerCharacter->GetVelocity(), OwnerCharacter->GetActorRotation());
     UCStateComponent *state = CHelpers::GetComponent<UCStateComponent>(OwnerCharacter);
     CheckNull(state); 
 
