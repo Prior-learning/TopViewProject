@@ -38,11 +38,8 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
                                FActorComponentTickFunction *ThisTickFunction) override;
     void OperationSelect(const AActor *target);
 
-
-    void Add(const EStateEnemyType &action, const E_WHY_BLOCKED &reason);
+    void Add(const E_WHY_BLOCKED &reason);
     void Remove(const E_WHY_BLOCKED &reason);
-    const bool IsContains(const EStateEnemyType &action);
-    void Clear(const EStateEnemyType &action);
 
   public:
     UFUNCTION(BlueprintPure)
@@ -62,17 +59,17 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
 
     virtual bool IsAimMode() const override {  return false; }
 
-    void Take_Damage(float DamageAmount);
+    void Take_Damage(float& DamageAmount);
 
     UFUNCTION(BlueprintCallable)
         void SetIdleMode();
     void SetApproachMode();
-    void SetStrafeMode();
     void SetActionMode();
     void SetDeathMode();
 
     void SetMode(const EStateEnemyType &num, const E_WHY_BLOCKED& reason);
-    bool FlagCheck(const EStateEnemyType &action, const E_WHY_BLOCKED &reason);
+    bool FlagCheck(const E_WHY_BLOCKED &reason) const ;
+
   protected:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Status")
     float mAttackRange = 120.f; // 어느 정도 가까워져야 공격을 할껀지
@@ -87,7 +84,8 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
     EStateEnemyType mState;
 
-    TMap<EStateEnemyType, uint8> mP_State; // 멀티스레드 환경에서 되도록 Mutex lock 
+    uint8 mFlagState = 0;
+
   private:
     float mHp = 0.f;
     float mCurrentCooltime = 3.f; //

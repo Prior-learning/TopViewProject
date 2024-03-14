@@ -4,6 +4,7 @@
 #include "../ActorComponent/CEnemyStateComponent.h"
 #include "../ActorComponent/CEMontageComponent.h"
 
+
 #include "../Combat/CMelee.h"
 #include "../Combat/CWeapon.h"
 
@@ -29,7 +30,8 @@ void ACEnemy::BeginPlay()
 void ACEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+    CheckFalse(mState->IsDeathMode());
+    
 }
 
 
@@ -46,8 +48,8 @@ float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, A
 
     mState->Take_Damage(DamageAmount);
 
-    if (!mState->FlagCheck(EStateEnemyType::Action, E_WHY_BLOCKED::ATTACKING) &&
-        !mState->FlagCheck(EStateEnemyType::Action, E_WHY_BLOCKED::DEATEH))
+    if (!mState->FlagCheck(E_WHY_BLOCKED::ATTACKING) &&
+        !mState->FlagCheck(E_WHY_BLOCKED::DEATEH))
     {
         mMontageComp->PlayAnimMontage(EMontage_State::Hitted);
         mState->SetMode(EStateEnemyType::Action, E_WHY_BLOCKED::HITTED);

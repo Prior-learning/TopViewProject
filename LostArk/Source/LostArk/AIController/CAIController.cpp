@@ -56,9 +56,8 @@ void ACAIController::OnPossess(APawn* InPawn)
 void ACAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-
+    
     mState->OperationSelect(target);
-
 }
 
 void ACAIController::RunAI()
@@ -74,8 +73,6 @@ void ACAIController::StopAI()
 {
 	UBehaviorTreeComponent* BehaviorTreeComponent = Cast<UBehaviorTreeComponent>(BrainComponent);
 	if (nullptr == BehaviorTreeComponent) return;
-
-	BehaviorTreeComponent->StopTree(EBTStopMode::Safe);
 }
 
 
