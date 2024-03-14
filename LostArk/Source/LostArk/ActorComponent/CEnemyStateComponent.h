@@ -7,7 +7,7 @@
 UENUM()
 enum class EStateEnemyType : uint8
 {
-    Idle,     // 준비 상태
+    Idle = 0,     // 준비 상태
     Approach, // 접근
     Strafe,   // 맴돌기
     Action,   // 동작 실행중
@@ -40,7 +40,7 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
 
 
     void Add(const EStateEnemyType &action, const E_WHY_BLOCKED &reason);
-    void Remove(const EStateEnemyType &action, const E_WHY_BLOCKED &reason);
+    void Remove(const E_WHY_BLOCKED &reason);
     const bool IsContains(const EStateEnemyType &action);
     void Clear(const EStateEnemyType &action);
 
@@ -60,18 +60,19 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsDeathMode() const override {return mState == EStateEnemyType::Death;}
 
-    virtual bool IsAimMode() const override { return false; }
+    virtual bool IsAimMode() const override {  return false; }
 
     void Take_Damage(float DamageAmount);
 
-    void SetIdleMode();
+    UFUNCTION(BlueprintCallable)
+        void SetIdleMode();
     void SetApproachMode();
     void SetStrafeMode();
     void SetActionMode();
     void SetDeathMode();
 
-    void SetMode(BYTE num);
-
+    void SetMode(const EStateEnemyType &num, const E_WHY_BLOCKED& reason);
+    bool FlagCheck(const EStateEnemyType &action, const E_WHY_BLOCKED &reason);
   protected:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Status")
     float mAttackRange = 120.f; // 어느 정도 가까워져야 공격을 할껀지

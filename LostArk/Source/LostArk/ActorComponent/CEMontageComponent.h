@@ -17,3 +17,14 @@ class LOSTARK_API UCEMontageComponent : public UCMontageComponent
 };
 
 
+/* //Roll map 자료형으로 왜 여러개 필요하지?
+* Aim Hit, Attacking
+* P_State =   Hit + Attacking 
+* Hit = 0
+* 
+* 
+* P_State[idle] = 0010; + Roll - Roll
+* P_State[Attack] = 0010; +Roll - Roll
+* P_State[Aim] = 0010;    + Roll - Roll
+* P_State[Roll] = 0010;   + Roll - Rooll
+*/

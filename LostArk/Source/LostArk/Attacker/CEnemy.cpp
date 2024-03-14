@@ -43,9 +43,15 @@ float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, A
 {
     if (mState->IsDeathMode())
         return 0.f;
-    mState->Take_Damage(DamageAmount);
-    mMontageComp->PlayAnimMontage(EMontage_State::Hitted);
 
+    mState->Take_Damage(DamageAmount);
+
+    if (!mState->FlagCheck(EStateEnemyType::Action, E_WHY_BLOCKED::ATTACKING) &&
+        !mState->FlagCheck(EStateEnemyType::Action, E_WHY_BLOCKED::DEATEH))
+    {
+        mMontageComp->PlayAnimMontage(EMontage_State::Hitted);
+        mState->SetMode(EStateEnemyType::Action, E_WHY_BLOCKED::HITTED);
+    }
     
 	return 10.f;
 }
