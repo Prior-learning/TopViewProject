@@ -115,8 +115,18 @@ void UCEnemyStateComponent::SetApproachMode()
     CheckTrue(FlagCheck(EStateEnemyType::Approach, E_WHY_BLOCKED::MOVE));
     CheckTrue(FlagCheck(EStateEnemyType::Approach, E_WHY_BLOCKED::ATTACKING));
 
-    SetMode(EStateEnemyType::Approach, E_WHY_BLOCKED::MOVE);
-
+    int ran = rand() % 2;
+    switch (ran)
+    {
+    case 0:
+        CLog::Log("Approach");
+        SetMode(EStateEnemyType::Approach, E_WHY_BLOCKED::MOVE);
+        return;
+    case 1:
+        CLog::Log("Strafe");
+        SetMode(EStateEnemyType::Strafe, E_WHY_BLOCKED::MOVE);
+        return;
+    }
 }
 
 void UCEnemyStateComponent::SetStrafeMode()
@@ -136,11 +146,9 @@ void UCEnemyStateComponent::SetActionMode()
     CheckTrue(FlagCheck(EStateEnemyType::Action, E_WHY_BLOCKED::ATTACKING));
     CheckTrue(FlagCheck(EStateEnemyType::Action, E_WHY_BLOCKED::MOVE));
 
-    // 공격 쿨타임이 남아있다면
-    if (0 < mCurrentCooltime)
-        SetStrafeMode();
+  
 
-    else if ( mCurrentCooltime <= 0)
+    if ( mCurrentCooltime <= 0)
     {
         controller->ClearFocus(EAIFocusPriority::Default);// 수정하기
         SetMode(EStateEnemyType::Action, E_WHY_BLOCKED::ATTACKING);

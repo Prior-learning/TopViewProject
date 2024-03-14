@@ -8,6 +8,12 @@
 EBTNodeResult::Type UCBTTask_Arrive::ExecuteTask(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory)
 {
     FVector movepos = OwnerComp.GetBlackboardComponent()->GetValueAsVector("MovePos");
+   
+    AActor* target = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(mtarget));
+    if (!!target)
+    {
+        movepos = target->GetActorLocation();
+    }
     AActor* self = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("Self"));
     UCEnemyStateComponent* statecomp = CHelpers::GetComponent<UCEnemyStateComponent>(self);
 
