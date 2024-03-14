@@ -50,11 +50,12 @@ private:
     void BeginRoll();
 	void BeginFire();
     void EndFire();
-    void Fire();
 
     void InitMovement();
     void InitCamera();
     void InitCursor();
+	void CursorUpdate();
+
 
 
 public:
@@ -65,7 +66,7 @@ private:
   virtual void CreateWeapon() override;
   virtual void OnCollision() override;
   virtual void OffCollision() override;
-  virtual void Attack() override{};
+  virtual void Attack() override;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")

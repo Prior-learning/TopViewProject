@@ -45,41 +45,28 @@ void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	CheckNull(mPlayerState);
-	mPlayerState->SetUnarmed();
-	mPlayerState->UnSetAiming();
-    mPlayerState->UnSetFiring();
 	CreateWeapon();
+    mPlayerState->SetUnarmed();
 
 }
 
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (CursorToWorld != nullptr)
-	{
-		if (APlayerController* PC = Cast<APlayerController>(GetController()))
-		{
-			FHitResult TraceHitResult;
-			PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
-			FVector CursorFV = TraceHitResult.ImpactNormal;
-			FRotator CursorR = CursorFV.Rotation();
-			CursorToWorld->SetWorldLocation(TraceHitResult.Location);
-			CursorToWorld->SetWorldRotation(CursorR);
 
-		}
-	}
+    CursorUpdate();
+
 	if (IsAiming() == true)
 		Look_Mouse();
-    //현재틱을 계속 업데이트
     
-	if (mPlayerState->IsFiring())
+	if (mPlayerState->IsFireMode())
     {
         mTickTimer += DeltaTime;
     }
     if (mTickTimer >= mGun->GetFireRate())
     {
         mTickTimer = 0;
-        Fire();
+        Attack();
     }
 }
 
@@ -92,7 +79,7 @@ E_WeaponType ACPlayer::GetWeaponType()
 
 bool ACPlayer::IsAiming()
 {
-	return mPlayerState->IsAiming();
+	return mPlayerState->IsAimMode();
 }
 
 void ACPlayer::Move_Forward(float Axis)
@@ -109,92 +96,50 @@ void ACPlayer::Move_Right(float Axis)
     AddMovementInput(direction, Axis);
 }
 
-void ACPlayer::Look_Mouse()
-{
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-	{
-		FHitResult TraceHitResult;
-		PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
-		FVector Cursor_pos = TraceHitResult.Location;
-		FVector pos = GetActorLocation();
-		FVector direction = Cursor_pos - pos;
-		FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(pos, FVector(Cursor_pos.X, Cursor_pos.Y, pos.Z));
-		SetActorRotation(LookRotation);
-	}
-}
-
-void ACPlayer::Move_Cursor(float Axis)
-{
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-	{
-		FHitResult TraceHitResult;
-		PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
-		FVector Cursor_pos = TraceHitResult.Location;
-		FVector pos = GetActorLocation();
-		FVector direction = Cursor_pos - pos;
-		float distance = sqrt(direction.X * direction.X + direction.Y * direction.Y);
-		direction.X = direction.X / distance;
-		direction.Y = direction.Y / distance;
-		AddMovementInput(direction, Axis);
-	}
-}
 void ACPlayer::OnEquip1()
 {
     if (GetWeaponType() == E_WeaponType::UnArmed)
     {
         mPlayerState->SetPrimary();
-        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
-                                mGun->GetHandSocket());
+        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHandSocket());
     }
     else
     {
         mPlayerState->SetUnarmed();
-        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),
-                                mGun->GetHolsterSocket());
+        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHolsterSocket());
     }
 
 }
 void ACPlayer::OnAim()
 {
-
-    if (!mPlayerState->IsContains(E_State::Aim) &&!IsAiming() && GetWeaponType() != E_WeaponType::UnArmed)
-    {
-        mPlayerState->SetAiming();
-        GetCharacterMovement()->MaxWalkSpeed = 250;
-    }
+    CheckTrue(mPlayerState->IsContains(E_State::Aim));
+    CheckTrue(IsAiming());
+    CheckTrue(GetWeaponType() == E_WeaponType::UnArmed);
+    mPlayerState->SetAim();
+    GetCharacterMovement()->MaxWalkSpeed = 250;
 }
 void ACPlayer::OffAim()
 {
-    if (IsAiming())
-    {
-        mPlayerState->UnSetAiming();
-        GetCharacterMovement()->MaxWalkSpeed = 600;
-    }
+    CheckFalse(IsAiming());
+    mPlayerState->UnSetAim();
+    GetCharacterMovement()->MaxWalkSpeed = 600;
 }
 void ACPlayer::BeginRoll()
 {
-	//checktrue로 변경해도 될듯
-    if (!mPlayerState->IsContains(E_State::Roll))
-    {
-        FVector start = GetActorLocation();
-        FVector from = start + GetVelocity().GetSafeNormal2D();
-        SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, from));
-        GetCharacterMovement()->MaxWalkSpeed = 1200;
-        mMontages->PlayAnimMontage(EMontage_State::Roll);
-        mPlayerState->Add(E_State::Aim, E_WHY_BLOCKED::ROLLING);
-        mPlayerState->Add(E_State::Attack, E_WHY_BLOCKED::ROLLING);
-        mPlayerState->Add(E_State::Reload, E_WHY_BLOCKED::ROLLING);
-        mPlayerState->Add(E_State::Roll, E_WHY_BLOCKED::ROLLING);
-
-    }
+    CheckTrue(mPlayerState->IsContains(E_State::Roll));
+    FVector start = GetActorLocation();
+    FVector from = start + GetVelocity().GetSafeNormal2D();
+    SetActorRotation(UKismetMathLibrary::FindLookAtRotation(start, from));
+    GetCharacterMovement()->MaxWalkSpeed = 1200;
+    mMontages->PlayAnimMontage(EMontage_State::Roll);
+    mPlayerState->SetRoll();
+    OffCollision();
 }
 void ACPlayer::EndRoll()
 {
     GetCharacterMovement()->MaxWalkSpeed = 600;
-    mPlayerState->Remove(E_State::Aim, E_WHY_BLOCKED::ROLLING);
-    mPlayerState->Remove(E_State::Attack, E_WHY_BLOCKED::ROLLING);
-    mPlayerState->Remove(E_State::Reload, E_WHY_BLOCKED::ROLLING);
-    mPlayerState->Remove(E_State::Roll, E_WHY_BLOCKED::ROLLING);
+    mPlayerState->UnSetRoll();
+    OnCollision();
 }
 void ACPlayer::CreateWeapon()
 {
@@ -204,31 +149,30 @@ void ACPlayer::CreateWeapon()
 }
 void ACPlayer::OnCollision()
 {
-	//인터페이스라서 오버라이드만 해둠
+    GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 }
 void ACPlayer::OffCollision()
 {
-    //인터페이스라서 오버라이드만 해둠
+    GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+}
+void ACPlayer::Attack()
+{
+    mGun->Fire(this);
+    mMontages->PlayAnimMontage(EMontage_State::Attack);
 }
 void ACPlayer::BeginFire()
 {
     CheckTrue(mPlayerState->IsContains(E_State::Attack));
     CheckFalse(IsAiming());
-    mPlayerState->SetFiring();
-    mPlayerState->Add(E_State::Reload, E_WHY_BLOCKED::ATTACKING);
+    mPlayerState->SetFire();
 }
 
 void ACPlayer::EndFire()
 {
-    mPlayerState->UnSetFiring();
-    mPlayerState->Remove(E_State::Reload, E_WHY_BLOCKED::ATTACKING);
+    mPlayerState->UnSetFire();
 }
 
-void ACPlayer::Fire()
-{
-    mGun->Fire(this);
-    mMontages->PlayAnimMontage(EMontage_State::Attack);
-}
+
 
 void ACPlayer::InitMovement()
 {
@@ -247,7 +191,7 @@ void ACPlayer::InitCamera()
     mSpring = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring"));
     mSpring->SetupAttachment(RootComponent);
     mSpring->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when character does
-    mSpring->TargetArmLength = 900.f;
+    mSpring->TargetArmLength = 1000.f;
     mSpring->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
     mSpring->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
 
@@ -268,6 +212,51 @@ void ACPlayer::InitCursor()
     }
     CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
     CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
+}
+
+void ACPlayer::CursorUpdate()
+{
+    if (CursorToWorld != nullptr)
+    {
+        if (APlayerController *PC = Cast<APlayerController>(GetController()))
+        {
+            FHitResult TraceHitResult;
+            PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
+            FVector CursorFV = TraceHitResult.ImpactNormal;
+            FRotator CursorR = CursorFV.Rotation();
+            CursorToWorld->SetWorldLocation(TraceHitResult.Location);
+            CursorToWorld->SetWorldRotation(CursorR);
+        }
+    }
+}
+void ACPlayer::Look_Mouse()
+{
+    if (APlayerController *PC = Cast<APlayerController>(GetController()))
+    {
+        FHitResult TraceHitResult;
+        PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
+        FVector Cursor_pos = TraceHitResult.Location;
+        FVector pos = GetActorLocation();
+        FVector direction = Cursor_pos - pos;
+        FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(pos, FVector(Cursor_pos.X, Cursor_pos.Y, pos.Z));
+        SetActorRotation(LookRotation);
+    }
+}
+
+void ACPlayer::Move_Cursor(float Axis)
+{
+    if (APlayerController *PC = Cast<APlayerController>(GetController()))
+    {
+        FHitResult TraceHitResult;
+        PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
+        FVector Cursor_pos = TraceHitResult.Location;
+        FVector pos = GetActorLocation();
+        FVector direction = Cursor_pos - pos;
+        float distance = sqrt(direction.X * direction.X + direction.Y * direction.Y);
+        direction.X = direction.X / distance;
+        direction.Y = direction.Y / distance;
+        AddMovementInput(direction, Axis);
+    }
 }
 
 
