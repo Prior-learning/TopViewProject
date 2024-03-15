@@ -87,6 +87,7 @@ void ACPlayer::Move_Forward(float Axis)
     FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
     FVector direction = FQuat(rotator).GetForwardVector();
     AddMovementInput(direction, Axis);
+    UE_LOG(LogTemp, Warning, TEXT("[CRifle::Fire]"));
 }
 
 void ACPlayer::Move_Right(float Axis)
