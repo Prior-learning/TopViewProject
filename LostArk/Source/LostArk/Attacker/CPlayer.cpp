@@ -17,7 +17,7 @@
 
 #include "../Combat/CWeapon.h"
 #include "../Combat/CGun.h"
-
+#include "../UParticlePooling.h"
 
 #include "Kismet/KismetMathLibrary.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
@@ -275,12 +275,25 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Released, this, &ACPlayer::EndFire);
 }
 
+void ACPlayer::Damaged(float Damage, FDamageEvent &Event, AController *controller, AActor *causer,
+                       const FVector hitLocation, UParticleSystem *particle)
+{
+    TakeDamage(Damage, Event, controller, causer);
+    /*AUParticlePooling *temp = UObjectPooling::GetParticle();
+    if (particle == nullptr)
+    {
+        CLog::Log("particle is Nullptr");
+        return;
+    }
+    CLog::Print(hitLocation);
+    temp->SetActorLocation(hitLocation);
+    temp->SetParticle(particle);*/
+}
+
 float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
                            AActor *DamageCauser)
 {
     Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-    UE_LOG(LogTemp, Warning, TEXT("[CPlayer::TakeDamage]"));
-
     mMontages->PlayAnimMontage(EMontage_State::Hitted);
     return 10.f;
 }

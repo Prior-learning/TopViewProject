@@ -22,7 +22,9 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat, public IGenericT
     virtual void Tick(float DeltaTime) override;
     virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
-
+    virtual void Damaged(float Damage, FDamageEvent& Event, AController *controller, AActor *causer,
+                         const FVector hitLocation,
+                         class UParticleSystem *particle)override;
     virtual float TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
                             AActor *DamageCauser) override;
 
@@ -57,17 +59,4 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat, public IGenericT
     void InitInfo();
 
     FGenericTeamId mTeamID = 1;
-};
-
-class ObjectPool
-{
-  public:
-    static void CreateParticle()
-    {
-        static TMap<FName, AActor> m;
-    }
-    static AActor GetParticle(FName name)
-    {
-        return m[name];
-    }
 };

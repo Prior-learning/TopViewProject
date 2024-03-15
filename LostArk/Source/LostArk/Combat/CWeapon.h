@@ -29,6 +29,9 @@ public:
 
 
   protected:
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "ParticleData")
+    class UParticleSystem *mParticle;
+
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     class USkeletalMeshComponent *mesh;
 
@@ -44,5 +47,5 @@ public:
 
     class AController *mController;
 
-
+    
 };
