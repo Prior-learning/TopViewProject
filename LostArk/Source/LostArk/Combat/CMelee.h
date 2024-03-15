@@ -39,6 +39,6 @@ class LOSTARK_API ACMelee : public ACWeapon
     class UBoxComponent *mCollider;
 
   private:
-    TArray<class ACharacter *> OverlapActors;
+    TArray<class IICombat *> OverlapActors;
     
 };

@@ -5,6 +5,7 @@
 
 #include "../Global.h"
 #include "../Combat/ICombat.h"
+
 using namespace std;
 
 
@@ -24,6 +25,8 @@ void ACMelee::BeginPlay()
 
     mCollider->OnComponentBeginOverlap.AddDynamic(this, &ACMelee::OnComponentBeginOverlap);
     mCollider->OnComponentEndOverlap.AddDynamic(this, &ACMelee::OnComponentEndOverlap);
+
+    OffCollision();
 }
 
 
@@ -43,27 +46,18 @@ void ACMelee::OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent, 
 {
     CheckTrue(OtherComp->GetOwner() == this->GetOwner());
 
-    ACharacter *hitedActor = Cast<ACharacter>(OtherComp->GetOwner());
+    IICombat *hitedActor = Cast<IICombat>(OtherComp->GetOwner());
     CheckNull(hitedActor);
+
+    FDamageEvent mDamageEvent;
     
-    OverlapActors.AddUnique(hitedActor);
+    hitedActor->Damaged(mPower, mDamageEvent, mController, this, OverlappedComponent->GetComponentLocation()
+                        , mParticle);
 }
 
 void ACMelee::OnComponentEndOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
                                     UPrimitiveComponent *OtherComp, int32 OtherBodyIndex)
 {
     CheckTrue(OtherComp->GetOwner() == this->GetOwner());
-    ACharacter *hitedActor = Cast<ACharacter>(OtherComp->GetOwner());
-    CheckNull(hitedActor);
-
-    int idx = -2; 
-    if (OverlapActors.Find(hitedActor, idx))
-    {
-        OverlapActors.RemoveAt(idx);
-        FDamageEvent mDamageEvent;
-     
-        hitedActor->TakeDamage(mPower, mDamageEvent, mController, this);
-        
-    }
 }
 

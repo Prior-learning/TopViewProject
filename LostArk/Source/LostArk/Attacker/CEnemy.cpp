@@ -7,6 +7,8 @@
 
 #include "../Combat/CMelee.h"
 #include "../Combat/CWeapon.h"
+#include "../UParticlePooling.h"
+#include "../ObjectPools/ParticlePooling.h"
 
 ACEnemy::ACEnemy()
 {
@@ -20,10 +22,12 @@ ACEnemy::ACEnemy()
 }
 
 
+
 void ACEnemy::BeginPlay()
 {
 	Super::BeginPlay();
     CreateWeapon();
+   
 }
 
 
@@ -40,6 +44,22 @@ void ACEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+void ACEnemy::Damaged(float Damage, FDamageEvent& Event, AController *controller, AActor *causer,const FVector hitLocation,
+                      UParticleSystem *particle)
+{
+    TakeDamage(Damage, Event, controller, causer);
+    UParticlePooling::Get();
+    /*AUParticlePooling *temp = UObjectPooling::GetParticle();
+    CheckNull(temp);
+    if (particle == nullptr)
+    {
+        CLog::Log("particle is Nullptr");
+        return;
+    }
+    temp->SetActorLocation(hitLocation);
+    temp->SetParticle(particle);*/
+}
+
 float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
                          AActor *DamageCauser)
 {
@@ -54,7 +74,6 @@ float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, A
         mMontageComp->PlayAnimMontage(EMontage_State::Hitted);
         mState->SetMode(EStateEnemyType::Action, E_WHY_BLOCKED::HITTED);
     }
-    
 	return 10.f;
 }
 
