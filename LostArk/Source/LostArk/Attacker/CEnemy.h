@@ -58,3 +58,16 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat, public IGenericT
 
     FGenericTeamId mTeamID = 1;
 };
+
+class ObjectPool
+{
+  public:
+    static void CreateParticle()
+    {
+        static TMap<FName, AActor> m;
+    }
+    static AActor GetParticle(FName name)
+    {
+        return m[name];
+    }
+};
