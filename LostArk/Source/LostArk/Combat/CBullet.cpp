@@ -5,6 +5,7 @@
 
 #include "GameFramework/Character.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "../Combat/ICombat.h"
 
 
 ACBullet::ACBullet()
@@ -69,11 +70,13 @@ void ACBullet::OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent,
                                        const FHitResult &SweepResult)
 {
     CheckTrue(OtherComp->GetOwner() == this->GetOwner());
-
-    ACharacter *hitedActor = Cast<ACharacter>(OtherComp->GetOwner());
+    IICombat *hitedActor = Cast<IICombat>(OtherComp->GetOwner());
     CheckNull(hitedActor);
-    FDamageEvent mDamageEvent;
-    hitedActor->TakeDamage(mBulletDamage, mDamageEvent, mController, this);
+
+     FDamageEvent mDamageEvent;
+
+    hitedActor->Damaged(mPower, mDamageEvent, mController, this, OverlappedComponent->GetComponentLocation(),
+                        mParticle);
 
 
     //TempDelete();
