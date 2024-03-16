@@ -14,7 +14,7 @@ ACParticleManager::ACParticleManager()
 ACParticleManager::~ACParticleManager()
 {
     CLog::Log("Destructor Called");
-  /*  for (int i = 0; i < POOLSIZE; i++)
+    /*for (int i = 0; i < POOLSIZE; i++)
         delete particlePool[i];*/
 }
 
