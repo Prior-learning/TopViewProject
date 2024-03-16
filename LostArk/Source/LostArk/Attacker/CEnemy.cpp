@@ -8,7 +8,7 @@
 #include "../Combat/CMelee.h"
 #include "../Combat/CWeapon.h"
 #include "../UParticlePooling.h"
-#include "../ObjectPools/ParticlePooling.h"
+#include "../ObjectPools/CParticleManager.h"
 
 ACEnemy::ACEnemy()
 {
@@ -48,8 +48,9 @@ void ACEnemy::Damaged(float Damage, FDamageEvent& Event, AController *controller
                       UParticleSystem *particle)
 {
     TakeDamage(Damage, Event, controller, causer);
-    UParticlePooling::Get();
-    /*AUParticlePooling *temp = UObjectPooling::GetParticle();
+ 
+    
+    AUParticlePooling *temp = ACParticleManager::Get().GetParticle();
     CheckNull(temp);
     if (particle == nullptr)
     {
@@ -57,7 +58,7 @@ void ACEnemy::Damaged(float Damage, FDamageEvent& Event, AController *controller
         return;
     }
     temp->SetActorLocation(hitLocation);
-    temp->SetParticle(particle);*/
+    temp->SetParticle(particle);
 }
 
 float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,

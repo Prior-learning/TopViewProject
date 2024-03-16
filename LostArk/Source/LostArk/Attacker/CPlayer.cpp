@@ -24,6 +24,8 @@
 #include "Materials/Material.h"
 #include "Engine/World.h"
 
+#include "../UParticlePooling.h"
+#include "../ObjectPools/CParticleManager.h"
 
 ACPlayer::ACPlayer()
 {
@@ -87,7 +89,7 @@ void ACPlayer::Move_Forward(float Axis)
     FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
     FVector direction = FQuat(rotator).GetForwardVector();
     AddMovementInput(direction, Axis);
-    UE_LOG(LogTemp, Warning, TEXT("[CRifle::Fire]"));
+    //UE_LOG(LogTemp, Warning, TEXT("[CRifle::Fire]"));
 }
 
 void ACPlayer::Move_Right(float Axis)
@@ -280,15 +282,15 @@ void ACPlayer::Damaged(float Damage, FDamageEvent &Event, AController *controlle
                        const FVector hitLocation, UParticleSystem *particle)
 {
     TakeDamage(Damage, Event, controller, causer);
-    /*AUParticlePooling *temp = UObjectPooling::GetParticle();
+    AUParticlePooling *temp = ACParticleManager::Get().GetParticle();
+    CheckNull(temp);
     if (particle == nullptr)
     {
         CLog::Log("particle is Nullptr");
         return;
     }
-    CLog::Print(hitLocation);
     temp->SetActorLocation(hitLocation);
-    temp->SetParticle(particle);*/
+    temp->SetParticle(particle);
 }
 
 float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
