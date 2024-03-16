@@ -18,6 +18,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "ParticleData")
+    class UParticleSystem *mParticle;
+
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     class UStaticMeshComponent *StaticMesh;
 
@@ -28,7 +31,7 @@ protected:
     class UBoxComponent *mCollider;
 
 	 UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
-    float mBulletDamage = 1.f;
+    float mPower = 1.f;
 
 	FTimerHandle ReturnHandle;
 
