@@ -13,7 +13,6 @@ class LOSTARK_API ACPlayer : public ACharacter, public IICombat, public IGeneric
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ACPlayer();
 
 protected:
@@ -39,13 +38,8 @@ public:
 
 private:
 	UFUNCTION()
-		void Move_Forward(float Axis);
-	UFUNCTION()
-		void Move_Right(float Axis);
-	UFUNCTION()
 		void Look_Mouse();
 
-	void Move_Cursor(float Axis);
 	void OnEquip1();
 	void OnAim();
 	void OffAim();
@@ -55,11 +49,7 @@ private:
 
     void InitMovement();
     void InitCamera();
-    void InitCursor();
-	void CursorUpdate();
-
-
-
+  
 public:
     void EndRoll();
     virtual FGenericTeamId GetGenericTeamId() const override{return mTeamID;}
@@ -75,10 +65,7 @@ protected:
 		class UCameraComponent* mCamera;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")
 		class USpringArmComponent* mSpring;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UDecalComponent* CursorToWorld;
-
+	
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCPlayerStateComponent* mPlayerState;
 
