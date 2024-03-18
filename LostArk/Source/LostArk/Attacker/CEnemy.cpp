@@ -65,10 +65,15 @@ float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, A
                          AActor *DamageCauser)
 {
     if (mState->IsDeathMode())
+    {
         return 0.f;
+    }
 
     mState->Take_Damage(DamageAmount);
-
+    if (mState->IsDeathMode())
+    {
+        GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    }
     if (!mState->FlagCheck(E_WHY_BLOCKED::ATTACKING) &&
         !mState->FlagCheck(E_WHY_BLOCKED::DEATEH))
     {
