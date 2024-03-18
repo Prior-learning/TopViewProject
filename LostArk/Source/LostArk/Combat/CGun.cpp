@@ -46,13 +46,6 @@ void ACGun::Fire(ACharacter *owner)
                                            FRotator::ZeroRotator, EAttachLocation::KeepRelativeOffset);
     UGameplayStatics::SpawnEmitterAttached(EjectParticle, mesh, "AmmoEject", FVector::ZeroVector, FRotator::ZeroRotator,
                                            EAttachLocation::KeepRelativeOffset);
-    /* float AlphaOffset = Fireoffset;
-    if (AlphaOffset < 1.f)
-        AlphaOffset = 1.01f;
-    FVector conDirection =
-        UKismetMathLibrary::RandomUnitVectorInEllipticalConeInDegrees(OutDirection, 1.0f, AlphaOffset);
-    conDirection *= 3000.0f;*/
-    //FVector muzzleLocation = mesh->GetSocketLocation("MuzzleFlash");
-    //UGameplayStatics::PlaySoundAtLocation(GetWorld(), FireSoundCue, muzzleLocation, 0.6f, 0.8f);
+    
 }
 

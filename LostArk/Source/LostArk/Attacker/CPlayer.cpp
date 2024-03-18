@@ -6,14 +6,13 @@
 #include "UObject/ConstructorHelpers.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 
-#include "Components/DecalComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "../ActorComponent/CPlayerStateComponent.h"
 #include "../ActorComponent/CMontageComponent.h"
+#include "../LostArkPlayerController.h"
 
 #include "../Combat/CWeapon.h"
 #include "../Combat/CGun.h"
@@ -32,7 +31,6 @@ ACPlayer::ACPlayer()
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
     InitMovement();
     InitCamera();
-    InitCursor();
 	
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -56,7 +54,6 @@ void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-    CursorUpdate();
 
 	if (IsAiming() == true)
 		Look_Mouse();
@@ -72,8 +69,6 @@ void ACPlayer::Tick(float DeltaTime)
     }
 }
 
-
-
 E_WeaponType ACPlayer::GetWeaponType()
 {
 	return mPlayerState->GetWeaponType();
@@ -82,21 +77,6 @@ E_WeaponType ACPlayer::GetWeaponType()
 bool ACPlayer::IsAiming()
 {
 	return mPlayerState->IsAimMode();
-}
-
-void ACPlayer::Move_Forward(float Axis)
-{
-    FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
-    FVector direction = FQuat(rotator).GetForwardVector();
-    AddMovementInput(direction, Axis);
-    //UE_LOG(LogTemp, Warning, TEXT("[CRifle::Fire]"));
-}
-
-void ACPlayer::Move_Right(float Axis)
-{
-    FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
-    FVector direction = FQuat(rotator).GetRightVector();
-    AddMovementInput(direction, Axis);
 }
 
 void ACPlayer::OnEquip1()
@@ -113,6 +93,7 @@ void ACPlayer::OnEquip1()
     }
 
 }
+
 void ACPlayer::OnAim()
 {
     CheckTrue(mPlayerState->IsContains(E_State::Aim));
@@ -121,12 +102,14 @@ void ACPlayer::OnAim()
     mPlayerState->SetAim();
     GetCharacterMovement()->MaxWalkSpeed = 250;
 }
+
 void ACPlayer::OffAim()
 {
     CheckFalse(IsAiming());
     mPlayerState->UnSetAim();
     GetCharacterMovement()->MaxWalkSpeed = 600;
 }
+
 void ACPlayer::BeginRoll()
 {
     CheckTrue(mPlayerState->IsContains(E_State::Roll));
@@ -138,31 +121,37 @@ void ACPlayer::BeginRoll()
     mPlayerState->SetRoll();
     OffCollision();
 }
+
 void ACPlayer::EndRoll()
 {
     GetCharacterMovement()->MaxWalkSpeed = 600;
     mPlayerState->UnSetRoll();
     OnCollision();
 }
+
 void ACPlayer::CreateWeapon()
 {
     CheckNull(mWeaponClass);
 	// 업캐스팅 다운캐스팅...은 너무 위험하고 다형성이없음
     mGun = Cast<ACGun>(ACWeapon::CreateWeapon(GetWorld(), mWeaponClass, this));
 }
+
 void ACPlayer::OnCollision()
 {
     GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 }
+
 void ACPlayer::OffCollision()
 {
     GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 }
+
 void ACPlayer::Attack()
 {
     mGun->Fire(this);
     mMontages->PlayAnimMontage(EMontage_State::Attack);
 }
+
 void ACPlayer::BeginFire()
 {
     CheckTrue(mPlayerState->IsContains(E_State::Attack));
@@ -174,8 +163,6 @@ void ACPlayer::EndFire()
 {
     mPlayerState->UnSetFire();
 }
-
-
 
 void ACPlayer::InitMovement()
 {
@@ -203,35 +190,6 @@ void ACPlayer::InitCamera()
     mCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 }
 
-void ACPlayer::InitCursor()
-{
-    CursorToWorld = CreateDefaultSubobject<UDecalComponent>("CursorToWorld");
-    CursorToWorld->SetupAttachment(RootComponent);
-    static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterialAsset(
-        TEXT("Material'/Game/TopDownCPP/Blueprints/M_Cursor_Decal.M_Cursor_Decal'"));
-    if (DecalMaterialAsset.Succeeded())
-    {
-        CursorToWorld->SetDecalMaterial(DecalMaterialAsset.Object);
-    }
-    CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
-    CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
-}
-
-void ACPlayer::CursorUpdate()
-{
-    if (CursorToWorld != nullptr)
-    {
-        if (APlayerController *PC = Cast<APlayerController>(GetController()))
-        {
-            FHitResult TraceHitResult;
-            PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
-            FVector CursorFV = TraceHitResult.ImpactNormal;
-            FRotator CursorR = CursorFV.Rotation();
-            CursorToWorld->SetWorldLocation(TraceHitResult.Location);
-            CursorToWorld->SetWorldRotation(CursorR);
-        }
-    }
-}
 void ACPlayer::Look_Mouse()
 {
     if (APlayerController *PC = Cast<APlayerController>(GetController()))
@@ -246,29 +204,9 @@ void ACPlayer::Look_Mouse()
     }
 }
 
-void ACPlayer::Move_Cursor(float Axis)
-{
-    if (APlayerController *PC = Cast<APlayerController>(GetController()))
-    {
-        FHitResult TraceHitResult;
-        PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
-        FVector Cursor_pos = TraceHitResult.Location;
-        FVector pos = GetActorLocation();
-        FVector direction = Cursor_pos - pos;
-        float distance = sqrt(direction.X * direction.X + direction.Y * direction.Y);
-        direction.X = direction.X / distance;
-        direction.Y = direction.Y / distance;
-        AddMovementInput(direction, Axis);
-    }
-}
-
-
 void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis("MoveForward", this, &ACPlayer::Move_Forward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ACPlayer::Move_Right);
 
 	PlayerInputComponent->BindAction("Equip1", EInputEvent::IE_Pressed, this, &ACPlayer::OnEquip1);
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ACPlayer::OnAim);
@@ -301,6 +239,36 @@ float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, 
     return 10.f;
 }
 
+
+
+// void ACPlayer::Move_Cursor(float Axis)
+//{
+//    if (APlayerController *PC = Cast<APlayerController>(GetController()))
+//    {
+//        FHitResult TraceHitResult;
+//        PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
+//        FVector Cursor_pos = TraceHitResult.Location;
+//        FVector pos = GetActorLocation();
+//        FVector direction = Cursor_pos - pos;
+//        float distance = sqrt(direction.X * direction.X + direction.Y * direction.Y);
+//        direction.X = direction.X / distance;
+//        direction.Y = direction.Y / distance;
+//        AddMovementInput(direction, Axis);
+//    }
+//}
+// void ACPlayer::InitCursor()
+//{
+//    CursorToWorld = CreateDefaultSubobject<UDecalComponent>("CursorToWorld");
+//    CursorToWorld->SetupAttachment(RootComponent);
+//    static ConstructorHelpers::FObjectFinder<UMaterial> DecalMaterialAsset(
+//        TEXT("Material'/Game/TopDownCPP/Blueprints/M_Cursor_Decal.M_Cursor_Decal'"));
+//    if (DecalMaterialAsset.Succeeded())
+//    {
+//        CursorToWorld->SetDecalMaterial(DecalMaterialAsset.Object);
+//    }
+//    CursorToWorld->DecalSize = FVector(16.0f, 32.0f, 32.0f);
+//    CursorToWorld->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f).Quaternion());
+//}
 
            
 

@@ -1,5 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,35 +7,21 @@
 UCLASS()
 class ALostArkPlayerController : public APlayerController
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-public:
-	ALostArkPlayerController();
+  public:
+    ALostArkPlayerController();
 
-protected:
-	/** True if the controlled character should navigate to the mouse cursor. */
-	uint32 bMoveToMouseCursor : 1;
+  protected:
+    virtual void PlayerTick(float DeltaTime) override;
+    virtual void SetupInputComponent() override;
 
-	// Begin PlayerController interface
-	virtual void PlayerTick(float DeltaTime) override;
-	virtual void SetupInputComponent() override;
-	// End PlayerController interface
-
-	/** Resets HMD orientation in VR. */
-	void OnResetVR();
-
-	/** Navigate player to the current mouse cursor location. */
-	void MoveToMouseCursor();
-
-	/** Navigate player to the current touch location. */
-	void MoveToTouchLocation(const ETouchIndex::Type FingerIndex, const FVector Location);
-	
-	/** Navigate player to the given world location. */
-	void SetNewMoveDestination(const FVector DestLocation);
-
-	/** Input handlers for SetDestination action. */
-	void OnSetDestinationPressed();
-	void OnSetDestinationReleased();
+    UFUNCTION()
+    void Move_Forward(float Axis);
+    UFUNCTION()
+    void Move_Right(float Axis);
+    // UFUNCTION()
+    // void Look_Mouse();
 };
 
 
