@@ -1,5 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+#include "CObjectPoolTest.h"
 
+UCObjectPoolTest::UCObjectPoolTest()
+{
+}
 
-#include "ObjectPools/CObjectPoolTest.h"
 
