@@ -26,6 +26,5 @@ class LOSTARK_API UCAnimInstance : public UAnimInstance
     UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
     E_WeaponType AnimWeaponType;
 
-  protected:
-    class ACharacter *OwnerCharacter;
+    class APawn *mOwnerPawn;
 };
