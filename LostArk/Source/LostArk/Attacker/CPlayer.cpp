@@ -56,7 +56,9 @@ void ACPlayer::Tick(float DeltaTime)
 
 
 	if (IsAiming() == true)
-		Look_Mouse();
+    {
+        Look_Mouse();
+    }
     
 	if (mPlayerState->IsFireMode())
     {

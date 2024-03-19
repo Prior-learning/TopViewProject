@@ -20,8 +20,13 @@ class ALostArkPlayerController : public APlayerController
     void Move_Forward(float Axis);
     UFUNCTION()
     void Move_Right(float Axis);
-    // UFUNCTION()
-    // void Look_Mouse();
+
+  public:
+    UFUNCTION()
+    bool OnHovered();
+    UFUNCTION()
+    void UnHovered();
+   
 };
 
 
