@@ -29,7 +29,8 @@ void AUParticlePooling::Tick(float DeltaTime)
 
 void AUParticlePooling::SetParticle(UParticleSystem *InParticle)
 {
-    particle->Template = InParticle;
+    particle->SetTemplate(InParticle);
+    //particle->Template = InParticle;
     particle->Activate(true);
  
 }

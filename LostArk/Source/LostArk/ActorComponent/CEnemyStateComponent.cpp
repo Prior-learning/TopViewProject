@@ -23,7 +23,7 @@ void UCEnemyStateComponent::BeginPlay()
     mHp = MaxHp;
 
     ACharacter *owner = Cast<ACharacter>(GetOwner());
-    controller = Cast<AAIController>(owner->GetController());
+    mController = Cast<AAIController>(owner->GetController());
 
     SetMode(EStateEnemyType::Idle, E_WHY_BLOCKED::NONE);
 }
@@ -101,7 +101,7 @@ void UCEnemyStateComponent::SetApproachMode()
     case 1:
         CLog::Log("Strafe");
         SetMode(EStateEnemyType::Strafe, E_WHY_BLOCKED::MOVE);
-        controller->SetFocus(Cast<AActor>(controller->GetBlackboardComponent()->GetValueAsObject("Target")));
+        mController->SetFocus(Cast<AActor>(mController->GetBlackboardComponent()->GetValueAsObject("Target")));
         return;
     }
 }
@@ -110,9 +110,11 @@ void UCEnemyStateComponent::SetApproachMode()
 
 void UCEnemyStateComponent::SetActionMode() 
 {
+
     CheckTrue(FlagCheck(E_WHY_BLOCKED::DEATEH));
     CheckTrue(FlagCheck(E_WHY_BLOCKED::ATTACKING));
     CheckTrue(FlagCheck(E_WHY_BLOCKED::MOVE));
+
   
 
     if ( mCurrentCooltime <= 0)
@@ -134,9 +136,9 @@ void UCEnemyStateComponent::SetDeathMode()
 
 void UCEnemyStateComponent::SetMode(const EStateEnemyType &type, const E_WHY_BLOCKED& reason)
 {
-    CheckNull(controller);
+    CheckNull(mController);
     mState = type;
-    controller->GetBlackboardComponent()->SetValueAsEnum("State", BYTE(type));
+    mController->GetBlackboardComponent()->SetValueAsEnum("State", BYTE(type));
     Add(reason);
 }
 

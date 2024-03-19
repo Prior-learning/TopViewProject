@@ -25,8 +25,10 @@ class LOSTARK_API ACParticleManager : public AActor
   public:
     static ACParticleManager &Get();
     class AUParticlePooling *GetParticle();
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "ObjectPooling")
+    int32 mPoolSize = 10;
 
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "PoolObject")
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "ObjectPooling")
     TSubclassOf<class AUParticlePooling> classOfObject;
 
   private:

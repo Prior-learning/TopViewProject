@@ -38,7 +38,7 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat, public IGenericT
 
   protected:
     UPROPERTY(VisibleDefaultsOnly)
-    class UCEnemyStateComponent *mState;
+    class UCEnemyStateComponent *mStateComp;
 
     UPROPERTY(VisibleDefaultsOnly)
     class UCEMontageComponent *mMontageComp;
