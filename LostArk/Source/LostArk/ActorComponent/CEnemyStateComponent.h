@@ -89,7 +89,7 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
   private:
     float mHp = 0.f;
     float mCurrentCooltime = 3.f; //
-    class AAIController *controller;
+    class AAIController *mController;
 
 
 };

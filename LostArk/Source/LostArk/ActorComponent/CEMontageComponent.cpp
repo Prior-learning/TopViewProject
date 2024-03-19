@@ -20,13 +20,15 @@ void UCEMontageComponent::BeginPlay()
             Datas2[int16(data->Type)].Emplace(data);
         }
     }
-
 }
 
 void UCEMontageComponent::PlayAnimMontage(EMontage_State InState)
 {
+
     ACharacter *character = Cast<ACharacter>(GetOwner());
 
+    CheckTrue(Datas2[(int16)InState].Num() == 0);
+  
     int idx = rand() % Datas2[(int16)InState].Num();
     const FMontageData *data = Datas2[(int16)InState][idx];
 
@@ -35,6 +37,7 @@ void UCEMontageComponent::PlayAnimMontage(EMontage_State InState)
         if (!!data->AnimMontage)
         {
             character->PlayAnimMontage(data->AnimMontage, data->PlayRatio, data->StartSection);
+            
         }
     }
 }

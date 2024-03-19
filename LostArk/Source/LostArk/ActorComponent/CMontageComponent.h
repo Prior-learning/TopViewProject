@@ -9,7 +9,7 @@
 UENUM()
 enum class EMontage_State : uint16
 {
-    Attack,
+    Attack = 0,
     Hitted,
     Roll,
     Reload,
