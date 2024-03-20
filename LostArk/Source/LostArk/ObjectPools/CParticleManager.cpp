@@ -2,8 +2,6 @@
 #include "../UParticlePooling.h"
 #include "../Global.h"
 
-#define POOLSIZE 10
-
 ACParticleManager *ACParticleManager::instance = nullptr;
 
 ACParticleManager::ACParticleManager()
@@ -14,8 +12,6 @@ ACParticleManager::ACParticleManager()
 ACParticleManager::~ACParticleManager()
 {
     CLog::Log("Destructor Called");
-    /*for (int i = 0; i < POOLSIZE; i++)
-        delete particlePool[i];*/
 }
 
 void ACParticleManager::BeginPlay()
@@ -23,8 +19,8 @@ void ACParticleManager::BeginPlay()
 	Super::BeginPlay();
     instance = this;
 
-    particlePool.SetNum(POOLSIZE);
-    for (int i = 0; i < POOLSIZE; i++)
+    particlePool.SetNum(mPoolSize);
+    for (int i = 0; i < mPoolSize; i++)
     {
         particlePool[i] = GetWorld()->SpawnActor<AUParticlePooling>(classOfObject);
     }
@@ -45,7 +41,7 @@ AUParticlePooling *ACParticleManager::GetParticle()
 {
     static int idx = -1;
     idx++;
-    idx %= POOLSIZE;
+    idx %= mPoolSize;
 
     return particlePool[idx];
 }

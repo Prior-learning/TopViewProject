@@ -73,9 +73,10 @@ void ACBullet::OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent,
     IICombat *hitedActor = Cast<IICombat>(OtherComp->GetOwner());
     CheckNull(hitedActor);
 
-     FDamageEvent mDamageEvent;
+    CheckNull(mParticle);
+    FDamageEvent mDamageEvent;
 
-    hitedActor->Damaged(mPower, mDamageEvent, mController, this, OverlappedComponent->GetComponentLocation(),
+    hitedActor->Damaged(mPower, mDamageEvent, nullptr, this, OverlappedComponent->GetComponentLocation(),
                         mParticle);
 
 

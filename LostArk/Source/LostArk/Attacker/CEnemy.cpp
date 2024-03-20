@@ -3,7 +3,7 @@
 #include "Components/CapsuleComponent.h"
 #include "../ActorComponent/CEnemyStateComponent.h"
 #include "../ActorComponent/CEMontageComponent.h"
-
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "../Combat/CMelee.h"
 #include "../Combat/CWeapon.h"
@@ -16,7 +16,7 @@ ACEnemy::ACEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 
     InitInfo();
-	CHelpers::CreateActorComponent<UCEnemyStateComponent>(this,&mState,"Statecddsdsomp");
+	CHelpers::CreateActorComponent<UCEnemyStateComponent>(this,&mStateComp,"Statecddsdcomp");
     CHelpers::CreateActorComponent<UCEMontageComponent>(this, &mMontageComp, "MontageComp");
 
 }
@@ -34,7 +34,7 @@ void ACEnemy::BeginPlay()
 void ACEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-    CheckFalse(mState->IsDeathMode());
+    CheckFalse(mStateComp->IsDeathMode());
     
 }
 
@@ -64,21 +64,26 @@ void ACEnemy::Damaged(float Damage, FDamageEvent& Event, AController *controller
 float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
                          AActor *DamageCauser)
 {
-    if (mState->IsDeathMode())
+    Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+    if (mStateComp->IsDeathMode())
     {
         return 0.f;
     }
 
-    mState->Take_Damage(DamageAmount);
-    if (mState->IsDeathMode())
+    mStateComp->Take_Damage(DamageAmount);
+    if (mStateComp->IsDeathMode())
     {
         GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     }
-    if (!mState->FlagCheck(E_WHY_BLOCKED::ATTACKING) &&
-        !mState->FlagCheck(E_WHY_BLOCKED::DEATEH))
+    if (!mStateComp->FlagCheck(E_WHY_BLOCKED::ATTACKING) &&
+        !mStateComp->FlagCheck(E_WHY_BLOCKED::DEATEH))
     {
-        mMontageComp->PlayAnimMontage(EMontage_State::Hitted);
-        mState->SetMode(EStateEnemyType::Action, E_WHY_BLOCKED::HITTED);
+        if(mMontageComp->GetKnockBack())
+        {
+            mMontageComp->PlayAnimMontage(EMontage_State::Hitted);
+            mStateComp->SetMode(EStateEnemyType::Action, E_WHY_BLOCKED::HITTED);
+        }
     }
 	return 10.f;
 }
