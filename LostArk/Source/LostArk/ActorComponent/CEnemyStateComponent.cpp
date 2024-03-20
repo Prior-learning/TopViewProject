@@ -25,7 +25,7 @@ void UCEnemyStateComponent::BeginPlay()
     ACharacter *owner = Cast<ACharacter>(GetOwner());
     mController = Cast<AAIController>(owner->GetController());
 
-    SetMode(EStateEnemyType::Idle, E_WHY_BLOCKED::NONE);
+    SetMode(EStateEnemyType::Idle, ECurrentState::NONESTATE);
 }
 
 void UCEnemyStateComponent::TickComponent(float DeltaTime, ELevelTick TickType,
@@ -54,12 +54,12 @@ void UCEnemyStateComponent::OperationSelect(const AActor* target)
     
 }
 
-void UCEnemyStateComponent::Add(const E_WHY_BLOCKED &reason)
+void UCEnemyStateComponent::Add(const ECurrentState &reason)
 {
     mFlagState |= reason;
 }
 
-void UCEnemyStateComponent::Remove( const E_WHY_BLOCKED &reason)
+void UCEnemyStateComponent::Remove( const ECurrentState &reason)
 {
     mFlagState &= ~reason;
 }
@@ -76,31 +76,31 @@ void UCEnemyStateComponent::Take_Damage(float& DamageAmount)
 void UCEnemyStateComponent::SetIdleMode() 
 {
     
-    CheckTrue(FlagCheck(E_WHY_BLOCKED::DEATEH));
+    CheckTrue(FlagCheck(ECurrentState::DEATEH));
 
-    Remove(E_WHY_BLOCKED::ATTACKING);
-    Remove(E_WHY_BLOCKED::MOVE);
-    Remove(E_WHY_BLOCKED::HITTED);
+    Remove(ECurrentState::ATTACKINGSTATE);
+    Remove(ECurrentState::MOVE);
+    Remove(ECurrentState::HITTED);
 
-    SetMode(EStateEnemyType::Idle,E_WHY_BLOCKED::NONE);
+    SetMode(EStateEnemyType::Idle,ECurrentState::NONESTATE);
 }
 
 void UCEnemyStateComponent::SetApproachMode() 
 {
-    CheckTrue(FlagCheck(E_WHY_BLOCKED::DEATEH));
-    CheckTrue(FlagCheck(E_WHY_BLOCKED::MOVE));
-    CheckTrue(FlagCheck(E_WHY_BLOCKED::ATTACKING));
+    CheckTrue(FlagCheck(ECurrentState::DEATEH));
+    CheckTrue(FlagCheck(ECurrentState::MOVE));
+    CheckTrue(FlagCheck(ECurrentState::ATTACKINGSTATE));
 
     int ran = rand() % 2;
     switch (ran)
     {
     case 0:
         CLog::Log("Approach");
-        SetMode(EStateEnemyType::Approach, E_WHY_BLOCKED::MOVE);
+        SetMode(EStateEnemyType::Approach, ECurrentState::MOVE);
         return;
     case 1:
         CLog::Log("Strafe");
-        SetMode(EStateEnemyType::Strafe, E_WHY_BLOCKED::MOVE);
+        SetMode(EStateEnemyType::Strafe, ECurrentState::MOVE);
         mController->SetFocus(Cast<AActor>(mController->GetBlackboardComponent()->GetValueAsObject("Target")));
         return;
     }
@@ -111,16 +111,16 @@ void UCEnemyStateComponent::SetApproachMode()
 void UCEnemyStateComponent::SetActionMode() 
 {
 
-    CheckTrue(FlagCheck(E_WHY_BLOCKED::DEATEH));
-    CheckTrue(FlagCheck(E_WHY_BLOCKED::ATTACKING));
-    CheckTrue(FlagCheck(E_WHY_BLOCKED::MOVE));
+    CheckTrue(FlagCheck(ECurrentState::DEATEH));
+    CheckTrue(FlagCheck(ECurrentState::ATTACKINGSTATE));
+    CheckTrue(FlagCheck(ECurrentState::MOVE));
 
   
 
     if ( mCurrentCooltime <= 0)
     {
        
-        SetMode(EStateEnemyType::Action, E_WHY_BLOCKED::ATTACKING);
+        SetMode(EStateEnemyType::Action, ECurrentState::ATTACKINGSTATE);
         
         IICombat *combat = Cast<IICombat>(GetOwner());
         combat->Attack();
@@ -131,10 +131,10 @@ void UCEnemyStateComponent::SetActionMode()
 
 void UCEnemyStateComponent::SetDeathMode() 
 {
-    SetMode(EStateEnemyType::Death, E_WHY_BLOCKED::DEATEH);
+    SetMode(EStateEnemyType::Death, ECurrentState::DEATEH);
 }
 
-void UCEnemyStateComponent::SetMode(const EStateEnemyType &type, const E_WHY_BLOCKED& reason)
+void UCEnemyStateComponent::SetMode(const EStateEnemyType &type, const ECurrentState& reason)
 {
     CheckNull(mController);
     mState = type;
@@ -142,7 +142,7 @@ void UCEnemyStateComponent::SetMode(const EStateEnemyType &type, const E_WHY_BLO
     Add(reason);
 }
 
-bool UCEnemyStateComponent::FlagCheck(const E_WHY_BLOCKED &reason) const
+bool UCEnemyStateComponent::FlagCheck(const ECurrentState &reason) const
 {
     return reason == (mFlagState & reason);
 }

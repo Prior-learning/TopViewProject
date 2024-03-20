@@ -24,8 +24,8 @@ EBTNodeResult::Type UCBTTask_Arrive::ExecuteTask(UBehaviorTreeComponent &OwnerCo
         float distance = sqrt(pow(movepos.X - current.X, 2) + pow(movepos.Y - current.Y, 2));
         if (distance <= mNearDistance)
         {
-            statecomp->Remove(E_WHY_BLOCKED::MOVE);
-            statecomp->SetMode(EStateEnemyType::Idle, E_WHY_BLOCKED::NONE);
+            statecomp->Remove(ECurrentState::MOVE);
+            statecomp->SetMode(EStateEnemyType::Idle, ECurrentState::NONESTATE);
             return EBTNodeResult::Succeeded;
         }
         return EBTNodeResult::Failed;
