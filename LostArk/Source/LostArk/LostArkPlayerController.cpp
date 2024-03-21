@@ -4,11 +4,13 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Attacker/CPlayer.h"
 #include "Kismet/GameplayStatics.h"
+#include "Global.h"
 
 #include "Engine/World.h"
 
 ALostArkPlayerController::ALostArkPlayerController()
 {
+    bEnemy = false;
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
     CurrentMouseCursor = EMouseCursor::Default;
@@ -20,15 +22,8 @@ ALostArkPlayerController::ALostArkPlayerController()
 void ALostArkPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
-    if(OnHovered())
-    {
-        CurrentMouseCursor = EMouseCursor::Crosshairs;
-    }
-    else
-    {
-        CurrentMouseCursor = EMouseCursor::Default;
-    }
-
+    OnHovered();
+    
 }
 
 void ALostArkPlayerController::SetupInputComponent()
@@ -59,22 +54,22 @@ void ALostArkPlayerController::Move_Right(float Axis)
     }
 }
 
-bool ALostArkPlayerController::OnHovered()
+void ALostArkPlayerController::OnHovered()
 {
-    FVector direction = GetPawn()->GetActorForwardVector() * 2000.f;
-    FVector start = GetPawn()->GetActorLocation() + GetPawn()->GetActorForwardVector();
-    FVector end = GetPawn()->GetActorLocation() + direction;
-
-    FCollisionQueryParams params;
-    params.AddIgnoredActor(GetOwner()); // 무시할 액터들.
-    FHitResult HitResult;               // 히트 결과 값 받을 변수.
-
-    bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, start, end, ECollisionChannel::ECC_Visibility, params);
-    return bHit;
+    
 }
 void ALostArkPlayerController::UnHovered()
 {
+            // FVector direction = GetPawn()->GetActorForwardVector() * 2000.f;
+            // FVector start = GetPawn()->GetActorLocation() + GetPawn()->GetActorForwardVector();
+            // FVector end = GetPawn()->GetActorLocation() + direction;
 
+            // FCollisionQueryParams params;
+            // params.AddIgnoredActor(GetOwner()); // 무시할 액터들.
+            // FHitResult HitResult;               // 히트 결과 값 받을 변수.
+
+            // bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, start, end,
+            // ECollisionChannel::ECC_Visibility, params); return bHit;
 }
 
  

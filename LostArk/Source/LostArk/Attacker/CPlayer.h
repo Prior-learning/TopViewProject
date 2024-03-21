@@ -60,6 +60,7 @@ private:
   virtual void OffCollision() override;
   virtual void Attack() override;
 
+
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera")
 		class UCameraComponent* mCamera;

@@ -23,9 +23,12 @@ class ALostArkPlayerController : public APlayerController
 
   public:
     UFUNCTION()
-    bool OnHovered();
+    void OnHovered();
     UFUNCTION()
     void UnHovered();
+
+  private:
+    bool bEnemy;
    
 };
 
