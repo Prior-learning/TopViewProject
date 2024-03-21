@@ -12,6 +12,15 @@ enum class EDecalShape : uint8
     Rect,
     Max,
 };
+UENUM(BlueprintType)
+enum class EDecalDirection : uint8
+{
+    Forward,
+    Right,
+    Left,
+    Back,
+    Max,
+};
 
 UCLASS()
 class LOSTARK_API ACDecalManager : public AActor
@@ -20,11 +29,11 @@ class LOSTARK_API ACDecalManager : public AActor
 
   private:
     ACDecalManager();
-
+    ~ACDecalManager();
   public:
     static ACDecalManager *Get();
-    void SetDecalInfo(EDecalShape &shape, FVector &location, float circum, float distancefromtcenter, float timer);
-
+    void SetDecalInfo(const EDecalShape &shape, const FRotator &direction, const float degree,
+                      const FVector &location, const float circum, const float distancefromtcenter);
   protected:
     virtual void BeginPlay() override;
 
@@ -34,7 +43,7 @@ class LOSTARK_API ACDecalManager : public AActor
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     TSubclassOf<class ACDecalObject> classof;
 
-    TQueue<class ACDecalObject *> mObjectpool;
+    static TQueue<class ACDecalObject *> mObjectpool;
 
     static ACDecalManager *Instance;
 };
