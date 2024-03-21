@@ -7,15 +7,19 @@ ACDecalObject::ACDecalObject()
 }
 
 
-void ACDecalObject::SetDecalInfo(EDecalShape &shape, FVector &location, float circum, float distancefromtcenter,
-                                 float timer)
+void ACDecalObject::SetDecalInfo(const EDecalShape &shape, const FRotator &direction, const float degree,
+                                 const FVector &location, const float circum, const float distancefromtcenter)
 {
     SetActorLocation(location);
     mShape = shape;
-    mTimer = timer;
+    mDirection = direction;
+    mDegree = degree;
+   
     mCircum = circum;
     mArea = 0;
     mEraseArea = distancefromtcenter;
+
+    SetActorRotation(FQuat(mDirection));
     ShowDecal();
 }
 

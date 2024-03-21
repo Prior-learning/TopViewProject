@@ -11,9 +11,32 @@ void UCENotifyDecal::Notify(USkeletalMeshComponent *MeshComp, UAnimSequenceBase 
         return;
     if (MeshComp->GetOwner() == nullptr)
         return;
-    FVector forward = MeshComp->GetOwner()->GetActorForwardVector().GetSafeNormal2D();
-    FVector location = MeshComp->GetOwner()->GetActorLocation() + forward * mOffset.X; 
     if (ACDecalManager::Get() == nullptr)
         return;
-    ACDecalManager::Get()->SetDecalInfo(mShape, location, mCircum,mDistancefromCenter, mTimer);
+
+    FVector forward = MeshComp->GetOwner()->GetActorForwardVector().GetSafeNormal2D();
+    FVector location = MeshComp->GetOwner()->GetActorLocation() + forward * mOffset.X; 
+    
+    FRotator rot = MeshComp->GetOwner()->GetActorRotation();
+    
+    switch (mDirection)
+    {
+    case EDecalDirection::Forward:
+        rot.Yaw += 180.f;
+        break;
+    case EDecalDirection::Back:
+        break;
+    case EDecalDirection::Right:
+        rot.Yaw -= 90.f;
+        break;
+    case EDecalDirection::Left:
+        rot.Yaw += 90.f;
+        break;
+    }
+
+    ACDecalManager::Get()->SetDecalInfo(mShape, rot, mDegree, location, mCircum, mCenterDistance);
+
+    
+
+    
 }
