@@ -38,7 +38,7 @@ class LOSTARK_API ACDecalManager : public AActor
     virtual void BeginPlay() override;
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    int mPoolSize = 10;
+    int32 mPoolSize = 10;
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     TSubclassOf<class ACDecalObject> classof;
