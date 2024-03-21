@@ -14,10 +14,10 @@ enum class EStateEnemyType : uint8
     Death,    // »ç¸Á
     Max,
 };
-enum E_WHY_BLOCKED : uint8
+enum ECurrentState : uint8
 {
-    NONE = 0,
-    ATTACKING = 1 << 1,
+    NONESTATE = 0,
+    ATTACKINGSTATE = 1 << 1,
     HITTED = 1 << 2,
     MOVE = 1 << 3,
     DEATEH = 1 << 4,
@@ -38,8 +38,8 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
                                FActorComponentTickFunction *ThisTickFunction) override;
     void OperationSelect(const AActor *target);
 
-    void Add(const E_WHY_BLOCKED &reason);
-    void Remove(const E_WHY_BLOCKED &reason);
+    void Add(const ECurrentState &reason);
+    void Remove(const ECurrentState &reason);
 
   public:
     UFUNCTION(BlueprintPure)
@@ -67,8 +67,8 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
     void SetActionMode();
     void SetDeathMode();
 
-    void SetMode(const EStateEnemyType &num, const E_WHY_BLOCKED& reason);
-    bool FlagCheck(const E_WHY_BLOCKED &reason) const ;
+    void SetMode(const EStateEnemyType &num, const ECurrentState& reason);
+    bool FlagCheck(const ECurrentState &reason) const ;
 
   protected:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Status")

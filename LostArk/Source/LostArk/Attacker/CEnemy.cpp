@@ -76,13 +76,13 @@ float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, A
     {
         GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     }
-    if (!mStateComp->FlagCheck(E_WHY_BLOCKED::ATTACKING) &&
-        !mStateComp->FlagCheck(E_WHY_BLOCKED::DEATEH))
+    if (!mStateComp->FlagCheck(ECurrentState::ATTACKINGSTATE) &&
+        !mStateComp->FlagCheck(ECurrentState::DEATEH))
     {
         if(mMontageComp->GetKnockBack())
         {
             mMontageComp->PlayAnimMontage(EMontage_State::Hitted);
-            mStateComp->SetMode(EStateEnemyType::Action, E_WHY_BLOCKED::HITTED);
+            mStateComp->SetMode(EStateEnemyType::Action, ECurrentState::HITTED);
         }
     }
 	return 10.f;
