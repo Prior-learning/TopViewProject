@@ -14,7 +14,7 @@ class LOSTARK_API ACGun : public ACWeapon
 
   protected:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    TSubclassOf<class ACBullet> mBullet;
+    TSubclassOf<class ACBulletManager> mBulletPool;
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     FName mRifleHand;
