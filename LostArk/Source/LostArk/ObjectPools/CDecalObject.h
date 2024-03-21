@@ -12,22 +12,26 @@ class LOSTARK_API ACDecalObject : public AActor
 
   public:
     ACDecalObject();
-    void SetDecalInfo(EDecalShape &shape, FVector &location, float circum, float distancefromtcenter, float timer);
-
+    void SetDecalInfo(const EDecalShape &shape, const FRotator &direction, const float degree,
+                      const  FVector &location,
+                      const float circum, const float distancefromtcenter);
   protected:
     virtual void BeginPlay() override;
     UFUNCTION(BlueprintImplementableEvent)
     void ShowDecal();
   
-  protected:
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+  private:
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(AllowPrivateAccess=true))
     EDecalShape mShape;
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    float mTimer;
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+    FRotator mDirection;
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+    float mDegree;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
     float mCircum;
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
     float mArea;
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
     float mEraseArea;
 };
