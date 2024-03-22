@@ -69,6 +69,7 @@ protected:
 	class UCEnemyStateComponent* mState;
 
 private:
+
 	class ACEnemy* mOwner;
     class AActor* target;
 

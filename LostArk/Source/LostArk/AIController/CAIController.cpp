@@ -56,7 +56,7 @@ void ACAIController::OnPossess(APawn* InPawn)
 void ACAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    
+   
     mState->OperationSelect(target);
 }
 
