@@ -22,7 +22,7 @@ void ACGun::Tick(float DeltaTime)
 
 void ACGun::Fire(ACharacter *owner)
 {
-    
+
     UWorld *world = GetWorld();
 
     FVector start, end, direction;
@@ -34,7 +34,7 @@ void ACGun::Fire(ACharacter *owner)
     if (world)
     {
         ACBullet *temp = ACBulletManager::GetInstance().Pop();
-       // Bullettemp.Add(temp);
+        // Bullettemp.Add(temp);
         if (temp)
         {
             if (direction.Normalize())
@@ -42,16 +42,15 @@ void ACGun::Fire(ACharacter *owner)
                 temp->SetActorLocation(start);
                 temp->SetActorRotation(direction.Rotation());
                 temp->Fire(direction);
-               /* if (world->GetTimerManager().IsTimerActive(ReturnHandle))
-                {
-                    world->GetTimerManager().ClearTimer(ReturnHandle);
-                }
-                world->GetTimerManager().SetTimer(ReturnHandle, this, &ACGun::ReturnBullet(temp), 2.0f, true);*/
-                //ACBulletManager::GetInstance().Return(temp);
 
+                FTimerHandle ReturnHandle;
+                if (world->GetTimerManager().IsTimerActive(ReturnHandle))
+                 {
+                     world->GetTimerManager().ClearTimer(ReturnHandle);
+                 }
+                 world->GetTimerManager().SetTimer(ReturnHandle, FTimerDelegate::CreateLambda([&]() 
+                 { ACBulletManager::GetInstance().Return(temp);}),2.0f, false);
             }
-            
-            
         }
     }
 
@@ -59,7 +58,6 @@ void ACGun::Fire(ACharacter *owner)
                                            FRotator::ZeroRotator, EAttachLocation::KeepRelativeOffset);
     UGameplayStatics::SpawnEmitterAttached(EjectParticle, mesh, "AmmoEject", FVector::ZeroVector, FRotator::ZeroRotator,
                                            EAttachLocation::KeepRelativeOffset);
-    
 }
 
 void ACGun::ReturnBullet(ACBullet *bullet)

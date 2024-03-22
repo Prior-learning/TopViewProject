@@ -38,7 +38,5 @@ class LOSTARK_API ACGun : public ACWeapon
 
   private:
     float FireRate;
-    FTimerHandle ReturnHandle;
-    /*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
-    TArray<ACBullet*> Bullettemp;*/
+   
 };

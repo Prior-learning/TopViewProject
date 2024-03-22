@@ -44,7 +44,6 @@ public:
     void Fire(const FVector& Direction);
 
     void Init();
-    void Activate();
     void Deactivate();
 
 private:
