@@ -87,6 +87,10 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
     uint8 mFlagState = 0;
 
   private:
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+    bool bStraff = true;
+
     float mHp = 0.f;
     float mCurrentCooltime = 3.f; //
     class AAIController *mController;

@@ -91,17 +91,25 @@ void UCEnemyStateComponent::SetApproachMode()
     CheckTrue(FlagCheck(ECurrentState::MOVE));
     CheckTrue(FlagCheck(ECurrentState::ATTACKINGSTATE));
 
-    int ran = rand() % 2;
-    switch (ran)
+    if (bStraff)
     {
-    case 0:
-        CLog::Log("Approach");
+        int ran = rand() % 2;
+        switch (ran)
+        {
+        case 0:
+            CLog::Log("Approach");
+            SetMode(EStateEnemyType::Approach, ECurrentState::MOVE);
+            return;
+        case 1:
+            CLog::Log("Strafe");
+            SetMode(EStateEnemyType::Strafe, ECurrentState::MOVE);
+            mController->SetFocus(Cast<AActor>(mController->GetBlackboardComponent()->GetValueAsObject("Target")));
+            return;
+        }
+    }
+    else
+    {
         SetMode(EStateEnemyType::Approach, ECurrentState::MOVE);
-        return;
-    case 1:
-        CLog::Log("Strafe");
-        SetMode(EStateEnemyType::Strafe, ECurrentState::MOVE);
-        mController->SetFocus(Cast<AActor>(mController->GetBlackboardComponent()->GetValueAsObject("Target")));
         return;
     }
 }
