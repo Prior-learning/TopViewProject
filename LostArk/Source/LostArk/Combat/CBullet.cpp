@@ -32,21 +32,19 @@ void ACBullet::TempCreate(UWorld *world, TSubclassOf<class ACBullet> classof, AC
 void ACBullet::Fire(const FVector &Direction)
 {
 
-    Activate();
     Projectile->Velocity = Direction * Projectile->InitialSpeed;
+    CLog::Log("Activate");
 
+    SetActorHiddenInGame(false);
+    mCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     if (GetWorld()->GetTimerManager().IsTimerActive(ReturnHandle))
     {
         GetWorld()->GetTimerManager().ClearTimer(ReturnHandle);
     }
-    // 타이머 시작
-    GetWorld()->GetTimerManager().SetTimer(ReturnHandle, this, &ACBullet::ReturnToPool, 2.5f, false);
+    GetWorld()->GetTimerManager().SetTimer(ReturnHandle, this, &ACBullet::Deactivate, 2.0f, true);
 }
 
-void ACBullet::ReturnToPool()
-{
-    ACBulletManager::GetInstance().Return(this);
-}
+
 
 void ACBullet::Init()
 {
@@ -58,16 +56,14 @@ void ACBullet::Init()
     Projectile->bShouldBounce = false;
 }
 
-void ACBullet::Activate()
-{
-    SetActorHiddenInGame(false);
-    mCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-}
+
 
 void ACBullet::Deactivate()
 {
+    ACBulletManager::GetInstance().Return(this);
     SetActorHiddenInGame(true);
     mCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    CLog::Log("Deactivate");
 }
 
 void ACBullet::OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
@@ -85,6 +81,5 @@ void ACBullet::OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent,
                         mParticle);
 
 
-    //TempDelete();
 }
 

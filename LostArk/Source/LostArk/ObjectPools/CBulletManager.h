@@ -17,7 +17,7 @@ class LOSTARK_API ACBulletManager : public AActor
     void Return(class ACBullet *target);
     class ACBullet *Pop();
     static ACBulletManager &GetInstance();
-
+    int32 GetPoolsize(){return Poolsize;}
   protected:
     virtual void BeginPlay() override;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
@@ -32,6 +32,9 @@ class LOSTARK_API ACBulletManager : public AActor
     int32 mBulletPoolSize=30;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
     int32 mExpandSize=10;
+    UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+    int32 Poolsize = 0;
+
     TQueue<ACBullet *> BulletPool;
     static ACBulletManager *mInstance;
 

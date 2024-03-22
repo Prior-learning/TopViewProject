@@ -59,16 +59,13 @@ void ACPlayer::Tick(float DeltaTime)
     {
         Look_Mouse();
     }
+   
     
-	if (mPlayerState->IsFireMode())
-    {
-        mTickTimer += DeltaTime;
-    }
-    if (mTickTimer >= mGun->GetFireRate())
+   /* if (mTickTimer >= mGun->GetFireRate())
     {
         mTickTimer = 0;
         Attack();
-    }
+    }*/
 }
 
 E_WeaponType ACPlayer::GetWeaponType()
@@ -158,12 +155,23 @@ void ACPlayer::BeginFire()
 {
     CheckTrue(mPlayerState->IsContains(E_State::Attack));
     CheckFalse(IsAiming());
-    mPlayerState->SetFire();
+    mPlayerState->SetFire(); //이제는 필요없을지도?
+
+    if (GetWorld()->GetTimerManager().IsTimerActive(FireDelay))
+    {
+        GetWorld()->GetTimerManager().ClearTimer(FireDelay);
+    }
+    GetWorld()->GetTimerManager().SetTimer(FireDelay, this, &ACPlayer::Attack, mGun->GetFireRate(), true);
+    // mTickTimer += DeltaTime;
 }
 
 void ACPlayer::EndFire()
 {
     mPlayerState->UnSetFire();
+    if (GetWorld()->GetTimerManager().IsTimerActive(FireDelay))
+    {
+        GetWorld()->GetTimerManager().ClearTimer(FireDelay);
+    }
 }
 
 void ACPlayer::InitMovement()

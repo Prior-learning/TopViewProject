@@ -80,5 +80,6 @@ protected:
     FGenericTeamId mTeamID = 0;
 	E_WeaponType mPlayerWeaponType;
 	float mTickTimer;
+    FTimerHandle FireDelay;
 
 };
