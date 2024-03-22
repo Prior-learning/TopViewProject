@@ -8,10 +8,16 @@
 ACGun::ACGun()
 {
     CHelpers::CreateComponent<USkeletalMeshComponent>(this, &mesh, "SkeletalMesh");
-   
+    PrimaryActorTick.bCanEverTick = true;
+
     RootComponent = mesh;
     FireRate = 0.15f;
 
+}
+void ACGun::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+    
 }
 
 void ACGun::Fire(ACharacter *owner)
@@ -28,6 +34,7 @@ void ACGun::Fire(ACharacter *owner)
     if (world)
     {
         ACBullet *temp = ACBulletManager::GetInstance().Pop();
+       // Bullettemp.Add(temp);
         if (temp)
         {
             if (direction.Normalize())
@@ -35,7 +42,16 @@ void ACGun::Fire(ACharacter *owner)
                 temp->SetActorLocation(start);
                 temp->SetActorRotation(direction.Rotation());
                 temp->Fire(direction);
+               /* if (world->GetTimerManager().IsTimerActive(ReturnHandle))
+                {
+                    world->GetTimerManager().ClearTimer(ReturnHandle);
+                }
+                world->GetTimerManager().SetTimer(ReturnHandle, this, &ACGun::ReturnBullet(temp), 2.0f, true);*/
+                //ACBulletManager::GetInstance().Return(temp);
+
             }
+            
+            
         }
     }
 
@@ -45,4 +61,10 @@ void ACGun::Fire(ACharacter *owner)
                                            EAttachLocation::KeepRelativeOffset);
     
 }
+
+void ACGun::ReturnBullet(ACBullet *bullet)
+{
+    ACBulletManager::GetInstance().Return(bullet);
+}
+
 

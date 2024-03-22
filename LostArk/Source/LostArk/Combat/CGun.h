@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "CWeapon.h"
+#include "CBullet.h"
 #include "CGun.generated.h"
 
 UCLASS()
@@ -11,6 +12,8 @@ class LOSTARK_API ACGun : public ACWeapon
   public:
     ACGun();
     virtual ~ACGun(){};
+
+    virtual void Tick(float DeltaTime) override;
 
   protected:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
@@ -27,6 +30,7 @@ class LOSTARK_API ACGun : public ACWeapon
 
   public:
     void Fire(ACharacter *owner);
+    void ReturnBullet(ACBullet* bullet);
     float GetFireRate(){return FireRate;}
     FName GetHandSocket(){return mRifleHand;}
     FName GetHolsterSocket(){return mAttachBone;}
@@ -34,4 +38,7 @@ class LOSTARK_API ACGun : public ACWeapon
 
   private:
     float FireRate;
+    FTimerHandle ReturnHandle;
+    /*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory")
+    TArray<ACBullet*> Bullettemp;*/
 };

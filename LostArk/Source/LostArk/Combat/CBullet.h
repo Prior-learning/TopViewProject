@@ -42,7 +42,6 @@ protected:
 public:	
 	void TempCreate(UWorld *world, TSubclassOf<class ACBullet> classof, ACharacter *owner);
     void Fire(const FVector& Direction);
-    void ReturnToPool();
 
     void Init();
     void Activate();
