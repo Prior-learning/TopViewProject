@@ -2,6 +2,7 @@
 #include "../Global.h"
 #include "Particles/ParticleSystem.h"
 #include "CBullet.h"
+#include "../ObjectPools/CBulletManager.h"
 #include "GameFramework/Character.h"
 
 ACGun::ACGun()
@@ -26,19 +27,15 @@ void ACGun::Fire(ACharacter *owner)
     end = meshLocation + endDirection;
     if (world)
     {
-        ACBullet *bullet = world->SpawnActor<ACBullet>(mBullet);
-        if (bullet)
+        ACBullet *temp = ACBulletManager::GetInstance().Pop();
+        if (temp)
         {
-            
-
             if (direction.Normalize())
             {
-                bullet->SetActorLocation(start);
-                bullet->SetActorRotation(direction.Rotation());
-                bullet->Fire(direction);
-
+                temp->SetActorLocation(start);
+                temp->SetActorRotation(direction.Rotation());
+                temp->Fire(direction);
             }
-
         }
     }
 

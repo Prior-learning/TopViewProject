@@ -4,6 +4,8 @@
 #include "Components/BoxComponent.h"
 
 #include "GameFramework/Character.h"
+#include "../ObjectPools/CBulletManager.h"
+
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "../Combat/ICombat.h"
 
@@ -30,18 +32,20 @@ void ACBullet::TempCreate(UWorld *world, TSubclassOf<class ACBullet> classof, AC
 void ACBullet::Fire(const FVector &Direction)
 {
 
+    Activate();
     Projectile->Velocity = Direction * Projectile->InitialSpeed;
+
     if (GetWorld()->GetTimerManager().IsTimerActive(ReturnHandle))
     {
         GetWorld()->GetTimerManager().ClearTimer(ReturnHandle);
     }
     // 타이머 시작
-    GetWorld()->GetTimerManager().SetTimer(ReturnHandle, this, &ACBullet::TempDelete, 10.0f, false);
+    GetWorld()->GetTimerManager().SetTimer(ReturnHandle, this, &ACBullet::ReturnToPool, 2.5f, false);
 }
 
-void ACBullet::TempDelete()
+void ACBullet::ReturnToPool()
 {
-    Destroy();
+    ACBulletManager::GetInstance().Return(this);
 }
 
 void ACBullet::Init()
@@ -52,16 +56,17 @@ void ACBullet::Init()
     Projectile->MaxSpeed = 10000;
     Projectile->bRotationFollowsVelocity = false;
     Projectile->bShouldBounce = false;
-    Activate();
 }
 
 void ACBullet::Activate()
 {
+    SetActorHiddenInGame(false);
     mCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 
 void ACBullet::Deactivate()
 {
+    SetActorHiddenInGame(true);
     mCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 

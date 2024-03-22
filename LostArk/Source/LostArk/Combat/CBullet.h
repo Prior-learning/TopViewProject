@@ -33,13 +33,16 @@ protected:
 	 UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
     float mPower = 1.f;
 
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    TSubclassOf<class ACBulletManager> mBulletPool;
+
 	FTimerHandle ReturnHandle;
 
 
 public:	
 	void TempCreate(UWorld *world, TSubclassOf<class ACBullet> classof, ACharacter *owner);
     void Fire(const FVector& Direction);
-    void TempDelete();
+    void ReturnToPool();
 
     void Init();
     void Activate();
