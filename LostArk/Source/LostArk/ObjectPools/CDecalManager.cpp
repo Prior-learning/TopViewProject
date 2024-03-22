@@ -33,8 +33,12 @@ void ACDecalManager::SetDecalInfo(const EDecalShape &shape, const FRotator &dire
 {
     if (Instance == nullptr)
         return;
-    if (mObjectpool.IsEmpty()) 
+    if (mObjectpool.IsEmpty())
+    {   
         return;
+    }
+    ensureMsgf(!mObjectpool.IsEmpty(), TEXT("mObjectpool is Empty"));
+
     ACDecalObject *data;
     mObjectpool.Dequeue(data);
     mObjectpool.Enqueue(data);
