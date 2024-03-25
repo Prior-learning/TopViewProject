@@ -31,27 +31,23 @@ void ACGun::Fire(ACharacter *owner)
     start = meshLocation + direction;
     FVector endDirection = direction * 2000;
     end = meshLocation + endDirection;
-    if (world)
+
+    ACBullet *temp = ACBulletManager::GetInstance().Pop();
+    
+    if (!!world)
     {
-        ACBullet *temp = ACBulletManager::GetInstance().Pop();
         // Bullettemp.Add(temp);
-        if (temp)
+        if (!!temp)
         {
             if (direction.Normalize())
             {
                 temp->SetActorLocation(start);
                 temp->SetActorRotation(direction.Rotation());
                 temp->Fire(direction);
-
-                FTimerHandle ReturnHandle;
-                if (world->GetTimerManager().IsTimerActive(ReturnHandle))
-                 {
-                     world->GetTimerManager().ClearTimer(ReturnHandle);
-                 }
-                 world->GetTimerManager().SetTimer(ReturnHandle, FTimerDelegate::CreateLambda([&]() 
-                 { ACBulletManager::GetInstance().Return(temp);}),2.0f, false);
             }
         }
+        else
+            CLog::Print("temp is nullptr");
     }
 
     UGameplayStatics::SpawnEmitterAttached(FlashParticle, mesh, "MuzzleFlash", FVector::ZeroVector,

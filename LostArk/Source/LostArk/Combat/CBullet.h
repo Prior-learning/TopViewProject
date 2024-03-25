@@ -14,6 +14,8 @@ class LOSTARK_API ACBullet : public AActor
 	
 public:	
 	ACBullet();
+    virtual ~ACBullet();
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -44,6 +46,7 @@ public:
     void Fire(const FVector& Direction);
 
     void Init();
+    UFUNCTION()
     void Deactivate();
 
 private:

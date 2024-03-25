@@ -18,7 +18,10 @@ ACBullet::ACBullet()
     RootComponent = StaticMesh;
 	Init();
 }
-
+ACBullet::~ACBullet()
+{
+    CLog::Log("Destroy");
+}
 void ACBullet::BeginPlay()
 {
 	Super::BeginPlay();
@@ -31,17 +34,14 @@ void ACBullet::TempCreate(UWorld *world, TSubclassOf<class ACBullet> classof, AC
 
 void ACBullet::Fire(const FVector &Direction)
 {
-
     Projectile->Velocity = Direction * Projectile->InitialSpeed;
+    Projectile->Activate(true);
     CLog::Log("Activate");
 
     SetActorHiddenInGame(false);
+    
     mCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-    if (GetWorld()->GetTimerManager().IsTimerActive(ReturnHandle))
-    {
-        GetWorld()->GetTimerManager().ClearTimer(ReturnHandle);
-    }
-    GetWorld()->GetTimerManager().SetTimer(ReturnHandle, this, &ACBullet::Deactivate, 2.0f, true);
+    GetWorldTimerManager().SetTimer(ReturnHandle, this, &ACBullet::Deactivate, 1.0f, false);
 }
 
 
@@ -49,6 +49,7 @@ void ACBullet::Fire(const FVector &Direction)
 void ACBullet::Init()
 {
     Projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
+    
     Projectile->SetUpdatedComponent(GetRootComponent());
     Projectile->InitialSpeed = 10000;
     Projectile->MaxSpeed = 10000;
@@ -57,14 +58,16 @@ void ACBullet::Init()
 }
 
 
-
 void ACBullet::Deactivate()
 {
+    Projectile->Deactivate();
     ACBulletManager::GetInstance().Return(this);
-    SetActorHiddenInGame(true);
+
     mCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    CLog::Log("Deactivate");
+    CLog::Print("Deactivate");
 }
+
+
 
 void ACBullet::OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
                                        UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
