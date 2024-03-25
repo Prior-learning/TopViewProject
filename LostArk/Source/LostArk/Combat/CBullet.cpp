@@ -51,8 +51,8 @@ void ACBullet::Init()
     Projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
     
     Projectile->SetUpdatedComponent(GetRootComponent());
-    Projectile->InitialSpeed = 10000;
-    Projectile->MaxSpeed = 10000;
+    Projectile->InitialSpeed = 5000;
+    Projectile->MaxSpeed = 5000;
     Projectile->bRotationFollowsVelocity = false;
     Projectile->bShouldBounce = false;
 }
