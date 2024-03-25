@@ -35,7 +35,7 @@ class LOSTARK_API ACBulletManager : public AActor
     UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))
     int32 Poolsize = 0;
 
-    TQueue<ACBullet *> BulletPool;
+    TQueue<ACBullet*> BulletPool;
     static ACBulletManager *mInstance;
 
 };

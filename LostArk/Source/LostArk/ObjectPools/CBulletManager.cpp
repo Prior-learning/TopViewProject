@@ -13,7 +13,8 @@ void ACBulletManager::Init()
 {
     for (int i = 0; i < mBulletPoolSize; i++)
     {
-        BulletPool.Enqueue(GetWorld()->SpawnActor<ACBullet>(bulletClass, FVector::ZeroVector, FRotator::ZeroRotator));
+        ACBullet *bullet = GetWorld()->SpawnActor<ACBullet>(bulletClass, FVector::ZeroVector, FRotator::ZeroRotator);
+        BulletPool.Enqueue(bullet);
         Poolsize++;
         CLog::Log("BulletInit");
 
@@ -44,22 +45,19 @@ ACBullet *ACBulletManager::Pop()
     ACBullet *PopBullet;
     if (!BulletPool.IsEmpty())
     {
-
         BulletPool.Dequeue(PopBullet);
         Poolsize--;
-
         CLog::Log("BulletPop");
         UE_LOG(LogTemp, Warning, TEXT("PoolSize:%d "), GetPoolsize()); 
 
         return PopBullet;
     }
-    else
-    {
-        Expand();
-        BulletPool.Dequeue(PopBullet);
-        Poolsize--;
-        return PopBullet;
-    }
+   
+    Expand();
+    BulletPool.Dequeue(PopBullet);
+    Poolsize--;
+    return PopBullet;
+    
 }
 
 ACBulletManager &ACBulletManager::GetInstance()
