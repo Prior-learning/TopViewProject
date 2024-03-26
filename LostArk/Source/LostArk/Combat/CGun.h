@@ -5,6 +5,14 @@
 #include "CBullet.h"
 #include "CGun.generated.h"
 
+UENUM()
+enum class E_Gun : uint16
+{
+    Rifle,
+    ShotGun,
+    Sniper
+};
+
 UCLASS()
 class LOSTARK_API ACGun : public ACWeapon
 {
@@ -17,26 +25,23 @@ class LOSTARK_API ACGun : public ACWeapon
 
   protected:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    TSubclassOf<class ACBulletManager> mBulletPool;
-
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     FName mRifleHand;
-
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    float FireRate;
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    E_Gun FireType;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     class UParticleSystem *FlashParticle;
-
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	class UParticleSystem *EjectParticle;
 
   public:
     void Fire(ACharacter *owner);
-    void ReturnBullet(ACBullet* bullet);
     float GetFireRate(){return FireRate;}
     FName GetHandSocket(){return mRifleHand;}
     FName GetHolsterSocket(){return mAttachBone;}
 
 
   private:
-    float FireRate;
    
 };

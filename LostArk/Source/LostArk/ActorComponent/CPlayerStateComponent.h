@@ -59,6 +59,7 @@ public:
 
 	void SetUnarmed() { mWeaponType = E_WeaponType::UnArmed; }
 	void SetPrimary() { mWeaponType = E_WeaponType::Primary; }
+    void SetSecondary() { mWeaponType = E_WeaponType::Secondary; }
 	bool IsFireMode(){return bFiring;}
 
 	virtual bool IsAimMode() const override {return bAiming;}
