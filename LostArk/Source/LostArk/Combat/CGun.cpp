@@ -36,7 +36,6 @@ void ACGun::Fire(ACharacter *owner)
     
     if (!!world)
     {
-        // Bullettemp.Add(temp);
         if (!!temp)
         {
             if (direction.Normalize())

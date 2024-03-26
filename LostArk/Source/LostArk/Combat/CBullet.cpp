@@ -51,8 +51,8 @@ void ACBullet::Init()
     Projectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
     
     Projectile->SetUpdatedComponent(GetRootComponent());
-    Projectile->InitialSpeed = 10000;
-    Projectile->MaxSpeed = 10000;
+    Projectile->InitialSpeed = 4000;
+    Projectile->MaxSpeed = 4000;
     Projectile->bRotationFollowsVelocity = false;
     Projectile->bShouldBounce = false;
 }
@@ -62,7 +62,6 @@ void ACBullet::Deactivate()
 {
     Projectile->Deactivate();
     ACBulletManager::GetInstance().Return(this);
-
     mCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     CLog::Print("Deactivate");
 }
