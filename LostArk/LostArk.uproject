@@ -23,6 +23,10 @@
 		{
 			"Name": "Gun",
 			"Enabled": false
+		},
+		{
+			"Name": "ApexDestruction",
+			"Enabled": true
 		}
 	]
 }
