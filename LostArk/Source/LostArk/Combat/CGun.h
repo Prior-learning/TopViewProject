@@ -29,6 +29,8 @@ class LOSTARK_API ACGun : public ACWeapon
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     float FireRate;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    float ReturnRate;
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     E_Gun FireType;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     class UParticleSystem *FlashParticle;
@@ -40,8 +42,11 @@ class LOSTARK_API ACGun : public ACWeapon
     float GetFireRate(){return FireRate;}
     FName GetHandSocket(){return mRifleHand;}
     FName GetHolsterSocket(){return mAttachBone;}
+    bool GetCoolDown(){return bCoolDown;}
 
 
   private:
+     float mTimer;
+     bool bCoolDown;
    
 };
