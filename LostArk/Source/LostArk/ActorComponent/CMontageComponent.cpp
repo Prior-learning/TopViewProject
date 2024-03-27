@@ -16,7 +16,7 @@ void UCMontageComponent::BeginPlay()
     DataTable->GetAllRows<FMontageData>("", datas);
  
     
-    for (int32 i = 0; i < (int16)EMontage_State::Max; i++)
+    for (int32 i = 0; i < (int8)EMontage_State::Max; i++)
     {
         for (FMontageData *data : datas)
         {
@@ -36,7 +36,7 @@ void UCMontageComponent::PlayAnimMontage(EMontage_State InState)
 {
     ACharacter *character = Cast<ACharacter>(GetOwner());
 
-    const FMontageData *data = Datas[(int16)InState];
+    const FMontageData *data = Datas[(int8)InState];
     if (!!data)
     {
         if (!!data->AnimMontage)
