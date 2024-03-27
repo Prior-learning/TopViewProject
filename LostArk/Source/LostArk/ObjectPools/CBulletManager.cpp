@@ -25,7 +25,8 @@ void ACBulletManager::Expand()
 {
     for (int i = 0; i < mExpandSize; i++)
     {
-        BulletPool.Enqueue(GetWorld()->SpawnActor<ACBullet>(bulletClass, FVector::ZeroVector, FRotator::ZeroRotator));
+        ACBullet *bullet=GetWorld()->SpawnActor<ACBullet>(bulletClass, FVector::ZeroVector, FRotator::ZeroRotator);
+        BulletPool.Enqueue(bullet);
         Poolsize++;
         CLog::Log("BulletExpand");
         
