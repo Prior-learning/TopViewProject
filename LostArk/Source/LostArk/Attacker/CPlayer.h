@@ -41,6 +41,7 @@ private:
 		void Look_Mouse();
 
 	void OnEquip1();
+    void OnEquip2();
 	void OnAim();
 	void OffAim();
     void BeginRoll();
@@ -76,10 +77,14 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
         TSubclassOf<class ACWeapon> mWeaponClass;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+        TSubclassOf<class ACWeapon> mWeaponClass2;
+
     class ACGun *mGun;
+    class ACGun *mShotGun;
     FGenericTeamId mTeamID = 0;
 	E_WeaponType mPlayerWeaponType;
-	float mTickTimer;
+	float CurrentFirerate;
     FTimerHandle FireDelay;
 
 };

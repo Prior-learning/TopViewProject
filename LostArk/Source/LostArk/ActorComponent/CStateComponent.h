@@ -9,7 +9,8 @@ UENUM(BlueprintType)
 enum class E_WeaponType : uint8
 {
     UnArmed,
-    Primary //....추가예정
+    Primary, 
+    Secondary //....추가예정
 };
 
 UCLASS(Abstract)

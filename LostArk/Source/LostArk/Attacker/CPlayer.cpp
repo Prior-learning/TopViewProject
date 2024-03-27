@@ -37,7 +37,7 @@ ACPlayer::ACPlayer()
 
 	CHelpers::CreateActorComponent<UCPlayerStateComponent>(this, &mPlayerState, "PlayerStateComponent");
     CHelpers::CreateActorComponent<UCMontageComponent>(this, &mMontages, "Montage");
-    mTickTimer = 0;
+    CurrentFirerate = 0;
 
 }
 
@@ -60,12 +60,6 @@ void ACPlayer::Tick(float DeltaTime)
         Look_Mouse();
     }
    
-    
-   /* if (mTickTimer >= mGun->GetFireRate())
-    {
-        mTickTimer = 0;
-        Attack();
-    }*/
 }
 
 E_WeaponType ACPlayer::GetWeaponType()
@@ -83,14 +77,51 @@ void ACPlayer::OnEquip1()
     if (GetWeaponType() == E_WeaponType::UnArmed)
     {
         mPlayerState->SetPrimary();
+        CurrentFirerate = mGun->GetFireRate();
+        UE_LOG(LogTemp, Warning, TEXT("FireRate:%f "), CurrentFirerate); 
+
         mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHandSocket());
-    }
-    else
+    } 
+    else if (GetWeaponType() == E_WeaponType::Primary)
     {
         mPlayerState->SetUnarmed();
         mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHolsterSocket());
     }
+    else if (GetWeaponType() == E_WeaponType::Secondary)
+    {
+        mPlayerState->SetPrimary();
+        CurrentFirerate = mGun->GetFireRate();
+        UE_LOG(LogTemp, Warning, TEXT("FireRate:%f "), CurrentFirerate); 
 
+        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHandSocket());
+        mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHolsterSocket());
+    }
+}
+
+void ACPlayer::OnEquip2()
+{
+    if (GetWeaponType() == E_WeaponType::UnArmed)
+    {
+        mPlayerState->SetSecondary();
+        CurrentFirerate = mShotGun->GetFireRate();
+        UE_LOG(LogTemp, Warning, TEXT("FireRate:%f "), CurrentFirerate); 
+
+        mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHandSocket());
+    }
+    else if (GetWeaponType() == E_WeaponType::Primary)
+    {
+        mPlayerState->SetSecondary();
+        CurrentFirerate = mShotGun->GetFireRate();
+        UE_LOG(LogTemp, Warning, TEXT("FireRate:%f "), CurrentFirerate); 
+
+        mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHandSocket());
+        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHolsterSocket());
+    }
+    else if (GetWeaponType() == E_WeaponType::Secondary)
+    {
+        mPlayerState->SetUnarmed();
+        mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHolsterSocket());
+    }
 }
 
 void ACPlayer::OnAim()
@@ -133,6 +164,7 @@ void ACPlayer::CreateWeapon()
     CheckNull(mWeaponClass);
 	// 업캐스팅 다운캐스팅...은 너무 위험하고 다형성이없음
     mGun = Cast<ACGun>(ACWeapon::CreateWeapon(GetWorld(), mWeaponClass, this));
+    mShotGun = Cast<ACGun>(ACWeapon::CreateWeapon(GetWorld(), mWeaponClass2, this));
 }
 
 void ACPlayer::OnCollision()
@@ -147,22 +179,29 @@ void ACPlayer::OffCollision()
 
 void ACPlayer::Attack()
 {
-    mGun->Fire(this);
-    mMontages->PlayAnimMontage(EMontage_State::Attack);
+    switch (GetWeaponType())
+    {
+    case E_WeaponType::Primary:
+        mGun->Fire(this);
+        mMontages->PlayAnimMontage(EMontage_State::Attack);
+
+        break;
+    case E_WeaponType::Secondary:
+        mShotGun->Fire(this);
+        mMontages->PlayAnimMontage(EMontage_State::Attack);
+
+        break;
+    }
 }
 
 void ACPlayer::BeginFire()
 {
     CheckTrue(mPlayerState->IsContains(E_State::Attack));
     CheckFalse(IsAiming());
-    mPlayerState->SetFire(); //이제는 필요없을지도?
+    mPlayerState->SetFire(); 
+    Attack();
+    GetWorld()->GetTimerManager().SetTimer(FireDelay, this, &ACPlayer::Attack, CurrentFirerate, true);
 
-    if (GetWorld()->GetTimerManager().IsTimerActive(FireDelay))
-    {
-        GetWorld()->GetTimerManager().ClearTimer(FireDelay);
-    }
-    GetWorld()->GetTimerManager().SetTimer(FireDelay, this, &ACPlayer::Attack, mGun->GetFireRate(), true);
-    // mTickTimer += DeltaTime;
 }
 
 void ACPlayer::EndFire()
@@ -219,6 +258,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("Equip1", EInputEvent::IE_Pressed, this, &ACPlayer::OnEquip1);
+    PlayerInputComponent->BindAction("Equip2", EInputEvent::IE_Pressed, this, &ACPlayer::OnEquip2);
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ACPlayer::OnAim);
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ACPlayer::OffAim);
     PlayerInputComponent->BindAction("Roll", EInputEvent::IE_Pressed, this, &ACPlayer::BeginRoll);
