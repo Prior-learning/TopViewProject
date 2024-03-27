@@ -32,9 +32,6 @@ protected:
 	 UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     class UBoxComponent *mCollider;
 
-	 UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Info")
-    float mPower = 1.f;
-
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     TSubclassOf<class ACBulletManager> mBulletPool;
 
@@ -42,23 +39,20 @@ protected:
 
 
 public:	
-	void TempCreate(UWorld *world, TSubclassOf<class ACBullet> classof, ACharacter *owner);
-    void Fire(const FVector& Direction);
-
+    void Fire(const FVector &Direction ,const float &firerate);
+    void SetPower(const float& damage);
+  
     void Init();
+    
     UFUNCTION()
     void Deactivate();
 
 private:
     //ÄÄÆ÷³ÍÆ® overlap
     UFUNCTION()
-    void OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
-                                 UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-                                 const FHitResult &SweepResult);
+    void OnComponentBeginOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
 
-   
-    
+    float mdamage;
     class AController *mController;
-
     TArray<class ACharacter *> HittedCharacter;
 };

@@ -82,8 +82,10 @@ protected:
 
     class ACGun *mGun;
     class ACGun *mShotGun;
+
     FGenericTeamId mTeamID = 0;
 	E_WeaponType mPlayerWeaponType;
+
 	float CurrentFirerate;
     FTimerHandle FireDelay;
 

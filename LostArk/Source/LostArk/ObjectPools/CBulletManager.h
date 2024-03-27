@@ -29,7 +29,7 @@ class LOSTARK_API ACBulletManager : public AActor
 
   private:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-    int32 mBulletPoolSize=15;
+    int32 mBulletPoolSize=25;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
     int32 mExpandSize=5;
     UPROPERTY(EditDefaultsOnly, meta = (AllowPrivateAccess = true))

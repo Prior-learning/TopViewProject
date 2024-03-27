@@ -47,19 +47,15 @@ void ACPlayer::BeginPlay()
 	CheckNull(mPlayerState);
 	CreateWeapon();
     mPlayerState->SetUnarmed();
-
 }
 
 void ACPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-
 	if (IsAiming() == true)
     {
         Look_Mouse();
     }
-   
 }
 
 E_WeaponType ACPlayer::GetWeaponType()
@@ -78,8 +74,6 @@ void ACPlayer::OnEquip1()
     {
         mPlayerState->SetPrimary();
         CurrentFirerate = mGun->GetFireRate();
-        UE_LOG(LogTemp, Warning, TEXT("FireRate:%f "), CurrentFirerate); 
-
         mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHandSocket());
     } 
     else if (GetWeaponType() == E_WeaponType::Primary)
@@ -91,8 +85,6 @@ void ACPlayer::OnEquip1()
     {
         mPlayerState->SetPrimary();
         CurrentFirerate = mGun->GetFireRate();
-        UE_LOG(LogTemp, Warning, TEXT("FireRate:%f "), CurrentFirerate); 
-
         mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHandSocket());
         mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHolsterSocket());
     }
@@ -104,16 +96,12 @@ void ACPlayer::OnEquip2()
     {
         mPlayerState->SetSecondary();
         CurrentFirerate = mShotGun->GetFireRate();
-        UE_LOG(LogTemp, Warning, TEXT("FireRate:%f "), CurrentFirerate); 
-
         mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHandSocket());
     }
     else if (GetWeaponType() == E_WeaponType::Primary)
     {
         mPlayerState->SetSecondary();
         CurrentFirerate = mShotGun->GetFireRate();
-        UE_LOG(LogTemp, Warning, TEXT("FireRate:%f "), CurrentFirerate); 
-
         mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHandSocket());
         mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHolsterSocket());
     }
@@ -162,6 +150,7 @@ void ACPlayer::EndRoll()
 void ACPlayer::CreateWeapon()
 {
     CheckNull(mWeaponClass);
+    CheckNull(mWeaponClass2);
 	// 업캐스팅 다운캐스팅...은 너무 위험하고 다형성이없음
     mGun = Cast<ACGun>(ACWeapon::CreateWeapon(GetWorld(), mWeaponClass, this));
     mShotGun = Cast<ACGun>(ACWeapon::CreateWeapon(GetWorld(), mWeaponClass2, this));
@@ -183,13 +172,13 @@ void ACPlayer::Attack()
     {
     case E_WeaponType::Primary:
         mGun->Fire(this);
+        if (!mGun->GetCoolDown())
         mMontages->PlayAnimMontage(EMontage_State::Attack);
-
         break;
     case E_WeaponType::Secondary:
         mShotGun->Fire(this);
+        if (!mShotGun->GetCoolDown())
         mMontages->PlayAnimMontage(EMontage_State::Attack);
-
         break;
     }
 }
@@ -201,7 +190,6 @@ void ACPlayer::BeginFire()
     mPlayerState->SetFire(); 
     Attack();
     GetWorld()->GetTimerManager().SetTimer(FireDelay, this, &ACPlayer::Attack, CurrentFirerate, true);
-
 }
 
 void ACPlayer::EndFire()
@@ -233,7 +221,6 @@ void ACPlayer::InitCamera()
     mSpring->TargetArmLength = 1000.f;
     mSpring->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
     mSpring->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
-
     mCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     mCamera->SetupAttachment(mSpring, USpringArmComponent::SocketName);
     mCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
