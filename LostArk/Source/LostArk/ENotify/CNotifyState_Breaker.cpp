@@ -19,5 +19,5 @@ void UCNotifyState_Breaker::NotifyBegin(USkeletalMeshComponent *MeshComp, UAnimS
 void UCNotifyState_Breaker::NotifyEnd(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation)
 {
     CheckNull(breakcomp);
-    breakcomp->OnBoxOverlap();
+    breakcomp->OffBoxOverlap();
 }
