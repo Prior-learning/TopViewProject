@@ -6,14 +6,15 @@
 #include "CMontageComponent.generated.h"
 
 //
-UENUM()
-enum class EMontage_State : uint16
+UENUM(BlueprintType)
+enum class EMontage_State : uint8
 {
     Attack = 0,
     Hitted,
     Roll,
     Reload,
     Dead,
+    Stun,
     Max
 };
 USTRUCT(BlueprintType)
@@ -47,6 +48,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+    UFUNCTION(BlueprintCallable)
     virtual void PlayAnimMontage(EMontage_State InState);
 
 protected:
