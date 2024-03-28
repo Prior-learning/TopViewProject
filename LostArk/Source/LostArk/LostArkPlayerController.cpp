@@ -15,6 +15,7 @@ ALostArkPlayerController::ALostArkPlayerController()
 	DefaultMouseCursor = EMouseCursor::Default;
     CurrentMouseCursor = EMouseCursor::Default;
     bEnableMouseOverEvents = true;
+
    
   
 }
@@ -35,8 +36,8 @@ void ALostArkPlayerController::SetupInputComponent()
 void ALostArkPlayerController::Move_Forward(float Axis)
 {
     APawn *const player = GetPawn();
-    if (player)
-    {
+    if (player && bCanMove)
+    { 
         FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
         FVector direction = FQuat(rotator).GetForwardVector();
         player->AddMovementInput(direction, Axis);
@@ -46,7 +47,7 @@ void ALostArkPlayerController::Move_Forward(float Axis)
 void ALostArkPlayerController::Move_Right(float Axis)
 {
     APawn *const player = GetPawn();
-    if (player)
+    if (player && bCanMove)
     {
         FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
         FVector direction = FQuat(rotator).GetRightVector();

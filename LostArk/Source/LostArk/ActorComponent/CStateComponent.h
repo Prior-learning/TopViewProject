@@ -10,7 +10,8 @@ enum class E_WeaponType : uint8
 {
     UnArmed,
     Primary, 
-    Secondary //....추가예정
+    Secondary,
+    Sniping
 };
 
 UCLASS(Abstract)
