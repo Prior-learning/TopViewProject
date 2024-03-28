@@ -2,7 +2,7 @@
 
 
 UCPlayerStateComponent::UCPlayerStateComponent() 
-: bFiring(false), bAiming(false)
+: bFiring(false), bAiming(false), bCanMove(true)
 {
    
 }
@@ -92,10 +92,44 @@ void UCPlayerStateComponent::UnSetFire()
     Remove(E_State::Reload, E_WHY_BLOCKED::ATTACKING);
 }
 
+void UCPlayerStateComponent::SetAirborn()
+{
+    bCanMove = false;
+    Add(E_State::Aim, E_WHY_BLOCKED::AirBorned);
+    Add(E_State::Attack, E_WHY_BLOCKED::AirBorned);
+    Add(E_State::Reload, E_WHY_BLOCKED::AirBorned);
+    Add(E_State::Roll, E_WHY_BLOCKED::AirBorned);
+}
+
+void UCPlayerStateComponent::UnSetAirborn()
+{
+    bCanMove = true;
+    Remove(E_State::Aim, E_WHY_BLOCKED::AirBorned);
+    Remove(E_State::Attack, E_WHY_BLOCKED::AirBorned);
+    Remove(E_State::Reload, E_WHY_BLOCKED::AirBorned);
+    Remove(E_State::Roll, E_WHY_BLOCKED::AirBorned);
+}
+
 void UCPlayerStateComponent::SetReload()
 {
 }
 
 void UCPlayerStateComponent::UnSetReload()
 {
+}
+
+void UCPlayerStateComponent::SetSkill()
+{
+    bCanMove = false;
+    Add(E_State::Aim, E_WHY_BLOCKED::SKILLUSE);
+    Add(E_State::Reload, E_WHY_BLOCKED::SKILLUSE);
+    Add(E_State::Roll, E_WHY_BLOCKED::SKILLUSE);
+}
+
+void UCPlayerStateComponent::UnSetSkill()
+{
+    bCanMove = true;
+    Remove(E_State::Aim, E_WHY_BLOCKED::SKILLUSE);
+    Remove(E_State::Reload, E_WHY_BLOCKED::SKILLUSE);
+    Remove(E_State::Roll, E_WHY_BLOCKED::SKILLUSE);
 }

@@ -38,7 +38,9 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent<UCPlayerStateComponent>(this, &mPlayerState, "PlayerStateComponent");
     CHelpers::CreateActorComponent<UCMontageComponent>(this, &mMontages, "Montage");
     CurrentFirerate = 0;
-
+    //이걸로 CanMove해볼예정
+    //GetCharacterMovement()->SetActive(true);
+    //GetCharacterMovement()->SetActive(false);
 }
 
 void ACPlayer::BeginPlay()
@@ -179,6 +181,9 @@ void ACPlayer::Attack()
         mShotGun->Fire(this);
         if (!mShotGun->GetCoolDown())
         mMontages->PlayAnimMontage(EMontage_State::Attack);
+        break;
+    case E_WeaponType::Sniping:
+
         break;
     }
 }

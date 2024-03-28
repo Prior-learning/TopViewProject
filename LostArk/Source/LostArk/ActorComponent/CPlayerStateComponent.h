@@ -14,10 +14,11 @@ enum class E_State : uint16
 {
 	Idle,
 	Attack,
-	Run,
+	Airborn,
 	Aim,
 	Roll,
 	Reload,
+	Skill,
 	Dead,
 	Max
 };
@@ -26,11 +27,12 @@ enum E_WHY_BLOCKED : uint64
 {
 	NONE = 0,
 	ATTACKING = 1 << 1,
-	RUNNING = 1 << 2,
+	AirBorned = 1 << 2,
 	AIMING = 1 << 3,
 	ROLLING = 1 << 4,
 	RELOADING = 1 << 5,
-	DEAD = 1 << 6,
+    SKILLUSE = 1 << 6,
+	DEAD = 1 << 7
 };
 
 //enum class E_State : uint16;
@@ -60,8 +62,10 @@ public:
 	void SetUnarmed() { mWeaponType = E_WeaponType::UnArmed; }
 	void SetPrimary() { mWeaponType = E_WeaponType::Primary; }
     void SetSecondary() { mWeaponType = E_WeaponType::Secondary; }
-	bool IsFireMode(){return bFiring;}
+	void SetSniping() { mWeaponType = E_WeaponType::Sniping; }
 
+	bool IsFireMode(){return bFiring;}
+    bool IsCanMove(){return bCanMove;}
 	virtual bool IsAimMode() const override {return bAiming;}
     virtual bool IsDeathMode() const override {return 0;}
 
@@ -72,12 +76,17 @@ public:
     void UnSetAim();
     void SetFire();
     void UnSetFire();
+    void SetAirborn();
+    void UnSetAirborn();
     void SetReload();
     void UnSetReload();
+    void SetSkill();
+    void UnSetSkill();
  
 private:
 	TMap<E_State, uint64> P_State;// 멀티스레드 환경에서 되도록 Mutex lock 
 
+	bool bCanMove;
 	bool bAiming;
     bool bFiring;
 	

@@ -27,9 +27,12 @@ class ALostArkPlayerController : public APlayerController
     UFUNCTION()
     void UnHovered();
 
+    void SetCanMove(){bCanMove=true;}
+    void UnSetCanMove(){bCanMove=false;}
+
   private:
     bool bEnemy;
-   
+    bool bCanMove;
 };
 
 
