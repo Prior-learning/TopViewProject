@@ -34,8 +34,10 @@ void UCENotifyDecal::Notify(USkeletalMeshComponent *MeshComp, UAnimSequenceBase 
         break;
     }
 
-    ACDecalManager::Get()->SetDecalInfo(mShape, rot, mDegree, location, mCircum, mCenterDistance);
+    mInfo.location = location;
+    mInfo.direction = rot;
 
+    ACDecalManager::Get()->SetDecalInfo(mInfo);
     
 
     

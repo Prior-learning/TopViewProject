@@ -17,19 +17,12 @@ class LOSTARK_API UCENotifyDecal : public UAnimNotify
 
   protected:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Decal")
-    EDecalShape mShape;
+    FDecalInfo mInfo;
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Decal")
     EDecalDirection mDirection;
-
-    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Decal")
-    float mDegree = 1.f;
-
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Decal")
     FVector mOffset;
 
-    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Decal")
-    float mCenterDistance;
-    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Decal")
-    float mCircum = 1.f;
 
+    
 };
