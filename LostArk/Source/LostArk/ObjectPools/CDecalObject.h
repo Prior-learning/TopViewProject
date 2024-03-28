@@ -15,11 +15,16 @@ class LOSTARK_API ACDecalObject : public AActor
     void SetDecalInfo(const EDecalShape &shape, const FRotator &direction, const float degree,
                       const  FVector &location,
                       const float circum, const float distancefromtcenter);
+    void SetDecalInfo(FDecalInfo &info);
   protected:
     virtual void BeginPlay() override;
     UFUNCTION(BlueprintImplementableEvent)
     void ShowDecal();
-  
+    UFUNCTION(BlueprintCallable)
+    void SpawnParticle();
+
+    void CircleParticle();
+    void TriangleParticle(FVector loc, int level);
   private:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(AllowPrivateAccess=true))
     EDecalShape mShape;
@@ -34,4 +39,13 @@ class LOSTARK_API ACDecalObject : public AActor
     float mArea;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
     float mEraseArea;
+
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+    class UParticleSystem *mParticle;
+
+
+    FDecalInfo mInfo;
+
+    FVector Fdir;
+    FVector Rdir;
 };

@@ -46,6 +46,23 @@ void ACDecalManager::SetDecalInfo(const EDecalShape &shape, const FRotator &dire
     data->SetDecalInfo(shape, direction, degree, location, circum, distancefromtcenter);
 }
 
+void ACDecalManager::SetDecalInfo(FDecalInfo &info)
+{
+    if (Instance == nullptr)
+        return;
+    if (mObjectpool.IsEmpty())
+    {
+        return;
+    }
+    ensureMsgf(!mObjectpool.IsEmpty(), TEXT("mObjectpool is Empty"));
+
+    ACDecalObject *data;
+    mObjectpool.Dequeue(data);
+    mObjectpool.Enqueue(data);
+
+    data->SetDecalInfo(info);
+}
+
 
 
 
