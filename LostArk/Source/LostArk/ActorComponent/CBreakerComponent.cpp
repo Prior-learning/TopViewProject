@@ -34,6 +34,7 @@ void UCBreakerComponent::OnBoxOverlap()
     {
         UBoxComponent *box = Cast<UBoxComponent>( mOverlapActor->GetComponentByClass(UBoxComponent::StaticClass()));
         box->SetGenerateOverlapEvents(true);
+        //box->Activate();
     }
 }
 
@@ -44,6 +45,7 @@ void UCBreakerComponent::OffBoxOverlap()
     {
         UBoxComponent *box = Cast<UBoxComponent>(mOverlapActor->GetComponentByClass(UBoxComponent::StaticClass()));
         box->SetGenerateOverlapEvents(false);
+        //box->Deactivate();
     }
 }
 
