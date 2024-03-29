@@ -58,6 +58,14 @@ void ACPlayer::Tick(float DeltaTime)
     {
         Look_Mouse();
     }
+    if (!mPlayerState->IsCanMove())
+    {
+        GetCharacterMovement()->MaxWalkSpeed=0;
+    }
+    else
+    {
+        GetCharacterMovement()->MaxWalkSpeed = 600;
+    }
 }
 
 E_WeaponType ACPlayer::GetWeaponType()
@@ -72,46 +80,61 @@ bool ACPlayer::IsAiming()
 
 void ACPlayer::OnEquip1()
 {
-    if (GetWeaponType() == E_WeaponType::UnArmed)
-    {
-        mPlayerState->SetPrimary();
-        CurrentFirerate = mGun->GetFireRate();
-        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHandSocket());
-    } 
-    else if (GetWeaponType() == E_WeaponType::Primary)
-    {
-        mPlayerState->SetUnarmed();
-        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHolsterSocket());
-    }
-    else if (GetWeaponType() == E_WeaponType::Secondary)
-    {
-        mPlayerState->SetPrimary();
-        CurrentFirerate = mGun->GetFireRate();
-        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHandSocket());
-        mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHolsterSocket());
-    }
+    SetWeapon(E_WeaponType::Primary);
+    CurrentFirerate = mGun->GetFireRate();
+    mGun->Equip(this);
 }
 
 void ACPlayer::OnEquip2()
 {
-    if (GetWeaponType() == E_WeaponType::UnArmed)
+    SetWeapon(E_WeaponType::Secondary);
+    CurrentFirerate = mShotGun->GetFireRate();
+    mShotGun->Equip(this);
+}
+
+void ACPlayer::OnEquip3()
+{
+    SetWeapon(E_WeaponType::Sniping);
+    CurrentFirerate = mSniper->GetFireRate();
+    mSniper->Equip(this);
+    mPlayerState->SetSkill();
+}
+
+void ACPlayer::UnEquip()
+{
+    switch (GetWeaponType())
     {
-        mPlayerState->SetSecondary();
-        CurrentFirerate = mShotGun->GetFireRate();
-        mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHandSocket());
-    }
-    else if (GetWeaponType() == E_WeaponType::Primary)
-    {
-        mPlayerState->SetSecondary();
-        CurrentFirerate = mShotGun->GetFireRate();
-        mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHandSocket());
-        mGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),mGun->GetHolsterSocket());
-    }
-    else if (GetWeaponType() == E_WeaponType::Secondary)
-    {
+    case E_WeaponType::Primary:
+        mGun->UnEquip(this);
         mPlayerState->SetUnarmed();
-        mShotGun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mShotGun->GetHolsterSocket());
+        break;
+    case E_WeaponType::Secondary:
+        mShotGun->UnEquip(this);
+        mPlayerState->SetUnarmed();
+        break;
+    case E_WeaponType::Sniping:
+        mSniper->UnEquip(this);
+        mPlayerState->SetUnarmed();
+        mPlayerState->UnSetSkill();
+
+        break;
+    default:
+        break;
     }
+}
+
+void ACPlayer::SetWeapon(E_WeaponType InType)
+{
+    if (GetWeaponType() == InType)
+    {
+        UnEquip();
+        return;
+    }
+    else if (GetWeaponType() != E_WeaponType::UnArmed)
+    {
+        UnEquip();
+    }
+    mPlayerState->SetWeaponType(InType);
 }
 
 void ACPlayer::OnAim()
@@ -153,9 +176,12 @@ void ACPlayer::CreateWeapon()
 {
     CheckNull(mWeaponClass);
     CheckNull(mWeaponClass2);
+    CheckNull(mWeaponClass3);
+
 	// 업캐스팅 다운캐스팅...은 너무 위험하고 다형성이없음
     mGun = Cast<ACGun>(ACWeapon::CreateWeapon(GetWorld(), mWeaponClass, this));
     mShotGun = Cast<ACGun>(ACWeapon::CreateWeapon(GetWorld(), mWeaponClass2, this));
+    mSniper = Cast<ACGun>(ACWeapon::CreateWeapon(GetWorld(), mWeaponClass3, this));
 }
 
 void ACPlayer::OnCollision()
@@ -183,7 +209,9 @@ void ACPlayer::Attack()
         mMontages->PlayAnimMontage(EMontage_State::Attack);
         break;
     case E_WeaponType::Sniping:
-
+        mSniper->Fire(this);
+        if (!mSniper->GetCoolDown())
+            mMontages->PlayAnimMontage(EMontage_State::Attack);
         break;
     }
 }
@@ -251,6 +279,7 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction("Equip1", EInputEvent::IE_Pressed, this, &ACPlayer::OnEquip1);
     PlayerInputComponent->BindAction("Equip2", EInputEvent::IE_Pressed, this, &ACPlayer::OnEquip2);
+    PlayerInputComponent->BindAction("Equip3", EInputEvent::IE_Pressed, this, &ACPlayer::OnEquip3);
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Pressed, this, &ACPlayer::OnAim);
 	PlayerInputComponent->BindAction("Aim", EInputEvent::IE_Released, this, &ACPlayer::OffAim);
     PlayerInputComponent->BindAction("Roll", EInputEvent::IE_Pressed, this, &ACPlayer::BeginRoll);

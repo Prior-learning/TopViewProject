@@ -2,7 +2,6 @@
 
 #include "CoreMinimal.h"
 #include "CWeapon.h"
-#include "CBullet.h"
 #include "CGun.generated.h"
 
 UENUM()
@@ -38,6 +37,8 @@ class LOSTARK_API ACGun : public ACWeapon
 	class UParticleSystem *EjectParticle;
 
   public:
+    void Equip(ACharacter *owner);
+    void UnEquip(ACharacter *owner);
     void Fire(ACharacter *owner);
     float GetFireRate(){return FireRate;}
     FName GetHandSocket(){return mRifleHand;}

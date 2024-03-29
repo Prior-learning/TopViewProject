@@ -60,10 +60,7 @@ public:
 		FORCEINLINE E_WeaponType GetWeaponType() { return mWeaponType; }
 
 	void SetUnarmed() { mWeaponType = E_WeaponType::UnArmed; }
-	void SetPrimary() { mWeaponType = E_WeaponType::Primary; }
-    void SetSecondary() { mWeaponType = E_WeaponType::Secondary; }
-	void SetSniping() { mWeaponType = E_WeaponType::Sniping; }
-
+	void SetWeaponType(E_WeaponType InType){mWeaponType=InType;}
 	bool IsFireMode(){return bFiring;}
     bool IsCanMove(){return bCanMove;}
 	virtual bool IsAimMode() const override {return bAiming;}
