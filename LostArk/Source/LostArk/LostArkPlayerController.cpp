@@ -11,6 +11,7 @@
 ALostArkPlayerController::ALostArkPlayerController()
 {
     bEnemy = false;
+    bCanMove = true;
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
     CurrentMouseCursor = EMouseCursor::Default;
