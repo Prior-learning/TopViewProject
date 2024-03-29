@@ -42,6 +42,10 @@ private:
 
 	void OnEquip1();
     void OnEquip2();
+    void OnEquip3();
+    void UnEquip();
+    void SetWeapon(E_WeaponType InType);
+
 	void OnAim();
 	void OffAim();
     void BeginRoll();
@@ -80,8 +84,12 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
         TSubclassOf<class ACWeapon> mWeaponClass2;
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+        TSubclassOf<class ACWeapon> mWeaponClass3;
+
     class ACGun *mGun;
     class ACGun *mShotGun;
+    class ACGun *mSniper;
 
     FGenericTeamId mTeamID = 0;
 	E_WeaponType mPlayerWeaponType;

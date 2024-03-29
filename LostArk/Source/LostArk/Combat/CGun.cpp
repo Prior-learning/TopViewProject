@@ -1,7 +1,7 @@
 #include "CGun.h"
 #include "../Global.h"
-#include "Particles/ParticleSystem.h"
 #include "CBullet.h"
+#include "Particles/ParticleSystem.h"
 #include "../ObjectPools/CBulletManager.h"
 #include "GameFramework/Character.h"
 
@@ -42,7 +42,8 @@ void ACGun::Fire(ACharacter *owner)
 
         switch (FireType)
         {
-        case E_Gun::Rifle: {
+        case E_Gun::Rifle: 
+        {
             ACBullet *temp = ACBulletManager::GetInstance().Pop();
             if (!bCoolDown)
             {
@@ -53,9 +54,13 @@ void ACGun::Fire(ACharacter *owner)
                         temp->SetPower(mPower);
                         temp->SetActorLocation(start);
                         temp->SetActorRotation(direction.Rotation());
-                        temp->Fire(direction,ReturnRate);
-                        UGameplayStatics::SpawnEmitterAttached(FlashParticle, mesh, "MuzzleFlash", FVector::ZeroVector,FRotator::ZeroRotator, EAttachLocation::KeepRelativeOffset);
-                        UGameplayStatics::SpawnEmitterAttached(EjectParticle, mesh, "AmmoEject", FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::KeepRelativeOffset);
+                        temp->Fire(direction, ReturnRate);
+                        UGameplayStatics::SpawnEmitterAttached(FlashParticle, mesh, "MuzzleFlash", FVector::ZeroVector,
+                                                               FRotator::ZeroRotator,
+                                                               EAttachLocation::KeepRelativeOffset);
+                        UGameplayStatics::SpawnEmitterAttached(EjectParticle, mesh, "AmmoEject", FVector::ZeroVector,
+                                                               FRotator::ZeroRotator,
+                                                               EAttachLocation::KeepRelativeOffset);
                         bCoolDown = true;
                     }
                 }
@@ -65,7 +70,8 @@ void ACGun::Fire(ACharacter *owner)
         }
 
         break;
-        case E_Gun::ShotGun: {
+        case E_Gun::ShotGun: 
+        {
             if (!bCoolDown)
             {
 
@@ -133,16 +139,43 @@ void ACGun::Fire(ACharacter *owner)
                         temp8->SetActorRotation(randirection8.Rotation());
                         temp8->Fire(randirection8, ReturnRate);
                         bCoolDown = true;
-                        UGameplayStatics::SpawnEmitterAttached(FlashParticle, mesh, "MuzzleFlash", FVector::ZeroVector,FRotator::ZeroRotator, EAttachLocation::KeepRelativeOffset);
-                        UGameplayStatics::SpawnEmitterAttached(EjectParticle, mesh, "AmmoEject", FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::KeepRelativeOffset);
-
+                        UGameplayStatics::SpawnEmitterAttached(FlashParticle, mesh, "MuzzleFlash", FVector::ZeroVector,
+                                                               FRotator::ZeroRotator,
+                                                               EAttachLocation::KeepRelativeOffset);
+                        UGameplayStatics::SpawnEmitterAttached(EjectParticle, mesh, "AmmoEject", FVector::ZeroVector,
+                                                               FRotator::ZeroRotator,
+                                                               EAttachLocation::KeepRelativeOffset);
                     }
                 }
             }
         }
 
         break;
-        case E_Gun::Sniper: {
+        case E_Gun::Sniper: 
+        {
+            ACBullet *temp = ACBulletManager::GetInstance().Pop();
+            if (!bCoolDown)
+            {
+                if (!!temp)
+                {
+                    if (direction.Normalize())
+                    {
+                        temp->SetPower(mPower);
+                        temp->SetActorLocation(start);
+                        temp->SetActorRotation(direction.Rotation());
+                        temp->Fire(direction, ReturnRate);
+                        UGameplayStatics::SpawnEmitterAttached(FlashParticle, mesh, "MuzzleFlash", FVector::ZeroVector,
+                                                               FRotator::ZeroRotator,
+                                                               EAttachLocation::KeepRelativeOffset);
+                        UGameplayStatics::SpawnEmitterAttached(EjectParticle, mesh, "AmmoEject", FVector::ZeroVector,
+                                                               FRotator::ZeroRotator,
+                                                               EAttachLocation::KeepRelativeOffset);
+                        bCoolDown = true;
+                    }
+                }
+                else
+                    CLog::Print("temp is nullptr");
+            }
         }
 
         break;
@@ -153,5 +186,15 @@ void ACGun::Fire(ACharacter *owner)
     }
 
     
+}
+
+void ACGun::Equip(ACharacter *owner)
+{
+    this->AttachToComponent(owner->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),GetHandSocket());
+}
+
+void ACGun::UnEquip(ACharacter *owner)
+{
+    this->AttachToComponent(owner->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),GetHolsterSocket());
 }
 
