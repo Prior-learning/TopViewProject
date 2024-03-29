@@ -9,37 +9,23 @@ ACDecalObject::ACDecalObject()
    
 }
 
-
-void ACDecalObject::SetDecalInfo(const EDecalShape &shape, const FRotator &direction, const float degree,
-                                 const FVector &location, const float circum, const float distancefromtcenter)
+void ACDecalObject::SetDecalInfo(FDecalInfo info)
 {
-    SetActorLocation(location);
-    mShape = shape;
-    mDirection = direction;
-    mDegree = degree;
-   
-    mCircum = circum;
-    mArea = 0;
-    mEraseArea = distancefromtcenter;
-
-    SetActorRotation(FQuat(mDirection));
-    ShowDecal();
-}
-void ACDecalObject::SetDecalInfo(FDecalInfo &info)
-{
+    mInfo = info;
     SetActorLocation(info.location);
-    mShape = info.shape;
+   /* mShape = info.shape;
     mDirection = info.direction;
     mDegree = info.degree;
 
     mCircum = info.circum;
     mArea = 0;
-    mEraseArea = info.distancefromtcenter;
+    mEraseArea = info.distancefromtcenter;*/
 
-    SetActorRotation(FQuat(mDirection));
+    SetActorRotation(FQuat(info.direction));
     ShowDecal();
 
-    mInfo = info;
+    
+    //mInfo.mImpact = info.mImpact;
 }
 void ACDecalObject::BeginPlay()
 {
@@ -49,13 +35,13 @@ void ACDecalObject::BeginPlay()
 
 void ACDecalObject::SpawnParticle()
 {
-    ensureMsgf(mParticle != nullptr, TEXT("Decal has not ParticleSystem"));
-    if (!!mParticle)
+    ensureMsgf(mInfo.mImpact != nullptr, TEXT("Decal has not ParticleSystem"));
+    if (!!mInfo.mImpact)
     {
         Fdir = -GetActorForwardVector().GetSafeNormal2D();
         Rdir = -GetActorRightVector().GetSafeNormal2D();
 
-        switch (mShape)
+        switch (mInfo.shape)
         {
         case EDecalShape::Circle:
             CircleParticle();
@@ -65,9 +51,9 @@ void ACDecalObject::SpawnParticle()
 
             AUParticlePooling *particle = ACParticleManager::Get().GetParticle();
             particle->SetActorLocation(GetActorLocation());
-            particle->SetParticle(mParticle);
+            particle->SetParticle(mInfo.mImpact);
             TriangleParticle(GetActorLocation(), 3);
-            
+            particle->SetPower(mInfo.mDamage);
 
             break;
         }
@@ -78,7 +64,7 @@ void ACDecalObject::SpawnParticle()
 void ACDecalObject::CircleParticle()
 {
     int AngleAxis = 0;
-    float distance = 300.f;
+    float distance = 256.f / 2.f * mInfo.circum;
     AUParticlePooling *particle;
     // prevent number from growind indefinitely
     while(AngleAxis != 360)
@@ -93,8 +79,10 @@ void ACDecalObject::CircleParticle()
 
         particle = ACParticleManager::Get().GetParticle();
 
+        particle->SetActorScale3D(mInfo.mParticleScale);
         particle->SetActorLocation(location);
-        particle->SetParticle(mParticle);
+        particle->SetParticle(mInfo.mImpact);
+        particle->SetPower(mInfo.mDamage);
     }
 }
 
@@ -108,12 +96,12 @@ void ACDecalObject::TriangleParticle(FVector loc, int level)
     AUParticlePooling *particle;
     // left
     {
-        location += Fdir * 150;
+        location += Fdir * 256.f/2.f * mInfo.circum;
         location += Rdir * 100.f;
         particle = ACParticleManager::Get().GetParticle();
 
         particle->SetActorLocation(location);
-        particle->SetParticle(mParticle);
+        particle->SetParticle(mInfo.mImpact);
         TriangleParticle(location, level);
     }
     //Right
@@ -122,7 +110,7 @@ void ACDecalObject::TriangleParticle(FVector loc, int level)
         particle = ACParticleManager::Get().GetParticle();
 
         particle->SetActorLocation(location);
-        particle->SetParticle(mParticle);
+        particle->SetParticle(mInfo.mImpact);
         TriangleParticle(location, level);
     }
    

@@ -31,15 +31,21 @@ struct FDecalInfo
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     EDecalShape shape;         
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FRotator direction;       
+    class UParticleSystem *mImpact;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float degree;              // 데칼의 넓이 각도
+    FVector mParticleScale;   
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FVector location;          // 위치
+    float degree;              // Circle Visible Degree
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float circum;              // 원의 크기
+    float circum;              // Circle Size
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float distancefromtcenter; // 중심으로부터의 거리
+    float distancefromtcenter; // distance from Center
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float mDamage;             // bool Particle Damage 
+
+    FVector location; // 위치
+    FRotator direction;
 };
 
 UCLASS()
@@ -53,8 +59,7 @@ class LOSTARK_API ACDecalManager : public AActor
 
   public:
     static ACDecalManager *Get();
-    void SetDecalInfo(const EDecalShape &shape, const FRotator &direction, const float degree, const FVector &location,
-                      const float circum, const float distancefromtcenter);
+
     void SetDecalInfo(FDecalInfo& info);
   protected:
     virtual void BeginPlay() override;

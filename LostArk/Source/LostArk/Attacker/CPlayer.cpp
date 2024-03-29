@@ -262,22 +262,30 @@ void ACPlayer::Damaged(float Damage, FDamageEvent &Event, AController *controlle
                        const FVector hitLocation, UParticleSystem *particle)
 {
     TakeDamage(Damage, Event, controller, causer);
-    AUParticlePooling *temp = ACParticleManager::Get().GetParticle();
-    CheckNull(temp);
-    if (particle == nullptr)
+
+    if (particle != nullptr)
     {
-        CLog::Log("particle is Nullptr");
-        return;
+        AUParticlePooling *temp = ACParticleManager::Get().GetParticle();
+        CheckNull(temp);
+
+        temp->SetActorLocation(hitLocation);
+        temp->SetParticle(particle);
     }
-    temp->SetActorLocation(hitLocation);
-    temp->SetParticle(particle);
 }
 
 float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
                            AActor *DamageCauser)
 {
-    Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-    mMontages->PlayAnimMontage(EMontage_State::Hitted);
+    if (DamageAmount < 0)
+    {
+        Super::TakeDamage(-DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+        mMontages->PlayAnimMontage(EMontage_State::AirBorne);
+    }
+    else if (0 < DamageAmount)
+    {
+        Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+        mMontages->PlayAnimMontage(EMontage_State::Hitted);
+    }
     return 10.f;
 }
 

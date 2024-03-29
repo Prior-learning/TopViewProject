@@ -15,6 +15,7 @@ enum class EMontage_State : uint8
     Reload,
     Dead,
     Stun,
+    AirBorne,
     Max
 };
 USTRUCT(BlueprintType)
