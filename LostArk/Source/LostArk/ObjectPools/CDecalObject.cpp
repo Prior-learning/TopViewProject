@@ -9,23 +9,14 @@ ACDecalObject::ACDecalObject()
    
 }
 
-void ACDecalObject::SetDecalInfo(FDecalInfo info)
+void ACDecalObject::SetDecalInfo(FDecalInfo& info)
 {
     mInfo = info;
     SetActorLocation(info.location);
-   /* mShape = info.shape;
-    mDirection = info.direction;
-    mDegree = info.degree;
 
-    mCircum = info.circum;
-    mArea = 0;
-    mEraseArea = info.distancefromtcenter;*/
 
     SetActorRotation(FQuat(info.direction));
     ShowDecal();
-
-    
-    //mInfo.mImpact = info.mImpact;
 }
 void ACDecalObject::BeginPlay()
 {
@@ -66,7 +57,9 @@ void ACDecalObject::CircleParticle()
     int AngleAxis = 0;
     float distance = 256.f / 2.f * mInfo.circum;
     AUParticlePooling *particle;
+
     // prevent number from growind indefinitely
+
     while(AngleAxis != 360)
     {
         AngleAxis += 30;

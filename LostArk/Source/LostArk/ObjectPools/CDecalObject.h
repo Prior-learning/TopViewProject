@@ -12,7 +12,7 @@ class LOSTARK_API ACDecalObject : public AActor
 
   public:
     ACDecalObject();
-    void SetDecalInfo(FDecalInfo info);
+    void SetDecalInfo(FDecalInfo& info);
   protected:
     virtual void BeginPlay() override;
     UFUNCTION(BlueprintImplementableEvent)
@@ -23,26 +23,7 @@ class LOSTARK_API ACDecalObject : public AActor
 
     void CircleParticle();
     void TriangleParticle(FVector loc, int level);
-
-
   private:
-    //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta=(AllowPrivateAccess=true))
-     //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-    //class UParticleSystem *mParticle;
-   //EDecalShape mShape;
-    //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-    //FRotator mDirection;
-    //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-    //float mDegree;
-
-    //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-    //float mCircum;
-    //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-    //float mArea;
-    //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
-    //float mEraseArea;
-
-
     UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
     FDecalInfo mInfo;
 
