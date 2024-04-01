@@ -8,9 +8,10 @@
 UENUM(BlueprintType)
 enum class E_WeaponType : uint8
 {
-    UnArmed,
     Primary, 
     Secondary,
+    Third,
+    Skill,
     Sniping
 };
 

@@ -131,3 +131,21 @@ void UCPlayerStateComponent::UnSetSkill()
     Remove(E_State::Reload, E_WHY_BLOCKED::SKILLUSE);
     Remove(E_State::Roll, E_WHY_BLOCKED::SKILLUSE);
 }
+
+void UCPlayerStateComponent::SetSniping()
+{
+    bCanMove = false;
+    bAiming = true;
+    Add(E_State::Aim, E_WHY_BLOCKED::SKILLUSE);
+    Add(E_State::Reload, E_WHY_BLOCKED::SKILLUSE);
+    Add(E_State::Roll, E_WHY_BLOCKED::SKILLUSE);
+}
+
+void UCPlayerStateComponent::UnSetSniping()
+{
+    bCanMove = true;
+    bAiming = false;
+    Remove(E_State::Aim, E_WHY_BLOCKED::SKILLUSE);
+    Remove(E_State::Reload, E_WHY_BLOCKED::SKILLUSE);
+    Remove(E_State::Roll, E_WHY_BLOCKED::SKILLUSE);
+}
