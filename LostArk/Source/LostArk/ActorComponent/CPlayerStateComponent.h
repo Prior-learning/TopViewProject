@@ -12,27 +12,28 @@
 UENUM()
 enum class E_State : uint16
 {
-	Idle,
 	Attack,
 	Airborn,
 	Aim,
 	Roll,
 	Reload,
 	Skill,
+	Snipe,
 	Dead,
 	Max
 };
 
 enum E_WHY_BLOCKED : uint64
 {
-	NONE = 0,
-	ATTACKING = 1 << 1,
-	AirBorned = 1 << 2,
-	AIMING = 1 << 3,
-	ROLLING = 1 << 4,
-	RELOADING = 1 << 5,
+    NONE = 0,
+    ATTACKING = 1 << 1,
+    AirBorned = 1 << 2,
+    AIMING = 1 << 3,
+    ROLLING = 1 << 4,
+    RELOADING = 1 << 5,
     SKILLUSE = 1 << 6,
-	DEAD = 1 << 7
+    SNIPING = 1 << 7,
+	DEAD = 1 << 8
 };
 
 //enum class E_State : uint16;
@@ -59,7 +60,6 @@ public:
 	UFUNCTION(BlueprintPure)
 		FORCEINLINE E_WeaponType GetWeaponType() { return mWeaponType; }
 
-	void SetUnarmed() { mWeaponType = E_WeaponType::UnArmed; }
 	void SetWeaponType(E_WeaponType InType){mWeaponType=InType;}
 	bool IsFireMode(){return bFiring;}
     bool IsCanMove(){return bCanMove;}
@@ -79,6 +79,10 @@ public:
     void UnSetReload();
     void SetSkill();
     void UnSetSkill();
+    void SetSniping();
+    void UnSetSniping();
+
+
  
 private:
 	TMap<E_State, uint64> P_State;// 멀티스레드 환경에서 되도록 Mutex lock 
