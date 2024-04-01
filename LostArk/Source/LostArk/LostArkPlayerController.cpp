@@ -11,20 +11,17 @@
 ALostArkPlayerController::ALostArkPlayerController()
 {
     bEnemy = false;
-    bCanMove = true;
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
     CurrentMouseCursor = EMouseCursor::Default;
     bEnableMouseOverEvents = true;
-
-   
-  
+     
 }
 
 void ALostArkPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
-    OnHovered();
+    //OnHovered();
     
 }
 
@@ -36,8 +33,8 @@ void ALostArkPlayerController::SetupInputComponent()
 }
 void ALostArkPlayerController::Move_Forward(float Axis)
 {
-    APawn *const player = GetPawn();
-    if (player && bCanMove)
+    ACPlayer *const player = Cast<ACPlayer>(GetPawn());
+    if (player && Cast<ACPlayer>(player)->IsCanMove())
     { 
         FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
         FVector direction = FQuat(rotator).GetForwardVector();
@@ -47,8 +44,8 @@ void ALostArkPlayerController::Move_Forward(float Axis)
 
 void ALostArkPlayerController::Move_Right(float Axis)
 {
-    APawn *const player = GetPawn();
-    if (player && bCanMove)
+    ACPlayer *const player = Cast<ACPlayer>(GetPawn());
+    if (player && player->IsCanMove())
     {
         FRotator rotator = FRotator(0, GetControlRotation().Yaw, 0);
         FVector direction = FQuat(rotator).GetRightVector();

@@ -35,6 +35,12 @@ public:
 		E_WeaponType GetWeaponType();
 	UFUNCTION(BlueprintCallable)
 		bool IsAiming();
+    UFUNCTION(BlueprintCallable)
+    bool IsCanMove();
+
+	void OnAirborn();
+    void OffAirborn();
+
 
 private:
 	UFUNCTION()
@@ -51,6 +57,9 @@ private:
     void BeginRoll();
 	void BeginFire();
     void EndFire();
+
+	void OnFSkill();
+    void OnESkill();
 
     void InitMovement();
     void InitCamera();

@@ -38,9 +38,6 @@ ACPlayer::ACPlayer()
 	CHelpers::CreateActorComponent<UCPlayerStateComponent>(this, &mPlayerState, "PlayerStateComponent");
     CHelpers::CreateActorComponent<UCMontageComponent>(this, &mMontages, "Montage");
     CurrentFirerate = 0;
-    //이걸로 CanMove해볼예정
-    //GetCharacterMovement()->SetActive(true);
-    //GetCharacterMovement()->SetActive(false);
 }
 
 void ACPlayer::BeginPlay()
@@ -48,7 +45,7 @@ void ACPlayer::BeginPlay()
 	Super::BeginPlay();
 	CheckNull(mPlayerState);
 	CreateWeapon();
-    mPlayerState->SetUnarmed();
+    OnEquip1();
 }
 
 void ACPlayer::Tick(float DeltaTime)
@@ -58,14 +55,14 @@ void ACPlayer::Tick(float DeltaTime)
     {
         Look_Mouse();
     }
-    if (!mPlayerState->IsCanMove())
+    /*if (!mPlayerState->IsCanMove())
     {
         GetCharacterMovement()->MaxWalkSpeed=0;
     }
     else
     {
         GetCharacterMovement()->MaxWalkSpeed = 600;
-    }
+    }*/
 }
 
 E_WeaponType ACPlayer::GetWeaponType()
@@ -76,6 +73,11 @@ E_WeaponType ACPlayer::GetWeaponType()
 bool ACPlayer::IsAiming()
 {
 	return mPlayerState->IsAimMode();
+}
+
+bool ACPlayer::IsCanMove()
+{
+    return mPlayerState->IsCanMove();
 }
 
 void ACPlayer::OnEquip1()
@@ -94,10 +96,9 @@ void ACPlayer::OnEquip2()
 
 void ACPlayer::OnEquip3()
 {
-    SetWeapon(E_WeaponType::Sniping);
+    SetWeapon(E_WeaponType::Third);
     CurrentFirerate = mSniper->GetFireRate();
     mSniper->Equip(this);
-    mPlayerState->SetSkill();
 }
 
 void ACPlayer::UnEquip()
@@ -106,17 +107,12 @@ void ACPlayer::UnEquip()
     {
     case E_WeaponType::Primary:
         mGun->UnEquip(this);
-        mPlayerState->SetUnarmed();
         break;
     case E_WeaponType::Secondary:
         mShotGun->UnEquip(this);
-        mPlayerState->SetUnarmed();
         break;
-    case E_WeaponType::Sniping:
+    case E_WeaponType::Third:
         mSniper->UnEquip(this);
-        mPlayerState->SetUnarmed();
-        mPlayerState->UnSetSkill();
-
         break;
     default:
         break;
@@ -127,10 +123,9 @@ void ACPlayer::SetWeapon(E_WeaponType InType)
 {
     if (GetWeaponType() == InType)
     {
-        UnEquip();
         return;
     }
-    else if (GetWeaponType() != E_WeaponType::UnArmed)
+    else 
     {
         UnEquip();
     }
@@ -141,7 +136,6 @@ void ACPlayer::OnAim()
 {
     CheckTrue(mPlayerState->IsContains(E_State::Aim));
     CheckTrue(IsAiming());
-    CheckTrue(GetWeaponType() == E_WeaponType::UnArmed);
     mPlayerState->SetAim();
     GetCharacterMovement()->MaxWalkSpeed = 250;
 }
@@ -234,6 +228,26 @@ void ACPlayer::EndFire()
     }
 }
 
+void ACPlayer::OnAirborn()
+{
+    mPlayerState->SetAirborn();
+}
+
+void ACPlayer::OffAirborn()
+{
+    mPlayerState->UnSetAirborn();
+}
+
+void ACPlayer::OnFSkill()
+{
+
+}
+
+void ACPlayer::OnESkill()
+{
+
+}
+
 void ACPlayer::InitMovement()
 {
     bUseControllerRotationYaw = false;
@@ -285,6 +299,8 @@ void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
     PlayerInputComponent->BindAction("Roll", EInputEvent::IE_Pressed, this, &ACPlayer::BeginRoll);
     PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, this, &ACPlayer::BeginFire);
     PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Released, this, &ACPlayer::EndFire);
+    PlayerInputComponent->BindAction("FSkill", EInputEvent::IE_Pressed, this, &ACPlayer::OnFSkill);
+    PlayerInputComponent->BindAction("ESkill", EInputEvent::IE_Pressed, this, &ACPlayer::OnESkill);
 }
 
 void ACPlayer::Damaged(float Damage, FDamageEvent &Event, AController *controller, AActor *causer,
