@@ -35,7 +35,7 @@ void AUParticlePooling::OnComponentBeginOverlap(UPrimitiveComponent *OverlappedC
                                                 UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                                                 const FHitResult &SweepResult)
 {
-    CLog::Print(OtherComp->GetOwner()->GetName());
+    //CLog::Print(OtherComp->GetOwner()->GetName());
 
     IICombat *combat = Cast<IICombat>(OtherComp->GetOwner());
     ensureMsgf(combat != nullptr, TEXT("Icombat Cast Fail"));

@@ -109,7 +109,19 @@ void UCEnemyStateComponent::SetApproachMode()
     }
     else
     {
-        SetMode(EStateEnemyType::Approach, ECurrentState::MOVE);
+        int ran = rand() % 2;
+        switch (ran)
+        {
+        case 0:
+            SetMode(EStateEnemyType::Approach, ECurrentState::MOVE);
+            break;
+        case 1:
+
+            SetMode(EStateEnemyType::Dash, ECurrentState::ATTACKINGSTATE);
+            IICombat *combat = Cast<IICombat>(GetOwner());
+            combat->Attack();
+            break;
+        }
         return;
     }
 }
@@ -127,8 +139,14 @@ void UCEnemyStateComponent::SetActionMode()
 
     if ( mCurrentCooltime <= 0)
     {
-       
-        SetMode(EStateEnemyType::Action, ECurrentState::ATTACKINGSTATE);
+        bool bChk = mHp / MaxHp <= 0.5f; // 반피 이하면 true
+        if (mMaxPhase && bChk)
+        {
+            mMaxPhase--;
+            SetMode(EStateEnemyType::Skill, ECurrentState::ATTACKINGSTATE);
+        }
+        else
+            SetMode(EStateEnemyType::Action, ECurrentState::ATTACKINGSTATE);
         
         IICombat *combat = Cast<IICombat>(GetOwner());
         combat->Attack();
