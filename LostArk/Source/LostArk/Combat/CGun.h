@@ -29,6 +29,7 @@ class LOSTARK_API ACGun : public ACWeapon
     float FireRate;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     float ReturnRate;
+   
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     E_Gun FireType;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
