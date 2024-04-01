@@ -19,11 +19,15 @@ void ACGun::Tick(float DeltaTime)
     if (bCoolDown)
         mTimer += DeltaTime;
 
+
     if (mTimer >= FireRate)
     {
         bCoolDown = false;
         mTimer = 0;
     }
+    
+
+
 }
 
 void ACGun::Fire(ACharacter *owner)

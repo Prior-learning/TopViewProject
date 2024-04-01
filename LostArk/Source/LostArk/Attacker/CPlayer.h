@@ -83,6 +83,9 @@ protected:
 	
 	UPROPERTY(VisibleDefaultsOnly)
 		class UCPlayerStateComponent* mPlayerState;
+    
+	UPROPERTY(VisibleDefaultsOnly)
+    class UCPSkillComponent *mPlayerSkill;
 
 	UPROPERTY(VisibleDefaultsOnly)
         class UCMontageComponent *mMontages;

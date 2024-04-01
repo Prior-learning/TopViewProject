@@ -12,6 +12,8 @@
 #include "Camera/CameraComponent.h"
 #include "../ActorComponent/CPlayerStateComponent.h"
 #include "../ActorComponent/CMontageComponent.h"
+#include "../ActorComponent/CPSkillComponent.h"
+
 #include "../LostArkPlayerController.h"
 
 #include "../Combat/CWeapon.h"
@@ -35,6 +37,7 @@ ACPlayer::ACPlayer()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
+   	CHelpers::CreateActorComponent<UCPSkillComponent>(this, &mPlayerSkill, "PlayerSkillComponent");
 	CHelpers::CreateActorComponent<UCPlayerStateComponent>(this, &mPlayerState, "PlayerStateComponent");
     CHelpers::CreateActorComponent<UCMontageComponent>(this, &mMontages, "Montage");
     CurrentFirerate = 0;
@@ -202,10 +205,19 @@ void ACPlayer::Attack()
         if (!mShotGun->GetCoolDown())
         mMontages->PlayAnimMontage(EMontage_State::Attack);
         break;
-    case E_WeaponType::Sniping:
+    case E_WeaponType::Third:
         mSniper->Fire(this);
         if (!mSniper->GetCoolDown())
             mMontages->PlayAnimMontage(EMontage_State::Attack);
+        break;
+    case E_WeaponType::Sniping:
+        if (APlayerController *PC = Cast<APlayerController>(GetController()))
+        {
+            FHitResult TraceHitResult;
+            PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
+            FVector Cursor_pos = TraceHitResult.Location;
+            
+        }
         break;
     }
 }
@@ -240,12 +252,16 @@ void ACPlayer::OffAirborn()
 
 void ACPlayer::OnFSkill()
 {
-
+    CheckFalse(GetWeaponType() == E_WeaponType::Third);
+    mPlayerState->SetWeaponType(E_WeaponType::Sniping);
+    mPlayerState->SetSniping();
+    
 }
 
 void ACPlayer::OnESkill()
 {
-
+    mPlayerState->SetWeaponType(E_WeaponType::Third);
+    mPlayerState->UnSetSniping();
 }
 
 void ACPlayer::InitMovement()
