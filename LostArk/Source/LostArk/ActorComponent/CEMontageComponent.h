@@ -17,11 +17,22 @@ class LOSTARK_API UCEMontageComponent : public UCMontageComponent
 
     virtual void PlayAnimMontage(EMontage_State InState);
 
+    void DataTableInit();
 
     bool GetKnockBack() {return bKnockBackable;}
-  protected:
-    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Status")
+
+  private:
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Status",meta=(AllowPrivateAccess=true))
     bool bKnockBackable = true;
+
+    UPROPERTY(EditDefaultsOnly, Category="DataTable",meta=(AllowPrivateAccess=true))
+    TArray<UDataTable *> mPhaseDataTable;
+
+    
+    TArray<FMontageData *> Datas2 [(int16)EMontage_State::Max];
+
+    UPROPERTY(meta=(AllowPrivateAccess=true))
+    int32 mPhase;
 };
 
 

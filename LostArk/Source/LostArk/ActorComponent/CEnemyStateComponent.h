@@ -12,6 +12,8 @@ enum class EStateEnemyType : uint8
     Strafe,   // 맴돌기
     Action,   // 동작 실행중
     Death,    // 사망
+    Dash,     // 돌진
+    Skill,
     Max,
 };
 enum ECurrentState : uint8
@@ -68,6 +70,7 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
     void SetDeathMode();
 
     void SetMode(const EStateEnemyType &num, const ECurrentState& reason);
+    EStateEnemyType State(){return mState;}
     bool FlagCheck(const ECurrentState &reason) const ;
 
   protected:
@@ -90,6 +93,8 @@ class LOSTARK_API UCEnemyStateComponent : public UCStateComponent
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
     bool bStraff = true;
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
+    int32 mMaxPhase;
 
     float mHp = 0.f;
     float mCurrentCooltime = 3.f; //
