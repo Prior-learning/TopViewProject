@@ -6,25 +6,13 @@
 void UCEMontageComponent::BeginPlay()
 {
     Super::BeginPlay();
-    CheckNull(DataTable);
-    TArray<FMontageData *> datas;
-    DataTable->GetAllRows<FMontageData>("", datas);
-
-
-    // 데이터가 들어있는 만큼 검사를하고
-
-    for (int32 i = 0; i < datas.Num(); i++)
-    {
-        for (FMontageData *data : datas)
-        {
-            Datas2[int8(data->Type)].Emplace(data);
-        }
-    }
+    CheckTrue(mPhaseDataTable.Num() == 0);
+    DataTableInit();
 }
 
 void UCEMontageComponent::PlayAnimMontage(EMontage_State InState)
 {
-
+    
     ACharacter *character = Cast<ACharacter>(GetOwner());
 
     CheckTrue(Datas2[(int8)InState].Num() == 0);
@@ -40,5 +28,33 @@ void UCEMontageComponent::PlayAnimMontage(EMontage_State InState)
             
         }
     }
+
+    if (InState == EMontage_State::Skill)
+    {
+        mPhase++;
+        DataTableInit();
+    }
+
+}
+
+void UCEMontageComponent::DataTableInit()
+{
+
+    CheckNull(mPhaseDataTable[mPhase]);
+
+    TArray<FMontageData *> datas;
+
+    mPhaseDataTable[mPhase]->GetAllRows<FMontageData>("", datas);
+    // 데이터가 들어있는 만큼 검사를하고
+       
+    for (FMontageData *data : datas)
+    {
+        Datas2[int8(data->Type)].Emplace(data);
+    }
+        
+    
+
+  
+
 }
 

@@ -111,7 +111,20 @@ void ACEnemy::OffCollision()
 
 void ACEnemy::Attack()
 {
-    mMontageComp->PlayAnimMontage(EMontage_State::Attack);
+    EMontage_State val;
+    switch(mStateComp->State())
+    {
+    case EStateEnemyType::Skill:
+        val = EMontage_State::Skill;
+        break;
+    case EStateEnemyType::Action:
+        val = EMontage_State::Attack;
+        break;
+    case EStateEnemyType::Dash:
+        val = EMontage_State::Dash;
+        break;
+    }
+    mMontageComp->PlayAnimMontage(val);
 }
 
 void ACEnemy::InitInfo()

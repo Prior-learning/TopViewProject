@@ -16,7 +16,9 @@ enum class EMontage_State : uint8
     Dead,
     Stun,
     AirBorne,
-    Max
+    Dash, // 돌진
+    Skill, // Enemy 는 특수 공격
+    Max,
 };
 USTRUCT(BlueprintType)
 struct FMontageData : public FTableRowBase
@@ -59,6 +61,6 @@ protected:
 
    	FMontageData *Datas[(int16)EMontage_State::Max];
 
-    TArray<FMontageData*> Datas2[(int16)EMontage_State::Max];
+
 		
 };
