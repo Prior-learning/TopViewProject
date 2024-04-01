@@ -22,15 +22,16 @@ void UCENotifyDecal::Notify(USkeletalMeshComponent *MeshComp, UAnimSequenceBase 
     switch (mDirection)
     {
     case EDecalDirection::Forward:
-        rot.Yaw += 180.f;
+       
         break;
     case EDecalDirection::Back:
+        rot.Yaw += 180.f;
         break;
     case EDecalDirection::Right:
-        rot.Yaw -= 90.f;
+        rot.Yaw += 90.f;
         break;
     case EDecalDirection::Left:
-        rot.Yaw += 90.f;
+        rot.Yaw -= 90.f;
         break;
     }
 
