@@ -7,41 +7,65 @@
 UCPSkillComponent::UCPSkillComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+    
 }
-
-
 void UCPSkillComponent::BeginPlay()
 {
 	Super::BeginPlay();
+    CheckNull(SkillDataTable);
+    TArray<FSkillData *> datas;
+    SkillDataTable->GetAllRows<FSkillData>("", datas);
+
+    for (int32 i = 0; i < (int8)E_Skill::Max; i++)
+    {
+        for (FSkillData *data : datas)
+        {
+            if ((E_Skill)i == data->Skill)
+            {
+                Datas[i] = data;
+
+                continue;
+            }
+        }
+    }
 }
-
-
 void UCPSkillComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	 if (bFSkillCool)
-        mFSkillTimer -= DeltaTime;
 
-	 if (bESkillCool)
-         mESkillTimer -= DeltaTime;
-
-	 if (mFSkillTimer <= 0)
-     {
-         bFSkillCool = false;
-         mFSkillTimer = FSkillCoolDown;
-     }
-     if (mESkillTimer <= 0)
-     {
-         bESkillCool = false;
-         mESkillTimer = ESkillCoolDown;
-     }
+    for (int32 i = 0; i < (int8)E_Skill::Max; i++)
+    {
+        if (Datas[i]->bInCoolTime)
+        {
+            Datas[i]->SkillTimer -= DeltaTime;
+            if (Datas[i]->SkillTimer<=0)
+            {
+                Datas[i]->SkillTimer = 0;
+                Datas[i]->bInCoolTime = false;
+            }
+        
+        }
+    
+    }
 }
 
-void UCPSkillComponent::DoFSkill(ACharacter *Owner)
+void UCPSkillComponent::DoSkill(E_Skill InSkill)
 {
-}
+    CLog::Log("DoSkill Called");
+    ACharacter *character = Cast<ACharacter>(GetOwner());
 
-void UCPSkillComponent::DoESkill(ACharacter *Owner)
-{
+    const FSkillData *data = Datas[(int8)InSkill];
+    if (!!data)
+    {
+        if (!!data->AnimMontage)
+        {
+            if (!data->bInCoolTime)
+            {
+                character->PlayAnimMontage(data->AnimMontage, data->PlayRatio, data->StartSection);
+                Datas[(int8)InSkill]->bInCoolTime = true;
+                Datas[(int8)InSkill]->SkillTimer = Datas[(int8)InSkill]->SkillCoolDown;
+            }
+        }
+    }
 }
 

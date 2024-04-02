@@ -59,7 +59,10 @@ private:
     void EndFire();
 
 	void OnFSkill();
-    void OnESkill();
+    void OffFSkill();
+
+	void OnESkill();
+    void OffESkill();
 
     void InitMovement();
     void InitCamera();
@@ -85,7 +88,7 @@ protected:
 		class UCPlayerStateComponent* mPlayerState;
     
 	UPROPERTY(VisibleDefaultsOnly)
-    class UCPSkillComponent *mPlayerSkill;
+    class UCPSkillComponent *mPlayerSkill2;
 
 	UPROPERTY(VisibleDefaultsOnly)
         class UCMontageComponent *mMontages;

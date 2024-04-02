@@ -2,6 +2,7 @@
 #include "../Global.h"
 #include "CBullet.h"
 #include "Particles/ParticleSystem.h"
+#include "Sound/SoundCue.h"
 #include "../ObjectPools/CBulletManager.h"
 #include "GameFramework/Character.h"
 
@@ -65,6 +66,8 @@ void ACGun::Fire(ACharacter *owner)
                         UGameplayStatics::SpawnEmitterAttached(EjectParticle, mesh, "AmmoEject", FVector::ZeroVector,
                                                                FRotator::ZeroRotator,
                                                                EAttachLocation::KeepRelativeOffset);
+                        UGameplayStatics::PlaySoundAtLocation(GetWorld(), FireSoundCue, meshLocation, 0.15f, 0.5f);
+
                         bCoolDown = true;
                     }
                 }
@@ -149,6 +152,9 @@ void ACGun::Fire(ACharacter *owner)
                         UGameplayStatics::SpawnEmitterAttached(EjectParticle, mesh, "AmmoEject", FVector::ZeroVector,
                                                                FRotator::ZeroRotator,
                                                                EAttachLocation::KeepRelativeOffset);
+
+                        UGameplayStatics::PlaySoundAtLocation(GetWorld(), FireSoundCue, meshLocation, 0.6f, 0.8f);
+
                     }
                 }
             }
@@ -174,6 +180,7 @@ void ACGun::Fire(ACharacter *owner)
                         UGameplayStatics::SpawnEmitterAttached(EjectParticle, mesh, "AmmoEject", FVector::ZeroVector,
                                                                FRotator::ZeroRotator,
                                                                EAttachLocation::KeepRelativeOffset);
+                        UGameplayStatics::PlaySoundAtLocation(GetWorld(), FireSoundCue, meshLocation, 0.6f, 0.8f);
                         bCoolDown = true;
                     }
                 }

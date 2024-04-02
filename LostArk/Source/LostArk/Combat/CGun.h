@@ -36,6 +36,9 @@ class LOSTARK_API ACGun : public ACWeapon
     class UParticleSystem *FlashParticle;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	class UParticleSystem *EjectParticle;
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+    class USoundCue *FireSoundCue;
+
 
   public:
     void Equip(ACharacter *owner);

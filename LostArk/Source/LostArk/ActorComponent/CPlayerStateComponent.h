@@ -63,6 +63,9 @@ public:
 	void SetWeaponType(E_WeaponType InType){mWeaponType=InType;}
 	bool IsFireMode(){return bFiring;}
     bool IsCanMove(){return bCanMove;}
+    void SetCanMove(bool is){bCanMove=is;}
+	void SetCanAim(bool is){bAiming=is;}
+
 	virtual bool IsAimMode() const override {return bAiming;}
     virtual bool IsDeathMode() const override {return 0;}
 

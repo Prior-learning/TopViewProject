@@ -5,19 +5,19 @@
 #include "Engine/DataTable.h"
 #include "CMontageComponent.generated.h"
 
-//
+
 UENUM(BlueprintType)
 enum class EMontage_State : uint8
 {
     Attack = 0,
     Hitted,
     Roll,
-    Reload,
+    Skill,//Reload없애고 스킬로 대체
     Dead,
     Stun,
     AirBorne,
     Dash, // 돌진
-    Skill, // Enemy 는 특수 공격
+    Skill2, // Enemy 는 특수 공격
     Max,
 };
 USTRUCT(BlueprintType)
