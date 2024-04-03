@@ -14,8 +14,9 @@ class LOSTARK_API UCEMontageComponent : public UCMontageComponent
 
   public:
     virtual void BeginPlay() override;
-
     virtual void PlayAnimMontage(EMontage_State InState);
+
+
 
     void DataTableInit();
 

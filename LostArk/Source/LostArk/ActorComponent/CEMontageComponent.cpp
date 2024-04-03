@@ -33,6 +33,7 @@ void UCEMontageComponent::PlayAnimMontage(EMontage_State InState)
     {
         mPhase++;
         DataTableInit();
+
     }
 
 }

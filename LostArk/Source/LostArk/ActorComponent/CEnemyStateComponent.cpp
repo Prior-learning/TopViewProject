@@ -139,7 +139,7 @@ void UCEnemyStateComponent::SetActionMode()
 
     if ( mCurrentCooltime <= 0)
     {
-        bool bChk = mHp / MaxHp <= 0.5f; // 반피 이하면 true
+        bool bChk = mHp / MaxHp <= 0.9f; // 반피 이하면 true
         if (mMaxPhase && bChk)
         {
             mMaxPhase--;
