@@ -37,7 +37,7 @@ ACPlayer::ACPlayer()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
-   	CHelpers::CreateActorComponent<UCPSkillComponent>(this, &mPlayerSkill2, "PlayerSkillComponent");
+   	CHelpers::CreateActorComponent<UCPSkillComponent>(this, &mPlayerSkill, "PlayerSkillComponent");
 	CHelpers::CreateActorComponent<UCPlayerStateComponent>(this, &mPlayerState, "PlayerStateComponent");
     CHelpers::CreateActorComponent<UCMontageComponent>(this, &mMontages, "Montage");
     CurrentFirerate = 0;
@@ -47,7 +47,7 @@ void ACPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	CheckNull(mPlayerState);
-    CheckNull(mPlayerSkill2);
+    CheckNull(mPlayerSkill);
     CheckNull(mMontages);
 
 	CreateWeapon();
@@ -258,7 +258,6 @@ void ACPlayer::OnFSkill()
     CheckFalse(GetWeaponType() == E_WeaponType::Third);
     mPlayerState->SetWeaponType(E_WeaponType::Sniping);
     mPlayerState->SetSniping();
-    mPlayerSkill2->DoSkill(E_Skill::Snipe);
     
 }
 

@@ -7,8 +7,6 @@
 //                    코드 작성자 == Dorong               //
 //비트 플래그를 사용해 상태관리를 해보기 위해 예제를 보고 수정하여 작성함.
 
-
-
 UENUM()
 enum class E_State : uint16
 {
