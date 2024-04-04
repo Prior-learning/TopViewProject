@@ -4,12 +4,20 @@
 #include "Engine/DataAsset.h"
 #include "CSkillData.generated.h"
 
+UENUM(BlueprintType)
+enum class ESkill_Type : uint8
+{
+    TargetDown,
+    Max
+};
 USTRUCT(BlueprintType)
 struct FOnSkillData 
 {
     GENERATED_BODY()
 
   public:
+    UPROPERTY(EditAnywhere)
+    ESkill_Type Type;
 
     UPROPERTY(EditAnywhere)
     class UAnimMontage *AnimMontage;
@@ -49,7 +57,7 @@ class LOSTARK_API UCSkillData : public UDataAsset
 
   public:
     UPROPERTY(BlueprintReadOnly, EditAnywhere)
-    TSubclassOf<class ACOnSKill> OnSkillClass;
+    TSubclassOf<class ACOnSkill> OnSkillClass;
 
     UPROPERTY(BlueprintReadOnly, EditAnywhere)
     TArray<FOnSkillData> OnSkillDatas;
@@ -57,6 +65,8 @@ class LOSTARK_API UCSkillData : public UDataAsset
   public:
     void BeginPlay(class ACharacter *InOwnerCharacter);
 
+  private:
+    FString GetLableName(class ACharacter *InOwnerCharacter, FString InName);
   private:
     class ACOnSkill *OnSkill;
 	

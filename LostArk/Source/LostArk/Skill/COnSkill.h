@@ -13,7 +13,7 @@ class LOSTARK_API ACOnSkill : public AActor
 public:	
 	ACOnSkill();
 
-	//FORCEINLINE void SetDatas(TArray<FOnSkillData> InDatas) { Datas = InDatas; }
+	FORCEINLINE void SetDatas(TArray<FOnSkillData> InDatas) { Datas = InDatas; }
 
 	virtual void OnSkill() {}
 	virtual void Begin_OnSkill() {}
@@ -32,6 +32,6 @@ protected:
     UPROPERTY(BlueprintReadOnly)
     class UCPlayerStateComponent *mState;
 
-   // TArray<FOnSkillData> Datas;
+    TArray<FOnSkillData> Datas;
 
 };

@@ -255,10 +255,7 @@ void ACPlayer::OffAirborn()
 
 void ACPlayer::OnFSkill()
 {
-    CheckFalse(GetWeaponType() == E_WeaponType::Third);
-    mPlayerState->SetWeaponType(E_WeaponType::Sniping);
-    mPlayerState->SetSniping();
-    
+    mPlayerSkill->OnSkill(ESkillButton::F);
 }
 
 void ACPlayer::OffFSkill()
