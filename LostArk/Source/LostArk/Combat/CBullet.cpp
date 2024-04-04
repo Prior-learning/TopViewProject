@@ -19,7 +19,7 @@ ACBullet::ACBullet()
 }
 ACBullet::~ACBullet()
 {
-    CLog::Log("Destroy");
+    //CLog::Log("Destroy");
 }
 void ACBullet::BeginPlay()
 {
@@ -31,7 +31,7 @@ void ACBullet::Fire(const FVector &Direction,const float &returnrate)
 {
     Projectile->Velocity = Direction * Projectile->InitialSpeed;
     Projectile->Activate(true);
-    CLog::Log("Activate");
+    //CLog::Log("Activate");
     SetActorHiddenInGame(false);
     mCollider->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
     GetWorldTimerManager().SetTimer(ReturnHandle, this, &ACBullet::Deactivate, returnrate, false);
@@ -40,7 +40,7 @@ void ACBullet::Fire(const FVector &Direction,const float &returnrate)
 void ACBullet::SetPower(const float &damage)
 {
     mdamage = damage;
-    CLog::Log("damage Setted");
+    //CLog::Log("damage Setted");
 }
 
 void ACBullet::Init()

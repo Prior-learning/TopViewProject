@@ -16,7 +16,7 @@ void ACBulletManager::Init()
         ACBullet *bullet = GetWorld()->SpawnActor<ACBullet>(bulletClass, FVector(0,0,2500), FRotator::ZeroRotator);
         BulletPool.Enqueue(bullet);
         Poolsize++;
-        CLog::Log("BulletInit");
+        //CLog::Log("BulletInit");
 
     }
 }
@@ -28,7 +28,7 @@ void ACBulletManager::Expand()
         ACBullet *bullet = GetWorld()->SpawnActor<ACBullet>(bulletClass, FVector(0, 0, 2500), FRotator::ZeroRotator);
         BulletPool.Enqueue(bullet);
         Poolsize++;
-        CLog::Log("BulletExpand");
+        //CLog::Log("BulletExpand");
         
     }
 }
@@ -37,8 +37,8 @@ void ACBulletManager::Return(ACBullet *target)
 {
     BulletPool.Enqueue(target);
     Poolsize++;
-    CLog::Log("BulletReturn");
-    UE_LOG(LogTemp, Warning, TEXT("PoolSize:%d "), GetPoolsize());
+    //CLog::Log("BulletReturn");
+    //UE_LOG(LogTemp, Warning, TEXT("PoolSize:%d "), GetPoolsize());
 }
 
 ACBullet *ACBulletManager::Pop()
@@ -48,8 +48,8 @@ ACBullet *ACBulletManager::Pop()
     {
         BulletPool.Dequeue(PopBullet);
         Poolsize--;
-        CLog::Log("BulletPop");
-        UE_LOG(LogTemp, Warning, TEXT("PoolSize:%d "), GetPoolsize()); 
+        //CLog::Log("BulletPop");
+        //UE_LOG(LogTemp, Warning, TEXT("PoolSize:%d "), GetPoolsize()); 
 
         return PopBullet;
     }

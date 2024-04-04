@@ -135,8 +135,6 @@ void UCEnemyStateComponent::SetActionMode()
     CheckTrue(FlagCheck(ECurrentState::ATTACKINGSTATE));
     CheckTrue(FlagCheck(ECurrentState::MOVE));
 
-  
-
     if ( mCurrentCooltime <= 0)
     {
         bool bChk = mHp / MaxHp <= 0.9f; // 반피 이하면 true

@@ -23,6 +23,11 @@ class LOSTARK_API ACDecalObject : public AActor
 
     void CircleParticle();
     void TriangleParticle(FVector loc, int level);
+
+  private:
+    void CheckDistanceAndTakeDamage();
+    void DistanceFromPlayer(float& distance);
+    void DistanceAttackRange(float &distance_MIN, float &distance_MAX);
   private:
     UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta = (AllowPrivateAccess = true))
     FDecalInfo mInfo;
