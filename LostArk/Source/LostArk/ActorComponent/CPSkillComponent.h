@@ -3,49 +3,14 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Engine/DataTable.h"
+#include "../Skill/CSkillData.h"
 #include "CPSkillComponent.generated.h"
 
 UENUM(BlueprintType)
-enum class E_Skill : uint8
+enum class ESkillButton : uint8
 {
-    Snipe,
+    F,E,
     Max
-};
-
-USTRUCT(BlueprintType)
-struct FSkillData : public FTableRowBase
-{
-    GENERATED_BODY()
-  public:
-    UPROPERTY(EditAnywhere)
-    class UAnimMontage *AnimMontage;
-
-    UPROPERTY(EditAnywhere)
-    float PlayRatio = 1.0f;
-
-    UPROPERTY(EditAnywhere)
-    FName StartSection;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    E_Skill Skill;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    class UParticleSystem *Effect;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FVector ParticleScale;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float Damage;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    bool bMoveFix;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    bool bAimFix;
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
-    float SkillCoolDown;
-    UPROPERTY(BlueprintReadWrite, EditAnywhere)
-    int LoopCount;
-    //UI추가예정?
-
-    float SkillTimer;
-    bool bInCoolTime;
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -53,20 +18,23 @@ class LOSTARK_API UCPSkillComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
+private:
+	/*UPROPERTY(EditDefaultsOnly)
+  class UCSkillData *Datas[(int32)ESkill_Type::Max];*/
+
 public:	
 	UCPSkillComponent();
-
 protected:
 	virtual void BeginPlay() override;
-
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
- 
-    UFUNCTION(BlueprintCallable)
-    virtual void DoSkill(E_Skill InSkill);
+public:
+    void OnSkill(ESkillButton InButton);
 protected:
-    UPROPERTY(EditDefaultsOnly, Category = "DataTable")
-    UDataTable *SkillDataTable;
+  UPROPERTY(EditDefaultsOnly)
+  class UCSkillData *Datas[(int32)ESkill_Type::Max];
 
-    FSkillData *Datas[(int16)E_Skill::Max];
+private:
+  TMap<ESkillButton, ESkill_Type> SkillBind;
+
 };

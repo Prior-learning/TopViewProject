@@ -55,12 +55,9 @@ public:
     virtual void PlayAnimMontage(EMontage_State InState);
 
 protected:
-    
     UPROPERTY(EditDefaultsOnly, Category = "DataTable")
     UDataTable *DataTable;
 
    	FMontageData *Datas[(int16)EMontage_State::Max];
-
-
 		
 };
