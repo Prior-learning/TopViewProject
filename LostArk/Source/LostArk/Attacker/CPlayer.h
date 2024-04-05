@@ -59,10 +59,8 @@ private:
     void EndFire();
 
 	void OnFSkill();
-    void OffFSkill();
 
 	void OnESkill();
-    void OffESkill();
 
     void InitMovement();
     void InitCamera();

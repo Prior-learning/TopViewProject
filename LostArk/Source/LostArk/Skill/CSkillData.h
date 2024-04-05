@@ -8,6 +8,7 @@ UENUM(BlueprintType)
 enum class ESkill_Type : uint8
 {
     TargetDown,
+    ShotGun,
     Max
 };
 USTRUCT(BlueprintType)

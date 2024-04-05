@@ -258,18 +258,9 @@ void ACPlayer::OnFSkill()
     mPlayerSkill->OnSkill(ESkillButton::F);
 }
 
-void ACPlayer::OffFSkill()
-{
-    mPlayerState->SetWeaponType(E_WeaponType::Third);
-    mPlayerState->UnSetSniping();
-}
-
 void ACPlayer::OnESkill()
 {
-}
-
-void ACPlayer::OffESkill()
-{
+    mPlayerSkill->OnSkill(ESkillButton::E);
 }
 
 void ACPlayer::InitMovement()
