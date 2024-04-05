@@ -22,11 +22,14 @@ class LOSTARK_API ACDecalObject : public AActor
     void SpawnParticle();
 
     void CircleParticle();
-    void TriangleParticle(FVector loc, int level);
+    void SectorParticle(FVector loc, int level);
 
   private:
-    void CheckDistanceAndTakeDamage();
+    void CheckDistanceAndTakeDamage(); // 피격 판정에 거리만 필요한 경우 ex) Circle
+    void CheckDegreeAndDistanceTakeDmage(); // 각도도 필요한 경우 ex) Sector 
+
     void DistanceFromPlayer(float& distance);
+    void DegreeFromPlayer(float &degree);
     void DistanceAttackRange(float &distance_MIN, float &distance_MAX);
   private:
     UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, meta = (AllowPrivateAccess = true))

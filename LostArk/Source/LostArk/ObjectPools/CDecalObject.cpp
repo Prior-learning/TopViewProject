@@ -48,8 +48,9 @@ void ACDecalObject::SpawnParticle()
             particle->SetActorLocation(GetActorLocation());
             particle->SetParticle(mInfo.mImpact);
 
-            TriangleParticle(GetActorLocation(), 3);
-            //particle->SetPower(mInfo.mDamage);
+            CheckDegreeAndDistanceTakeDmage();
+            SectorParticle(GetActorLocation(), 3);
+            
             break;
         }
        
@@ -92,16 +93,15 @@ void ACDecalObject::CircleParticle()
         str.Append(" , ");
         str.Append(FString::SanitizeFloat(location.Y, 2));
 
-        UE_LOG(GameProject, Display, L"%s", *str);
+        //UE_LOG(GameProject, Display, L"%s", *str);
     }
 }
 
-void ACDecalObject::TriangleParticle(FVector loc, int level)
+void ACDecalObject::SectorParticle(FVector loc, int level)
 {
     level--;
     if (level == 0)
         return;
-
     FVector location = loc;
     AUParticlePooling *particle;
 
@@ -113,7 +113,7 @@ void ACDecalObject::TriangleParticle(FVector loc, int level)
 
         particle->SetActorLocation(location);
         particle->SetParticle(mInfo.mImpact);
-        TriangleParticle(location, level);
+        SectorParticle(location, level);
     }
     //Right
     {
@@ -122,7 +122,7 @@ void ACDecalObject::TriangleParticle(FVector loc, int level)
 
         particle->SetActorLocation(location);
         particle->SetParticle(mInfo.mImpact);
-        TriangleParticle(location, level);
+        SectorParticle(location, level);
     }
    
 }
@@ -145,6 +145,31 @@ void ACDecalObject::CheckDistanceAndTakeDamage()
     }
 }
 
+void ACDecalObject::CheckDegreeAndDistanceTakeDmage()
+{
+    float decalrange = mInfo.circum * 256.f;
+
+    float DecalDegree = 360 * mInfo.degree / 2.f;
+    float degree;
+    DegreeFromPlayer(degree);
+    float distance;
+    DistanceFromPlayer(distance);
+
+    APlayerController *playercontroller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    IICombat *player = Cast<IICombat>(playercontroller->GetPawn());
+
+    if (distance <= decalrange)
+    {
+
+        if (-DecalDegree <= degree && degree <= DecalDegree)
+        {
+            FDamageEvent type;
+            player->Damaged(-mInfo.mDamage, type, nullptr, this, GetActorLocation(), nullptr);
+        }
+    }
+
+}
+
 void ACDecalObject::DistanceFromPlayer(float &distance)
 {
     APlayerController *playercontroller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -157,6 +182,22 @@ void ACDecalObject::DistanceFromPlayer(float &distance)
                pow((player->GetActorLocation().Y - GetActorLocation().Y), 2)); 
     str.Append(FString::SanitizeFloat(distance, 2));
     //UE_LOG(GameProject, Display, L"%s", *str);
+}
+
+void ACDecalObject::DegreeFromPlayer(float &degree)
+{
+    APlayerController *playercontroller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+    IICombat *player = Cast<IICombat>(playercontroller->GetPawn());
+
+    FVector distacneFromPlayer = playercontroller->GetPawn()->GetActorLocation() - GetActorLocation();
+    FVector forward = GetActorForwardVector();
+
+    float dotVal = FVector::DotProduct(distacneFromPlayer, forward);
+    float radianVal = FMath::Acos(dotVal / distacneFromPlayer.Size() * forward.Size());
+    degree = radianVal * 180 / PI;
+
+    UE_LOG(LogTemp, Warning, TEXT("DegreeFromPlayer : %f"), degree);
+  
 }
 
 void ACDecalObject::DistanceAttackRange(float &distance_MIN, float &distance_MAX)
