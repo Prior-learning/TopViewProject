@@ -13,6 +13,8 @@ class LOSTARK_API ACOnSkill_ShotGun : public ACOnSkill
     virtual void OnSkill() override;
     virtual void Begin_OnSkill() override;
     virtual void End_OnSkill() override;
+    virtual void Trigger() override;
+
 
   protected:
     virtual void BeginPlay() override;

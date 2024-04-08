@@ -45,6 +45,10 @@ void ACOnSkill_TargetDown::End_OnSkill()
     IsCoolDown = true;
 }
 
+void ACOnSkill_TargetDown::Trigger()
+{
+}
+
 void ACOnSkill_TargetDown::BeginPlay()
 {
     Super::BeginPlay();

@@ -18,6 +18,7 @@ public:
 	virtual void OnSkill() {}
 	virtual void Begin_OnSkill() {}
 	virtual void End_OnSkill() {}
+    virtual void Trigger() {}
 
 protected:
 	virtual void BeginPlay() override;
