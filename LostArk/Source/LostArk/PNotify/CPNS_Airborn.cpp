@@ -1,7 +1,7 @@
 #include "CPNS_Airborn.h"
 #include "../Global.h"
 #include "../Attacker/CPlayer.h"
-#include "CPNS_Airborn.h"
+
 
 FString UCPNS_Airborn::GetNotifyName_Implementation() const
 {

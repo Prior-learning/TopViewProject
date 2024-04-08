@@ -10,6 +10,14 @@ UCPSkillComponent::UCPSkillComponent()
     
 }
 
+void UCPSkillComponent::E_SkillBind()
+{
+}
+
+void UCPSkillComponent::F_SkillBind()
+{
+}
+
 void UCPSkillComponent::BeginPlay()
 {
 	Super::BeginPlay();

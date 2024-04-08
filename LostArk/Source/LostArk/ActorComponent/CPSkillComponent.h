@@ -24,6 +24,11 @@ private:
 
 public:	
 	UCPSkillComponent();
+  static void E_SkillBind();
+  static void F_SkillBind();
+  UCSkillData* GetData(int a) {return Datas[a];}
+  
+
 protected:
 	virtual void BeginPlay() override;
 public:	
