@@ -6,8 +6,7 @@
 
 #include "Kismet/GameplayStatics.h"
 
-#include "Engine.h"
-DEFINE_LOG_CATEGORY_STATIC(GameProject, Display, All)
+#include "../Global.h"
 
 //Sector 부채꼴임  나중에 수정
 ACDecalObject::ACDecalObject()
