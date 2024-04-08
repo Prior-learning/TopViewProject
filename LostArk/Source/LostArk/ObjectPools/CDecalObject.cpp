@@ -17,8 +17,6 @@ void ACDecalObject::SetDecalInfo(FDecalInfo& info)
 {
     mInfo = info;
     SetActorLocation(info.location);
-
-
     SetActorRotation(FQuat(info.direction));
     ShowDecal();
 }
@@ -149,7 +147,7 @@ void ACDecalObject::CheckDistanceAndTakeDamage()
         FDamageEvent type;
         player->Damaged(-mInfo.mDamage, type, nullptr, this, GetActorLocation(), nullptr);
         FString str = "AttackRange Chk Success \n";
-        UE_LOG(LogTemp, Display, L"%s", *str);
+        //UE_LOG(LogTemp, Display, L"%s", *str);
     }
 }
 
@@ -161,7 +159,7 @@ void ACDecalObject::CheckDegreeAndDistanceTakeDmage()
     FString str = "";
     str.Append("DecalDegree Distance : ");
     str.Append(FString::SanitizeFloat(DecalDegree, 2));
-    UE_LOG(LogTemp, Display, L"%s", *str);
+    //UE_LOG(LogTemp, Display, L"%s", *str);
 
     float degree;
     DegreeFromPlayer(degree);
@@ -179,7 +177,7 @@ void ACDecalObject::CheckDegreeAndDistanceTakeDmage()
             FDamageEvent type;
             player->Damaged(-mInfo.mDamage, type, nullptr, this, GetActorLocation(), nullptr);
             str = "AttackRange Chk Success \n";
-            UE_LOG(LogTemp, Display, L"%s", *str);
+            //UE_LOG(LogTemp, Display, L"%s", *str);
         }
 
     }
@@ -197,7 +195,7 @@ void ACDecalObject::DistanceFromPlayer(float &distance)
     distance = sqrt(pow((player->GetActorLocation().X - GetActorLocation().X), 2) +
                pow((player->GetActorLocation().Y - GetActorLocation().Y), 2)); 
     str.Append(FString::SanitizeFloat(distance, 2));
-    UE_LOG(LogTemp, Display, L"%s", *str);
+    //UE_LOG(LogTemp, Display, L"%s", *str);
 }
 
 void ACDecalObject::DegreeFromPlayer(float &degree)
@@ -212,7 +210,7 @@ void ACDecalObject::DegreeFromPlayer(float &degree)
     float radianVal = FMath::Acos(dotVal / distacneFromPlayer.Size() * forward.Size());
     degree = radianVal * 180 / PI;
 
-    UE_LOG(LogTemp, Warning, TEXT("DegreeFromPlayer : %f"), degree);
+    //UE_LOG(LogTemp, Warning, TEXT("DegreeFromPlayer : %f"), degree);
   
 }
 
@@ -226,6 +224,6 @@ void ACDecalObject::DistanceAttackRange(float &distance_MIN, float &distance_MAX
     str.Append(FString::SanitizeFloat(distance_MIN, 2));
     str.Append(" ~ ");
     str.Append(FString::SanitizeFloat(distance_MAX, 2));
-    UE_LOG(LogTemp, Display, L"%s", *str);
+    //UE_LOG(LogTemp, Display, L"%s", *str);
 
 }
