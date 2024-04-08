@@ -33,7 +33,7 @@ struct FDecalInfo
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     class UParticleSystem *mImpact;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FVector mParticleScale;   
+    FVector mParticleScale = FVector(1.f,1.f,1.f);   
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float degree;              // Circle Visible Degree
@@ -43,6 +43,8 @@ struct FDecalInfo
     float distancefromtcenter; // distance from Center
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float mDamage;             // bool Particle Damage 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FTransform trasformoffset;
 
     FVector location; // À§Ä¡
     FRotator direction;

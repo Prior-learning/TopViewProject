@@ -7,7 +7,6 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "../Global.h"
-
 //Sector 부채꼴임  나중에 수정
 ACDecalObject::ACDecalObject()
 {
@@ -46,13 +45,14 @@ void ACDecalObject::SpawnParticle()
             AUParticlePooling *particle = ACParticleManager::Get().GetParticle();
             particle->SetActorLocation(GetActorLocation());
             particle->SetParticle(mInfo.mImpact);
+            particle->SetActorScale3D(mInfo.mParticleScale);
+            particle->SetActorRotation(GetActorRotation() + mInfo.trasformoffset.Rotator());
 
             CheckDegreeAndDistanceTakeDmage();
             SectorParticle(GetActorLocation(), 3);
             
             break;
         }
-       
     }
 }
 
@@ -76,7 +76,10 @@ void ACDecalObject::CircleParticle()
 
         particle = ACParticleManager::Get().GetParticle();
 
+        
         particle->SetActorScale3D(mInfo.mParticleScale);
+        particle->SetActorRotation(GetActorRotation());
+
         particle->SetActorLocation(location);
         particle->SetParticle(mInfo.mImpact);
         //particle->SetPower(mInfo.mDamage);
@@ -112,6 +115,8 @@ void ACDecalObject::SectorParticle(FVector loc, int level)
 
         particle->SetActorLocation(location);
         particle->SetParticle(mInfo.mImpact);
+        particle->SetActorScale3D(mInfo.mParticleScale);
+        particle->SetActorRotation(GetActorRotation() + mInfo.trasformoffset.Rotator());
         SectorParticle(location, level);
     }
     //Right
@@ -121,8 +126,12 @@ void ACDecalObject::SectorParticle(FVector loc, int level)
 
         particle->SetActorLocation(location);
         particle->SetParticle(mInfo.mImpact);
+        particle->SetActorScale3D(mInfo.mParticleScale);
+        particle->SetActorRotation(GetActorRotation() + mInfo.trasformoffset.Rotator());
+        
         SectorParticle(location, level);
     }
+
    
 }
 
@@ -140,7 +149,7 @@ void ACDecalObject::CheckDistanceAndTakeDamage()
         FDamageEvent type;
         player->Damaged(-mInfo.mDamage, type, nullptr, this, GetActorLocation(), nullptr);
         FString str = "AttackRange Chk Success \n";
-        //UE_LOG(GameProject, Display, L"%s", *str);
+        UE_LOG(LogTemp, Display, L"%s", *str);
     }
 }
 
@@ -149,6 +158,11 @@ void ACDecalObject::CheckDegreeAndDistanceTakeDmage()
     float decalrange = mInfo.circum * 256.f;
 
     float DecalDegree = 360 * mInfo.degree / 2.f;
+    FString str = "";
+    str.Append("DecalDegree Distance : ");
+    str.Append(FString::SanitizeFloat(DecalDegree, 2));
+    UE_LOG(LogTemp, Display, L"%s", *str);
+
     float degree;
     DegreeFromPlayer(degree);
     float distance;
@@ -164,7 +178,10 @@ void ACDecalObject::CheckDegreeAndDistanceTakeDmage()
         {
             FDamageEvent type;
             player->Damaged(-mInfo.mDamage, type, nullptr, this, GetActorLocation(), nullptr);
+            str = "AttackRange Chk Success \n";
+            UE_LOG(LogTemp, Display, L"%s", *str);
         }
+
     }
 
 }
@@ -180,7 +197,7 @@ void ACDecalObject::DistanceFromPlayer(float &distance)
     distance = sqrt(pow((player->GetActorLocation().X - GetActorLocation().X), 2) +
                pow((player->GetActorLocation().Y - GetActorLocation().Y), 2)); 
     str.Append(FString::SanitizeFloat(distance, 2));
-    //UE_LOG(GameProject, Display, L"%s", *str);
+    UE_LOG(LogTemp, Display, L"%s", *str);
 }
 
 void ACDecalObject::DegreeFromPlayer(float &degree)
@@ -209,6 +226,6 @@ void ACDecalObject::DistanceAttackRange(float &distance_MIN, float &distance_MAX
     str.Append(FString::SanitizeFloat(distance_MIN, 2));
     str.Append(" ~ ");
     str.Append(FString::SanitizeFloat(distance_MAX, 2));
-    //UE_LOG(GameProject, Display, L"%s", *str);
+    UE_LOG(LogTemp, Display, L"%s", *str);
 
 }
