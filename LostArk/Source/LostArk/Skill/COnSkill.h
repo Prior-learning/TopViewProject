@@ -8,7 +8,7 @@
 UCLASS()
 class LOSTARK_API ACOnSkill : public AActor
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 	
 public:	
 	ACOnSkill();
@@ -18,7 +18,6 @@ public:
 	virtual void OnSkill() {}
 	virtual void Begin_OnSkill() {}
 	virtual void End_OnSkill() {}
-    virtual void Trigger() {}
 
 protected:
 	virtual void BeginPlay() override;

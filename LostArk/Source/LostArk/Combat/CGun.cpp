@@ -26,9 +26,6 @@ void ACGun::Tick(float DeltaTime)
         bCoolDown = false;
         mTimer = 0;
     }
-    
-
-
 }
 
 void ACGun::Fire(ACharacter *owner)

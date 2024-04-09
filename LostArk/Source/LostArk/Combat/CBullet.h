@@ -5,8 +5,6 @@
 #include "CBullet.generated.h"
 
 //DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnComponentBeginOverlap);
-
-
 UCLASS()
 class LOSTARK_API ACBullet : public AActor
 {
