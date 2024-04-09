@@ -10,6 +10,7 @@
 UCLASS()
 class LOSTARK_API UCENotifyDecal : public UAnimNotify
 {
+    //리팩토링 할 때 모양별로 나눠서 구현하기.
     GENERATED_BODY()
   public:
     virtual FString GetNotifyName() const;

@@ -63,6 +63,7 @@ class LOSTARK_API ACDecalManager : public AActor
     static ACDecalManager *Get();
 
     void SetDecalInfo(FDecalInfo& info);
+    void SetDecalInfo_LocationToPlayer(FDecalInfo &info);
   protected:
     virtual void BeginPlay() override;
 

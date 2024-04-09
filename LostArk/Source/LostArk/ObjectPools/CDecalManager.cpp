@@ -1,6 +1,9 @@
 #include "CDecalManager.h"
 #include "CDecalObject.h"
 
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/Character.h"
+
 ACDecalManager *ACDecalManager::Instance = nullptr;
 TQueue<class ACDecalObject *> ACDecalManager::mObjectpool;
 
@@ -46,6 +49,36 @@ void ACDecalManager::SetDecalInfo(FDecalInfo &info)
     data->SetDecalInfo(info);
    
 }
+void ACDecalManager::SetDecalInfo_LocationToPlayer(FDecalInfo &info)
+{
+    if (Instance == nullptr)
+        return;
+    if (mObjectpool.IsEmpty())
+    {
+        return;
+    }
+    ensureMsgf(!mObjectpool.IsEmpty(), TEXT("mObjectpool is Empty"));
+
+    ACDecalObject *data;
+    mObjectpool.Dequeue(data);
+    mObjectpool.Enqueue(data);
+
+     ACharacter *player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+    if (!!player)
+    {
+        info.location = player->GetActorLocation();
+        info.location.Z = -150.f;
+    }
+    else
+    {
+        FString str = "controller Cast Fail";
+        UE_LOG(LogTemp, Warning, TEXT("%s"), *str);
+    }
+
+    
+    data->SetDecalInfo(info);
+}
+
 
 
 

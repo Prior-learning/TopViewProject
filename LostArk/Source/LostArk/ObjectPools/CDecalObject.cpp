@@ -47,7 +47,7 @@ void ACDecalObject::SpawnParticle()
             particle->SetActorRotation(GetActorRotation() + mInfo.trasformoffset.Rotator());
 
             CheckDegreeAndDistanceTakeDmage();
-            SectorParticle(GetActorLocation(), 3);
+            SectorParticle(GetActorLocation(), 5);
             
             break;
         }
