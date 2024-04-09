@@ -2,6 +2,8 @@
 #include "../Global.h"
 #include "../ActorComponent/CPSkillComponent.h"
 #include "../Skill/COnSkill.h"
+#include "../Skill/ISkillNotify.h"
+
 
 
 
@@ -22,6 +24,7 @@ void UCPNotify_Trigger::Notify(USkeletalMeshComponent *MeshComp, UAnimSequenceBa
     ACOnSkill *OnSkill;
     OnSkill = mSkill->GetData(1)->GetOnSkill();
     CheckNull(OnSkill);
-    OnSkill->Trigger();
+    IISkillNotify *iSkill = Cast<IISkillNotify>(OnSkill);
+    iSkill->OnTrigger();
 }
 

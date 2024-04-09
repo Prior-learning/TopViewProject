@@ -5,9 +5,7 @@
 #include "CWeapon.h"
 #include "CMelee.generated.h"
 
-/**
- *
- */
+
 UCLASS()
 class LOSTARK_API ACMelee : public ACWeapon
 {
