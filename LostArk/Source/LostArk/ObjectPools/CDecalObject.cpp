@@ -47,7 +47,7 @@ void ACDecalObject::SpawnParticle()
             particle->SetActorRotation(GetActorRotation() + mInfo.trasformoffset.Rotator());
 
             CheckDegreeAndDistanceTakeDmage();
-            SectorParticle(GetActorLocation(), 5);
+            SectorParticle(GetActorLocation(), mInfo.circum * 2);
             
             break;
         }
@@ -71,7 +71,7 @@ void ACDecalObject::CircleParticle()
         
         location.X += RotateValue.X; 
         location.Y += RotateValue.Y;
-
+        location.Z = -150.f;
         particle = ACParticleManager::Get().GetParticle();
 
         
@@ -103,9 +103,10 @@ void ACDecalObject::SectorParticle(FVector loc, int level)
     if (level == 0)
         return;
     FVector location = loc;
+    location.Z = -150.f;
     AUParticlePooling *particle;
 
-    location += Fdir * 256.f / 2.f * mInfo.circum;
+    location += Fdir * 256.f / 2.f;
     // left
     {
         location += Rdir * 100.f;

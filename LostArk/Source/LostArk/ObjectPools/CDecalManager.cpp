@@ -67,7 +67,7 @@ void ACDecalManager::SetDecalInfo_LocationToPlayer(FDecalInfo &info)
     if (!!player)
     {
         info.location = player->GetActorLocation();
-        info.location.Z = -150.f;
+        info.location.Z = -250.f;
     }
     else
     {
