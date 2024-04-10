@@ -103,11 +103,11 @@ void ACDecalObject::SectorParticle(FVector loc, int level)
     if (level == 0)
         return;
     FVector location = loc;
-    location.Z = -150.f;
+    location.Z = mInfo.location.Z;
     AUParticlePooling *particle;
 
     location += Fdir * 256.f / 2.f;
-    // left
+    // Right
     {
         location += Rdir * 100.f;
         particle = ACParticleManager::Get().GetParticle();
@@ -118,7 +118,7 @@ void ACDecalObject::SectorParticle(FVector loc, int level)
         particle->SetActorRotation(GetActorRotation() + mInfo.trasformoffset.Rotator());
         SectorParticle(location, level);
     }
-    //Right
+    //Left
     {
         location -= Rdir * 100.f * 2;
         particle = ACParticleManager::Get().GetParticle();
