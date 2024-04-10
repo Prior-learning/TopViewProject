@@ -67,6 +67,8 @@ private:
   
 public:
     void EndRoll();
+    void SetWeaponHand();
+    void SetWeaponTemp();
     virtual FGenericTeamId GetGenericTeamId() const override{return mTeamID;}
 
 private:
