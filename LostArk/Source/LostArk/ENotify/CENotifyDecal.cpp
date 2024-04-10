@@ -16,7 +16,7 @@ void UCENotifyDecal::Notify(USkeletalMeshComponent *MeshComp, UAnimSequenceBase 
 
     FVector forward = MeshComp->GetOwner()->GetActorForwardVector().GetSafeNormal2D();
     FVector location = MeshComp->GetOwner()->GetActorLocation() + forward * mOffset.X; 
-    location.Z = -150.f;
+    location.Z = -250.f;
     FRotator rot = MeshComp->GetOwner()->GetActorRotation();
     
     switch (mDirection)
