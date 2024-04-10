@@ -196,6 +196,11 @@ void ACGun::Fire(ACharacter *owner)
     
 }
 
+void ACGun::SetHandTemp(ACharacter *owner)
+{
+    this->AttachToComponent(owner->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), mRifleTemp);
+}
+
 void ACGun::Equip(ACharacter *owner)
 {
     this->AttachToComponent(owner->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true),GetHandSocket());

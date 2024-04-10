@@ -21,6 +21,8 @@ protected:
 	 UPROPERTY(VisibleDefaultsOnly)
     class UProjectileMovementComponent *Projectile;
 
+	 ACharacter *OwnerCharacter;
+
 public:	
 	void Throwing();
 

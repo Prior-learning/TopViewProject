@@ -5,6 +5,10 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "../ActorComponent/CPlayerStateComponent.h"
 
+ACOnSkill_ShotGun::ACOnSkill_ShotGun()
+{
+    CHelpers::GetClass<ACGrenadeMesh>(&GrenadeClass, "Blueprint'/Game/AActor/Player/BP_Grenade.BP_Grenade_C'");
+}
 
 void ACOnSkill_ShotGun::OnSkill()
 {
@@ -40,14 +44,14 @@ void ACOnSkill_ShotGun::End_OnSkill()
 
 void ACOnSkill_ShotGun::SpawnMesh()
 {
-    FVector throwlocation = OwnerCharacter->GetMesh()->GetSocketLocation(mHandThrow);
-    
-    CheckNull(GrenadeClass);
-
+    CheckNull(GrenadeClass);//null bp를 만들었지만 스킬정보 가져올때 c클래스로 초기화를 해서 문제가 생긴듯
+    UE_LOG(LogTemp, Warning, TEXT("[COnSkillShot::SpawnMesh_Notify]"));
     mGrenade = GetWorld()->SpawnActor<ACGrenadeMesh>(GrenadeClass);
-    mGrenade->SetActorLocation(throwlocation);
+    FVector throwlocation = OwnerCharacter->GetMesh()->GetSocketLocation(mHandThrow);
     if (mGrenade)
     { 
+        mGrenade->SetOwner(OwnerCharacter);
+        UE_LOG(LogTemp, Warning, TEXT("[COnSkillShot::SpawnSuccessed]"));
         mGrenade->SetActorLocation(throwlocation);
         mGrenade->Throwing();
     }
@@ -69,6 +73,7 @@ void ACOnSkill_ShotGun::BeginPlay()
 
     CoolTime = 0;
     IsCoolDown = false;
+
 }
 
 void ACOnSkill_ShotGun::Tick(float DeltaTime)

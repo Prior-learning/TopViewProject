@@ -12,6 +12,7 @@ class LOSTARK_API ACOnSkill_ShotGun : public ACOnSkill, public IISkillNotify
     GENERATED_BODY()
 
   public:
+    ACOnSkill_ShotGun();
 
     virtual void OnSkill() override;
     virtual void Begin_OnSkill() override;
@@ -26,15 +27,11 @@ class LOSTARK_API ACOnSkill_ShotGun : public ACOnSkill, public IISkillNotify
 
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     TSubclassOf<class ACGrenadeMesh> GrenadeClass;
+    
+    UPROPERTY(VisibleDefaultsOnly)
+    FName mHandThrow = "HandThrow";
 
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    FName mRifleHand;
-
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    FName mRifleTemp;
-
-    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-    FName mHandThrow;
+    ACGrenadeMesh *mGrenade;
 
   public:
     virtual void Tick(float DeltaTime) override;
@@ -42,5 +39,4 @@ class LOSTARK_API ACOnSkill_ShotGun : public ACOnSkill, public IISkillNotify
   private:
     float CoolTime;
     bool IsCoolDown;
-    ACGrenadeMesh *mGrenade;
 };

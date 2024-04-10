@@ -25,6 +25,10 @@ class LOSTARK_API ACGun : public ACWeapon
   protected:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     FName mRifleHand;
+
+    UPROPERTY(VisibleDefaultsOnly)
+    FName mRifleTemp = "HandTemp";
+        
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     float FireRate;
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
@@ -44,6 +48,8 @@ class LOSTARK_API ACGun : public ACWeapon
     void Equip(ACharacter *owner);
     void UnEquip(ACharacter *owner);
     void Fire(ACharacter *owner);
+    void SetHandTemp(ACharacter *owner);
+
     float GetFireRate(){return FireRate;}
     FName GetHandSocket(){return mRifleHand;}
     FName GetHolsterSocket(){return mAttachBone;}

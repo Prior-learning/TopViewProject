@@ -138,6 +138,42 @@ void ACPlayer::SetWeapon(E_WeaponType InType)
     mPlayerState->SetWeaponType(InType);
 }
 
+void ACPlayer::SetWeaponHand()
+{
+    switch (GetWeaponType())
+    {
+    case E_WeaponType::Primary:
+        mGun->Equip(this);
+        break;
+    case E_WeaponType::Secondary:
+        mShotGun->Equip(this);
+        break;
+    case E_WeaponType::Third:
+        mSniper->Equip(this);
+        break;
+    default:
+        break;
+    }
+}
+
+void ACPlayer::SetWeaponTemp()
+{
+    switch (GetWeaponType())
+    {
+    case E_WeaponType::Primary:
+        mGun->SetHandTemp(this);
+        break;
+    case E_WeaponType::Secondary:
+        mShotGun->SetHandTemp(this);
+        break;
+    case E_WeaponType::Third:
+        mSniper->SetHandTemp(this);
+        break;
+    default:
+        break;
+    }
+}
+
 void ACPlayer::OnAim()
 {
     CheckTrue(mPlayerState->IsContains(E_State::Aim));
