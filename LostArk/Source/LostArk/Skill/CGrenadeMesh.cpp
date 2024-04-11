@@ -18,7 +18,7 @@ void ACGrenadeMesh::BeginPlay()
 
 void ACGrenadeMesh::Throwing()
 {
-    UE_LOG(LogTemp, Warning, TEXT("[CGrenade::Throw]"));
+    //UE_LOG(LogTemp, Warning, TEXT("[CGrenade::Throw]"));
     CheckNull(GetOwner());
 
     FVector outDirection = GetOwner()->GetActorForwardVector();
@@ -30,7 +30,7 @@ void ACGrenadeMesh::Throwing()
     if (UGameplayStatics::SuggestProjectileVelocity_CustomArc(this, outVelocity, startLoc, targetLoc, GetWorld()->GetGravityZ(), arcValue))
     {
         FPredictProjectilePathParams predictParams(20.0f, startLoc, outVelocity, 10.0f);   // 20: tracing 보여질 프로젝타일 크기, 15: 시물레이션되는 Max 시간(초)
-        predictParams.DrawDebugTime = 10.0f;     //디버그 라인 보여지는 시간 (초)
+        predictParams.DrawDebugTime = 5.0f;     //디버그 라인 보여지는 시간 (초)
         predictParams.DrawDebugType = EDrawDebugTrace::Type::ForDuration;  // DrawDebugTime 을 지정하면 EDrawDebugTrace::Type::ForDuration 필요.
         predictParams.OverrideGravityZ = GetWorld()->GetGravityZ();
         FPredictProjectilePathResult result;

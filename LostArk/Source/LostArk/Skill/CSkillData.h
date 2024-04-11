@@ -31,8 +31,16 @@ struct FOnSkillData
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     class UParticleSystem *Effect;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+
+     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FTransform EffectTransform;
+
+     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    class UParticleSystem *HittedEffect;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FTransform HittedEffectTransform;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float Damage;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)

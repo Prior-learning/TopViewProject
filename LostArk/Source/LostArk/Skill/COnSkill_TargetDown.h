@@ -18,7 +18,10 @@ public:
 
 
 protected:
-	virtual void BeginPlay() override;
+   	virtual void BeginPlay() override;
+
+    UFUNCTION()
+    void OnLineTrace(const FVector &startpos);
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -27,4 +30,5 @@ private:
     int LeftShot;
     float CoolTime;
     bool IsCoolDown;
+    UParticleSystemComponent *ParticleComponent;
 };

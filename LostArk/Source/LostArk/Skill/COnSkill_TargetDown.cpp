@@ -3,6 +3,7 @@
 #include "GameFramework/Character.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "../ActorComponent/CPlayerStateComponent.h"
+#include "../Combat/ICombat.h"
 
 void ACOnSkill_TargetDown::OnSkill()
 {
@@ -30,7 +31,8 @@ void ACOnSkill_TargetDown::Begin_OnSkill()
         PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
         FVector Cursor_pos = TraceHitResult.Location;
         Datas[0].EffectTransform.SetLocation(TraceHitResult.Location);
-        UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Datas[0].Effect, Datas[0].EffectTransform, true);
+        ParticleComponent =UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Datas[0].Effect,Datas[0].EffectTransform, true);
+        OnLineTrace(TraceHitResult.Location);
     }
 
     if (LeftShot == 0)
@@ -52,6 +54,33 @@ void ACOnSkill_TargetDown::BeginPlay()
     CoolTime = 0;
     IsCoolDown = false;
 
+}
+
+void ACOnSkill_TargetDown::OnLineTrace(const FVector &startpos)
+{
+    FVector start = startpos;
+    FVector end = FVector(start.X, start.Y, start.Z + 500);
+    TArray<TEnumAsByte<EObjectTypeQuery>> queries;
+    queries.Add(EObjectTypeQuery::ObjectTypeQuery3);
+    TArray<AActor *> ignoreActors;
+    ignoreActors.Add(OwnerCharacter);
+    FHitResult hitResult;
+
+    if (UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(), start, end, 500, queries, false, ignoreActors,EDrawDebugTrace::ForOneFrame, hitResult, true))
+    {
+        IICombat *hitedActor = Cast<IICombat>(hitResult.GetActor());
+        CheckNull(Datas[0].HittedEffect);
+        CheckNull(hitedActor);
+        FDamageEvent mDamageEvent;
+        float DamageAmount = 10.f;
+        if (!!hitedActor)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("[TargetDown]Hitted Enemy"));
+            // FRotator rotator = hitResult.ImpactNormal.Rotation();
+            hitedActor->Damaged(DamageAmount, mDamageEvent, nullptr, this, hitResult.GetActor()->GetActorLocation(),Datas[0].HittedEffect);
+            ignoreActors.Add(hitResult.GetActor());
+        }
+    }
 }
 
 void ACOnSkill_TargetDown::Tick(float DeltaTime)

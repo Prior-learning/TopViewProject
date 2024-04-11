@@ -25,9 +25,13 @@ class LOSTARK_API ACOnSkill_ShotGun : public ACOnSkill, public IISkillNotify
   protected:
     virtual void BeginPlay() override;
 
+    UFUNCTION()
+    void OnLineTrace(const FVector &startpos);
+
+  protected:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
     TSubclassOf<class ACGrenadeMesh> GrenadeClass;
-    
+
     UPROPERTY(VisibleDefaultsOnly)
     FName mHandThrow = "HandThrow";
 
