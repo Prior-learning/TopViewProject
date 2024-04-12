@@ -18,7 +18,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+private:
+    void Initialize();
+
+  public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	UPROPERTY(EditAnywhere, Category="Minimap")
