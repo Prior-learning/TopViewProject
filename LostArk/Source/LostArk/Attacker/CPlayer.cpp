@@ -61,14 +61,7 @@ void ACPlayer::Tick(float DeltaTime)
     {
         Look_Mouse();
     }
-    /*if (!mPlayerState->IsCanMove())
-    {
-        GetCharacterMovement()->MaxWalkSpeed=0;
-    }
-    else
-    {
-        GetCharacterMovement()->MaxWalkSpeed = 600;
-    }*/
+    
 }
 
 E_WeaponType ACPlayer::GetWeaponType()
@@ -323,6 +316,7 @@ void ACPlayer::InitCamera()
     mCamera->SetupAttachment(mSpring, USpringArmComponent::SocketName);
     mCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 }
+
 
 void ACPlayer::Look_Mouse()
 {

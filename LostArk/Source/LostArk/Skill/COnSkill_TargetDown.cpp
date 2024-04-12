@@ -18,8 +18,6 @@ void ACOnSkill_TargetDown::OnSkill()
     mState->SetWeaponType(E_WeaponType::Sniping);
     mState->SetSniping();
     LeftShot = Datas[0].LoopCount;
-	//마우스커서의 위치 추적
-	//비긴온스킬로 넘어가기.
 }
 void ACOnSkill_TargetDown::Begin_OnSkill()
 {

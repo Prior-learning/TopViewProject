@@ -1,10 +1,12 @@
 #include "CPlayerStateComponent.h"
+#include "Components/WidgetComponent.h"
+
 
 
 UCPlayerStateComponent::UCPlayerStateComponent() 
 : bFiring(false), bAiming(false), bCanMove(true)
 {
-   
+    InitWidget();
 }
 
 void UCPlayerStateComponent::Initialize()
@@ -142,6 +144,9 @@ void UCPlayerStateComponent::SetSniping()
     Add(E_State::Reload, E_WHY_BLOCKED::SKILLUSE);
     Add(E_State::Roll, E_WHY_BLOCKED::SKILLUSE);
     Remove(E_State::Attack, E_WHY_BLOCKED::SKILLUSE);
+    TargetDownWidget->SetHiddenInGame(false);
+
+
 }
 
 void UCPlayerStateComponent::UnSetSniping()
@@ -152,4 +157,19 @@ void UCPlayerStateComponent::UnSetSniping()
     Remove(E_State::Reload, E_WHY_BLOCKED::SKILLUSE);
     Remove(E_State::Roll, E_WHY_BLOCKED::SKILLUSE);
     Remove(E_State::Attack, E_WHY_BLOCKED::SKILLUSE);
+    TargetDownWidget->SetHiddenInGame(true);
+}
+
+void UCPlayerStateComponent::InitWidget()
+{
+    TargetDownWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("TargetDownWidget"));
+    static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/Widget/WB_TargetDown"));
+    TargetDownWidget->SetWidgetSpace(EWidgetSpace::Screen);
+
+    if (UI_HUD.Succeeded())
+    {
+        TargetDownWidget->SetWidgetClass(UI_HUD.Class);
+        TargetDownWidget->SetHiddenInGame(true);
+        UE_LOG(LogTemp, Warning, TEXT("[TargetDown]WidgetConstruct"));
+    }
 }

@@ -11,7 +11,6 @@ class LOSTARK_API ACOnSkill_TargetDown : public ACOnSkill
 	GENERATED_BODY()
 
 public:
-	
 	virtual void OnSkill() override;
     virtual void Begin_OnSkill() override;
     virtual void End_OnSkill() override;
