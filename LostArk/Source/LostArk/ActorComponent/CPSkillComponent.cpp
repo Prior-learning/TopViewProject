@@ -2,12 +2,13 @@
 #include "../Global.h"
 #include "../Skill/COnSkill.h"
 #include "GameFramework/Character.h"
+#include "Components/WidgetComponent.h"
 #include "CPlayerStateComponent.h"
 
 UCPSkillComponent::UCPSkillComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-    
+    CurrentSkilltype = -1;
 }
 
 void UCPSkillComponent::E_SkillBind()
@@ -46,10 +47,13 @@ void UCPSkillComponent::OnSkill(ESkillButton InButton)
     //버튼을 Key로 만든 맵에 있는 value값을 임시로 저장해 Datas 배열내에 있는 스킬정보를 찾아 OnSkill
     if (!!SkillType &&!! Datas[(int32)(*SkillType)])
     {
+        CurrentSkilltype = (int)SkillBind[InButton];
         // COnSkill 에 Skilldata가 멤버변수로 있음.GetOnSkill 함수는 skillData 클래스에 있음
         ACOnSkill *action = Datas[(int32)(*SkillType)]->GetOnSkill();
         if (!!action)
+        {
             action->OnSkill();
+        }
     }
 }
 

@@ -18,16 +18,12 @@ class LOSTARK_API UCPSkillComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-private:
-	/*UPROPERTY(EditDefaultsOnly)
-  class UCSkillData *Datas[(int32)ESkill_Type::Max];*/
-
 public:	
 	UCPSkillComponent();
   static void E_SkillBind();
   static void F_SkillBind();
   UCSkillData* GetData(int a) {return Datas[a];}
-  
+  int GetSkillType()  {return CurrentSkilltype; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -41,5 +37,5 @@ protected:
 
 private:
   TMap<ESkillButton, ESkill_Type> SkillBind;
-
+  int CurrentSkilltype;
 };

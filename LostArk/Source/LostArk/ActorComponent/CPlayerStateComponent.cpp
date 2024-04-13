@@ -1,10 +1,8 @@
 #include "CPlayerStateComponent.h"
 
-
 UCPlayerStateComponent::UCPlayerStateComponent() 
 : bFiring(false), bAiming(false), bCanMove(true)
 {
-   
 }
 
 void UCPlayerStateComponent::Initialize()
@@ -153,3 +151,4 @@ void UCPlayerStateComponent::UnSetSniping()
     Remove(E_State::Roll, E_WHY_BLOCKED::SKILLUSE);
     Remove(E_State::Attack, E_WHY_BLOCKED::SKILLUSE);
 }
+

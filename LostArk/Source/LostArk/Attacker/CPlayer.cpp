@@ -15,6 +15,7 @@
 #include "../ActorComponent/CPSkillComponent.h"
 
 #include "../LostArkPlayerController.h"
+#include "../Widget/TargetDownWidget.h"
 
 #include "../Combat/CWeapon.h"
 #include "../Combat/CGun.h"
@@ -33,6 +34,7 @@ ACPlayer::ACPlayer()
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
     InitMovement();
     InitCamera();
+    InitWidget();
 	
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -61,14 +63,7 @@ void ACPlayer::Tick(float DeltaTime)
     {
         Look_Mouse();
     }
-    /*if (!mPlayerState->IsCanMove())
-    {
-        GetCharacterMovement()->MaxWalkSpeed=0;
-    }
-    else
-    {
-        GetCharacterMovement()->MaxWalkSpeed = 600;
-    }*/
+    
 }
 
 E_WeaponType ACPlayer::GetWeaponType()
@@ -323,6 +318,35 @@ void ACPlayer::InitCamera()
     mCamera->SetupAttachment(mSpring, USpringArmComponent::SocketName);
     mCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 }
+
+void ACPlayer::InitWidget()
+{
+    if (TargetWidgetClass)
+    {
+        TargetDownWidget = Cast<UTargetDownWidget>(CreateWidget(GetWorld(), TargetWidgetClass));
+        if (TargetDownWidget)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("[TargetDown]Widget Add"));
+            TargetDownWidget->AddToViewport();
+            TargetDownWidget->SetVisibility(ESlateVisibility::Visible);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("[TargetDown]Widget Null"));
+        }
+    }
+    /*  TargetDownWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("TargetDownWidget"));
+   static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/Widget/WB_TargetDown"));
+   TargetDownWidget->SetWidgetSpace(EWidgetSpace::Screen);
+
+   if (UI_HUD.Succeeded())
+   {
+       TargetDownWidget->SetWidgetClass(UI_HUD.Class);
+       TargetDownWidget->SetHiddenInGame(true);
+       UE_LOG(LogTemp, Warning, TEXT("[TargetDown]WidgetConstruct"));
+   }*/
+}
+
 
 void ACPlayer::Look_Mouse()
 {
