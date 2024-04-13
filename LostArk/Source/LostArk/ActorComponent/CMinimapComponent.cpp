@@ -27,7 +27,7 @@ void UCMinimapComponent::Initialize()
     mSpring->SetRelativeLocation({0, 0, 1000});
     FRotator rot = {-90, 0, 0};
     mSpring->SetRelativeRotation(FQuat(rot));
-    mSpring->TargetArmLength = 3000.f;
+    mSpring->TargetArmLength = 4000.f;
 }
 
 
