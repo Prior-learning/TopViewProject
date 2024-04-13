@@ -9,7 +9,6 @@ void ACOnSkill_TargetDown::OnSkill()
 {
     CheckTrue(IsCoolDown);
     Super::OnSkill();
-
     if (LeftShot > 0 && mState->GetWeaponType() == E_WeaponType::Sniping)
     {
         Begin_OnSkill();

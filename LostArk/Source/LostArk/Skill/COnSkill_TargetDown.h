@@ -21,7 +21,7 @@ protected:
 
     UFUNCTION()
     void OnLineTrace(const FVector &startpos);
-
+  
 public:	
 	virtual void Tick(float DeltaTime) override;
 

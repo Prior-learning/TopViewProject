@@ -15,6 +15,7 @@
 #include "../ActorComponent/CPSkillComponent.h"
 
 #include "../LostArkPlayerController.h"
+#include "../Widget/TargetDownWidget.h"
 
 #include "../Combat/CWeapon.h"
 #include "../Combat/CGun.h"
@@ -33,6 +34,7 @@ ACPlayer::ACPlayer()
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
     InitMovement();
     InitCamera();
+    InitWidget();
 	
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -315,6 +317,25 @@ void ACPlayer::InitCamera()
     mCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
     mCamera->SetupAttachment(mSpring, USpringArmComponent::SocketName);
     mCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+}
+
+void ACPlayer::InitWidget()
+{
+    if (TargetWidgetClass)
+    {
+        TargetDownWidget = Cast<UTargetDownWidget>(CreateWidget(GetWorld(), TargetWidgetClass));
+        //static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/Widget/WB_TargetDown"));
+                if (TargetDownWidget)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("[TargetDown]Widget Add"));
+            TargetDownWidget->AddToViewport();
+            TargetDownWidget->SetVisibility(ESlateVisibility::Visible);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("[TargetDown]Widget Null"));
+        }
+    }
 }
 
 

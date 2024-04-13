@@ -82,13 +82,9 @@ public:
     void UnSetSkill();
     void SetSniping();
     void UnSetSniping();
+    void MoveScopeToMousePos();
 
- protected:
-    UPROPERTY(VisibleAnywhere, Category = UI)
-    class UWidgetComponent *TargetDownWidget;
-
-	void InitWidget();
- private:
+private:
 	TMap<E_State, uint64> P_State;// 멀티스레드 환경에서 되도록 Mutex lock 
 
 	bool bCanMove;

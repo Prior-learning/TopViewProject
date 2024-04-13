@@ -64,6 +64,7 @@ private:
 
     void InitMovement();
     void InitCamera();
+    void InitWidget();
   
 public:
     void EndRoll();
@@ -101,6 +102,12 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
         TSubclassOf<class ACWeapon> mWeaponClass3;
+
+    UPROPERTY(EditAnywhere, Category = "Widget")
+        TSubclassOf<UUserWidget> TargetWidgetClass;
+
+    UPROPERTY()
+        class UUserWidget *TargetDownWidget;
 
     class ACGun *mGun;
     class ACGun *mShotGun;
