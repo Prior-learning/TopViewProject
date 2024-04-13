@@ -324,8 +324,7 @@ void ACPlayer::InitWidget()
     if (TargetWidgetClass)
     {
         TargetDownWidget = Cast<UTargetDownWidget>(CreateWidget(GetWorld(), TargetWidgetClass));
-        //static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/Widget/WB_TargetDown"));
-                if (TargetDownWidget)
+        if (TargetDownWidget)
         {
             UE_LOG(LogTemp, Warning, TEXT("[TargetDown]Widget Add"));
             TargetDownWidget->AddToViewport();
@@ -336,6 +335,16 @@ void ACPlayer::InitWidget()
             UE_LOG(LogTemp, Warning, TEXT("[TargetDown]Widget Null"));
         }
     }
+    /*  TargetDownWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("TargetDownWidget"));
+   static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/Widget/WB_TargetDown"));
+   TargetDownWidget->SetWidgetSpace(EWidgetSpace::Screen);
+
+   if (UI_HUD.Succeeded())
+   {
+       TargetDownWidget->SetWidgetClass(UI_HUD.Class);
+       TargetDownWidget->SetHiddenInGame(true);
+       UE_LOG(LogTemp, Warning, TEXT("[TargetDown]WidgetConstruct"));
+   }*/
 }
 
 
