@@ -1,12 +1,12 @@
 #include "CMarkComponent.h"
 #include "PaperSpriteComponent.h"
+
 UCMarkComponent::UCMarkComponent()
 {
 
 	PrimaryComponentTick.bCanEverTick = true;
 
     mSprite = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Sprite"));
-
 }
 
 void UCMarkComponent::BeginPlay()
@@ -17,7 +17,8 @@ void UCMarkComponent::BeginPlay()
     {
         sprite->SetRelativeScale3D({5, 5, 5});
         sprite->SetRelativeRotation({0, 0, -90});
-        sprite->SetRelativeLocation({1000, 0, 0});
+        sprite->SetRelativeLocation({500, 0, 0});
+        sprite->SetRelativeScale3D(mScale);
     }
 }
 
@@ -30,7 +31,7 @@ void UCMarkComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
     if (!!sprite)
     {
         FVector loc = GetOwner()->GetActorLocation();
-        loc.Z = 1000.f;
+        loc.Z = 3000.f;
         sprite->SetRelativeLocation(loc);
     }
 	

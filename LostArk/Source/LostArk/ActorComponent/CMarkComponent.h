@@ -22,6 +22,9 @@ public:
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+public:	
 	UPROPERTY(EditDefaultsOnly, Category = "Mark")
     class UPaperSpriteComponent *mSprite;
+    UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category="Mark")
+    FVector mScale = {1,1,1};
 };
