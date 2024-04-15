@@ -10,6 +10,9 @@
 #include "../UParticlePooling.h"
 #include "../ObjectPools/CParticleManager.h"
 
+
+#include "../ActorComponent/CDamageText.h"
+
 ACEnemy::ACEnemy()
 {
  	
@@ -48,8 +51,11 @@ void ACEnemy::Damaged(float Damage, FDamageEvent& Event, AController *controller
                       UParticleSystem *particle)
 {
     TakeDamage(Damage, Event, controller, causer);
- 
-    
+    UCDamageText *textRenderComp = CHelpers::GetComponent<UCDamageText>(this);
+    if (!!textRenderComp)
+    {
+        textRenderComp->TextRender(Damage, hitLocation);
+    }
     AUParticlePooling *temp = ACParticleManager::Get().GetParticle();
     CheckNull(temp);
     if (particle == nullptr)
@@ -111,7 +117,7 @@ void ACEnemy::OffCollision()
 
 void ACEnemy::Attack()
 {
-    EMontage_State val;
+    EMontage_State val = EMontage_State::Attack;
     switch(mStateComp->State())
     {
     case EStateEnemyType::Skill:

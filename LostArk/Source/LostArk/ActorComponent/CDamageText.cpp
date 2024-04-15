@@ -1,27 +1,51 @@
 #include "CDamageText.h"
 #include "Components/TextRenderComponent.h"
+#include "../Combat/CTextRenderComponent.h"
 
 UCDamageText::UCDamageText()
 {
-	PrimaryComponentTick.bCanEverTick = true;
-    mtextCmp = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Text"));
+
+    class UCTextRenderComponent *mtextCmp;
+
+    for (int32 i = 0; i < mPoolTextSize; i++)
+    {
+        FString str = TEXT("Text");
+        str.Append(FString::SanitizeFloat(i));
+        mtextCmp = CreateDefaultSubobject<UCTextRenderComponent>(*str);
+        mtextCmp->SetRelativeRotation({47, -175.f, 0});
+        mtextCmp->SetVisibility(false);
+        mtextCmp->SetTextRenderColor(FColor(204, 204, 0));
+        
+        mTextVec.Emplace(mtextCmp);
+    }
 }
 
 void UCDamageText::BeginPlay()
 {
 	Super::BeginPlay();
-	
+  
 }
 
-
-void UCDamageText::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UCDamageText::TextRender(float damage,const FVector &location)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	FVector loc = GetOwner()->GetActorLocation();
-    loc.Z = 200.f;
+    static float mLoopSpeed = 0.7f;
 
-	
-    mtextCmp->SetRelativeLocation(loc);
+    midx++;
+    midx %= mPoolTextSize;
+
+    mTextVec[midx]->SetWorldLocation(location);
+    FVector forward = mTextVec[midx]->GetForwardVector().GetSafeNormal();
+
+    FVector move_loc = location + forward * 150.f;
+
+    mTextVec[midx]->SetRelativeLocation(move_loc);
+
+    mTextVec[midx]->SetVisibility(true);
+    mTextVec[midx]->SetText(FString::SanitizeFloat(damage));
+    FTimerHandle temp;
+    GetOwner()->GetWorldTimerManager().SetTimer(temp, mTextVec[midx], &UCTextRenderComponent::TextAutoOff, mLoopSpeed,
+                                                false);
+    
+
 }
-

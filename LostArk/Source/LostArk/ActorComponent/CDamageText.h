@@ -4,20 +4,26 @@
 #include "Components/ActorComponent.h"
 #include "CDamageText.generated.h"
 
-
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class LOSTARK_API UCDamageText : public UActorComponent
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-public:	
-	UCDamageText();
-protected:
+  public:
+    UCDamageText();
 
-	virtual void BeginPlay() override;
-public:	
+  protected:
+    virtual void BeginPlay() override;
 
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	class UTextRenderComponent *mtextCmp;
+  public:
+    void TextRender(float damage,const FVector& location);
+  private:
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+    int32 mPoolTextSize = 6;
+   
+    TArray<class UCTextRenderComponent *> mTextVec;
+    int32 midx = -1;
+
+    
+
 };
