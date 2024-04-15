@@ -36,7 +36,3 @@ void UCMinimapComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
     mSpring->SetRelativeLocation(loc);
     
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> Dorong
