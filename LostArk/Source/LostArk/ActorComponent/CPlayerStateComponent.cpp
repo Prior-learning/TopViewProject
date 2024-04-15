@@ -139,7 +139,7 @@ void UCPlayerStateComponent::SetSniping()
     Add(E_State::Aim, E_WHY_BLOCKED::SKILLUSE);
     Add(E_State::Reload, E_WHY_BLOCKED::SKILLUSE);
     Add(E_State::Roll, E_WHY_BLOCKED::SKILLUSE);
-    Remove(E_State::Attack, E_WHY_BLOCKED::SKILLUSE);
+    Add(E_State::Attack, E_WHY_BLOCKED::SKILLUSE);
 }
 
 void UCPlayerStateComponent::UnSetSniping()

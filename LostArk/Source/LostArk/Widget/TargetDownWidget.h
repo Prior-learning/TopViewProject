@@ -14,9 +14,6 @@ class LOSTARK_API UTargetDownWidget : public UUserWidget
 public:
     UTargetDownWidget(const FObjectInitializer &ObjectInitializer);
 
-    UPROPERTY(BlueprintReadOnly, meta = (BindWidget)) // 배경 이미지
-    class UImage *BackgroundImage;
-
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget)) // 스코프 이미지
     class UImage *ScopeImage;
 

@@ -41,6 +41,12 @@ public:
 	void OnAirborn();
     void OffAirborn();
 
+public:
+    UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Events")
+    void OnTargetDownUI();
+    UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Events")
+    void OffTargetDownUI();
+
 
 private:
 	UFUNCTION()
@@ -105,6 +111,9 @@ protected:
 
     UPROPERTY(EditAnywhere, Category = "Widget")
         TSubclassOf<UUserWidget> TargetWidgetClass;
+    
+	//UUIMainHUD *MainHUDWidget;
+
 
     UPROPERTY()
         class UUserWidget *TargetDownWidget;
@@ -118,5 +127,6 @@ protected:
 
 	float CurrentFirerate;
     FTimerHandle FireDelay;
+    bool bTargetUI;
 
 };
