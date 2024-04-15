@@ -9,8 +9,6 @@ UCMinimapComponent::UCMinimapComponent()
 
 }
 
-
-
 void UCMinimapComponent::BeginPlay()
 {
     mCamera->AttachToComponent(mSpring, FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
@@ -29,8 +27,6 @@ void UCMinimapComponent::Initialize()
     mSpring->TargetArmLength = 4000.f;
 }
 
-
-
 void UCMinimapComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -40,3 +36,7 @@ void UCMinimapComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
     mSpring->SetRelativeLocation(loc);
     
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> Dorong

@@ -1,7 +1,5 @@
-
 #include "CPlayer.h"
 #include "../Global.h"
-
 
 #include "UObject/ConstructorHelpers.h"
 
@@ -34,8 +32,8 @@ ACPlayer::ACPlayer()
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
     InitMovement();
     InitCamera();
-    InitWidget();
-	
+    //InitWidget();
+    bTargetUI = false;
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
@@ -63,7 +61,23 @@ void ACPlayer::Tick(float DeltaTime)
     {
         Look_Mouse();
     }
+    if (GetWeaponType()==E_WeaponType::Sniping)
+    {
+        if (!bTargetUI)
+        {
+            OnTargetDownUI();
+            bTargetUI = true;
+        }
+    }
+    else
+    {
+        if (bTargetUI)
+        {
+            OffTargetDownUI();
+            bTargetUI = false;
+        }
     
+    }
 }
 
 E_WeaponType ACPlayer::GetWeaponType()
@@ -324,6 +338,7 @@ void ACPlayer::InitWidget()
     if (TargetWidgetClass)
     {
         TargetDownWidget = Cast<UTargetDownWidget>(CreateWidget(GetWorld(), TargetWidgetClass));
+
         if (TargetDownWidget)
         {
             UE_LOG(LogTemp, Warning, TEXT("[TargetDown]Widget Add"));
@@ -393,8 +408,7 @@ void ACPlayer::Damaged(float Damage, FDamageEvent &Event, AController *controlle
     }
 }
 
-float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator,
-                           AActor *DamageCauser)
+float ACPlayer::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, AController *EventInstigator, AActor *DamageCauser)
 {
     if (DamageAmount < 0)
     {
