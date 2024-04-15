@@ -18,14 +18,11 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-<<<<<<< HEAD
 private:
     void Initialize();
-
   public:	
-=======
+
 public:	
->>>>>>> Dorong
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	UPROPERTY(EditAnywhere, Category="Minimap")
