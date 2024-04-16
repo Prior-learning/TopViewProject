@@ -9,7 +9,11 @@
 UENUM(BlueprintType)
 enum class ESkillButton : uint8
 {
-    F,E,
+    F,
+    E,
+    Q,
+    R,
+    T,
     Max
 };
 

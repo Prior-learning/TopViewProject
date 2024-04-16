@@ -9,8 +9,33 @@ enum class ESkill_Type : uint8
 {
     TargetDown,
     ShotGun,
+    Ult,
+    HealPotion,
+    ManaPotion,
     Max
 };
+
+USTRUCT(BlueprintType)
+struct FSkillSlotData
+{
+
+    GENERATED_BODY()
+
+  public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FText Name;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FText ButtonText;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FText Description;
+   
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UTexture2D *ItemIcon;
+};
+
+
 USTRUCT(BlueprintType)
 struct FOnSkillData 
 {
@@ -67,6 +92,9 @@ class LOSTARK_API UCSkillData : public UDataAsset
   public:
     UPROPERTY(BlueprintReadOnly, EditAnywhere)
     TSubclassOf<class ACOnSkill> OnSkillClass;
+
+    UPROPERTY(BlueprintReadOnly, EditAnywhere)
+    FSkillSlotData SkillSlotData;
 
     UPROPERTY(BlueprintReadOnly, EditAnywhere)
     TArray<FOnSkillData> OnSkillDatas;
