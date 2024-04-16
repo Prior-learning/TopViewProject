@@ -14,7 +14,6 @@ public:
 	ACOnSkill();
 
 	FORCEINLINE void SetDatas(TArray<FOnSkillData> InDatas) { Datas = InDatas; }
-
 	virtual void OnSkill() {}
 	virtual void Begin_OnSkill() {}
 	virtual void End_OnSkill() {}
