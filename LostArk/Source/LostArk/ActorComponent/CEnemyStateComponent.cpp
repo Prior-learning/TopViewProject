@@ -10,6 +10,7 @@
 
 #include "Animation/AnimMontage.h"
 #include "../Combat/ICombat.h"
+#include "../Widget/CEnemyHpWidget.h"
 
 UCEnemyStateComponent::UCEnemyStateComponent()
 {
@@ -67,7 +68,7 @@ void UCEnemyStateComponent::Remove( const ECurrentState &reason)
 void UCEnemyStateComponent::Take_Damage(float& DamageAmount)
 {
     mHp -= DamageAmount;
-    
+    UCEnemyHpWidget::GetInstance()->UpdateProgressBar(mHp/MaxHp);
     if (mHp <= 0)
         SetDeathMode();
 
