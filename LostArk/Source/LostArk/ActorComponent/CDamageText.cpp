@@ -42,7 +42,8 @@ void UCDamageText::TextRender(float damage,const FVector &location)
     mTextVec[midx]->SetRelativeLocation(move_loc);
 
     mTextVec[midx]->SetVisibility(true);
-    mTextVec[midx]->SetText(FString::SanitizeFloat(damage));
+    
+    mTextVec[midx]->SetText(FString::SanitizeFloat(damage,0));
     FTimerHandle temp;
     GetOwner()->GetWorldTimerManager().SetTimer(temp, mTextVec[midx], &UCTextRenderComponent::TextAutoOff, mLoopSpeed,
                                                 false);
