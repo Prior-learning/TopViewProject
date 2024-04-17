@@ -33,6 +33,6 @@ void UCMinimapComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
     FVector loc = GetOwner()->GetActorLocation();
     loc.Z = mSpring->GetRelativeLocation().Z;
-    mSpring->SetRelativeLocation(loc);
+    mSpring->SetWorldLocation(loc + FVector(10000,0,0));
     
 }
