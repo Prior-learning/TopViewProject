@@ -369,15 +369,14 @@ void ACPlayer::Look_Mouse()
     {
         FHitResult TraceHitResult;
         PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
-        FVector Cursor_pos = TraceHitResult.Location;
+        FVector Cursor_pos = TraceHitResult.ImpactPoint;
         FVector pos = GetActorLocation();
         FVector direction = Cursor_pos - pos;
-        FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(pos, FVector(Cursor_pos.X, Cursor_pos.Y, pos.Z));
+        FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(pos, FVector(Cursor_pos.X, Cursor_pos.Y,pos.Z)); 
         SetActorRotation(LookRotation);
     }
 }
-
-void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+        void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 

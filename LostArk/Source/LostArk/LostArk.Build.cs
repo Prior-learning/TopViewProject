@@ -9,5 +9,6 @@ public class LostArk : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HeadMountedDisplay", "NavigationSystem", "AIModule" ,"GameplayTasks", "UMG" , "Paper2D" });
-    }
+		PrivateDependencyModuleNames.AddRange(new string[] {"Slate","SlateCore"	});
+	}
 }

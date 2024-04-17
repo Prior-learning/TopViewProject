@@ -26,7 +26,10 @@ public:
 	UCPSkillComponent();
   static void E_SkillBind();
   static void F_SkillBind();
+
+  UFUNCTION(BlueprintCallable)
   UCSkillData* GetData(int a) {return Datas[a];}
+   
   int GetSkillType()  {return CurrentSkilltype; }
 
 protected:
