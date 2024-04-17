@@ -13,7 +13,13 @@ class ALostArkGameMode : public AGameModeBase
 
 public:
 	ALostArkGameMode();
+
+protected:
+  virtual void BeginPlay() override;
+
+protected:
+  class UCHUD_SkillSlot *MainHUD;
+  TSubclassOf<UUserWidget> HUDWidgetClass;
+
 };
-
-
 

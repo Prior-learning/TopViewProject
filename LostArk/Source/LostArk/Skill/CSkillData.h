@@ -68,16 +68,23 @@ struct FOnSkillData
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float Damage;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     bool bMoveFix;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     bool bAimFix;
+
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     float SkillCoolDown;
+
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
     int LoopCount;
 
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
     float SkillTimer;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
     bool bInCoolTime;
 };
 
