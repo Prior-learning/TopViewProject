@@ -12,16 +12,16 @@ ALostArkGameMode::ALostArkGameMode()
 	PlayerControllerClass = ALostArkPlayerController::StaticClass();
 
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDownCPP/Blueprints/TopDownCharacter"));
-	//static ConstructorHelpers::FClassFinder<UUIMainHUD> MainHUDWidgetAsset(TEXT("WidgetBlueprint'/Game/UI/UI_MainHUD.UI_MainHUD_C'"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("Blueprint'/Game/AActor/Player/BP_CPlayer.BP_CPlayer_C'"));
+    static ConstructorHelpers::FClassFinder<AHUD> LostArkHUD(TEXT("Blueprint'/Game/PUserInterface/BP_HUD.BP_HUD_C'"));
+    static ConstructorHelpers::FClassFinder<UCHUD_SkillSlot> MainHUDAsset(TEXT("WidgetBlueprint'/Game/Widget/WB_SkillBar.WB_SkillBar_C'"));
+   
+    if (LostArkHUD.Succeeded())
+        HUDClass = LostArkHUD.Class;
 
 	if (PlayerPawnBPClass.Class != nullptr)
-	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
-	}
-    static ConstructorHelpers::FClassFinder<UCHUD_SkillSlot> MainHUDAsset(TEXT("WidgetBlueprint'/Game/Widget/WB_SkillBar.WB_SkillBar_C'"));
-
-    // TSubclassOf 템플릿 클래스 객체에 블루프린트 클래스를 넣어준다
+	
     if (MainHUDAsset.Succeeded())
         HUDWidgetClass = MainHUDAsset.Class;
   

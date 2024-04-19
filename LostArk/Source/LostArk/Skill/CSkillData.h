@@ -26,9 +26,6 @@ struct FSkillSlotData
     FText Name;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FText ButtonText;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FText Description;
    
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
