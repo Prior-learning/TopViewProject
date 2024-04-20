@@ -4,7 +4,6 @@
 #include "COnSkill.h"
 #include "COnSkill_TargetDown.generated.h"
 
-
 UCLASS()
 class LOSTARK_API ACOnSkill_TargetDown : public ACOnSkill
 {
@@ -15,6 +14,9 @@ public:
     virtual void Begin_OnSkill() override;
     virtual void End_OnSkill() override;
 
+    FORCEINLINE bool GetCoolTime(){return IsCoolDown;}
+
+    FORCEINLINE bool GetIsCoolDown(){return IsCoolDown;}
 
 protected:
    	virtual void BeginPlay() override;

@@ -19,6 +19,7 @@ protected:
 
 protected:
   class UCHUD_SkillSlot *MainHUD;
+
   TSubclassOf<UUserWidget> HUDWidgetClass;
 
 };

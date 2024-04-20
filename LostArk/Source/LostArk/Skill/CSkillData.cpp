@@ -16,6 +16,7 @@ void UCSkillData::BeginPlay(ACharacter *InOwnerCharacter)
 		OnSkill->AttachToComponent(InOwnerCharacter->GetMesh(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
         OnSkill->SetActorLabel(GetLableName(InOwnerCharacter, "OnSkill"));
         OnSkill->SetDatas(OnSkillDatas);
+        OnSkill->SetSlotData(SkillSlotData);
 		UGameplayStatics::FinishSpawningActor(OnSkill, transform);
 	}
 }
