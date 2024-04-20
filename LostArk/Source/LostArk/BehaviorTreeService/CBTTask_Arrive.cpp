@@ -15,10 +15,10 @@ EBTNodeResult::Type UCBTTask_Arrive::ExecuteTask(UBehaviorTreeComponent &OwnerCo
         movepos = target->GetActorLocation();
     }
     AActor* self = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("Self"));
-    UCEnemyStateComponent* statecomp = CHelpers::GetComponent<UCEnemyStateComponent>(self);
 
     if (!!self)
     {
+        UCEnemyStateComponent *statecomp = CHelpers::GetComponent<UCEnemyStateComponent>(self);
         FVector current = self->GetActorLocation();
 
         float distance = sqrt(pow(movepos.X - current.X, 2) + pow(movepos.Y - current.Y, 2));
