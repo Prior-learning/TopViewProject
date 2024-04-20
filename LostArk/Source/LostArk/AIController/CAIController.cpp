@@ -36,19 +36,25 @@ ACAIController::~ACAIController()
 void ACAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	mOwner = Cast<ACEnemy>(GetPawn());
-	CheckNull(mOwner);
 
-	mState = CHelpers::GetComponent<UCEnemyStateComponent>(mOwner);
-    Blackboard->SetValueAsVector("HomePos", mOwner->GetActorLocation());
-    Blackboard->SetValueAsObject("Self", GetPawn());
 }
 
 
 void ACAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+    mOwner = Cast<ACEnemy>(InPawn);
+    ensureMsgf(mOwner != nullptr ,TEXT("mOwner is Nullptr"));
+    mState = CHelpers::GetComponent<UCEnemyStateComponent>(mOwner);
+    ensureMsgf(Blackboard != nullptr, TEXT("Blackboard is Nullptr"));
 
+	CHelpers::GetAssetDynamic<UBehaviorTree>(&mBehaviorTree,
+                                      TEXT("BehaviorTree'/Game/AActor/Enemy/Ai_Controller/BT_Chase.BT_Chase'"));
+    CHelpers::GetAssetDynamic<UBlackboardData>(&mBlackBoard,
+                                        TEXT("BlackboardData'/Game/AActor/Enemy/Ai_Controller/BB_Chase.BB_Chase'"));
+
+  /*  Blackboard->SetValueAsVector("HomePos", mOwner->GetActorLocation());
+    Blackboard->SetValueAsObject("Self", InPawn);*/
 	RunAI();
 
 }
