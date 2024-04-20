@@ -36,12 +36,14 @@ void ACOnSkill_ShotGun::Begin_OnSkill()
 
 void ACOnSkill_ShotGun::End_OnSkill()
 {
+
     if (Datas[0].bAimFix)
         mState->UnSetAim();
     if (Datas[0].bMoveFix)
         mState->SetCanMove(true);
 
-        mState->UnSetSkill();
+    mState->UnSetSkill();
+    Super::End_OnSkill();
 }
 
 void ACOnSkill_ShotGun::SpawnMesh()

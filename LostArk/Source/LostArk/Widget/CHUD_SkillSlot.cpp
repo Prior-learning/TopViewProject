@@ -32,30 +32,60 @@ void UCHUD_SkillSlot::NativeOnInitialized()
     {
         mSkill = CHelpers::GetComponent<UCPSkillComponent>(OwnerCharacter);
     }
+    if (mSkill)
+    {
+        mSkill->SendSlotInfo.AddUFunction(this, FName("ShowCoolTime"));    
+        mSkill->UpdateCoolTime.AddUFunction(this, FName("UpdateSlotCoolTime"));
+    }
+    
 }
 
 void UCHUD_SkillSlot::NativeConstruct()
 {
-    if (mSkill)
-    {
-        mSkill->OnSlotInfoChanged.AddUObject(this, &UCHUD_SkillSlot::UpdateSlotCoolTime);
-    }
+    
 }
 
 void UCHUD_SkillSlot::NativeTick(const FGeometry &MyGeometry, float InDeltaTime)
 {
+    Super::NativeTick(MyGeometry, InDeltaTime);
+    UE_LOG(LogTemp, Warning, TEXT("[text]"));
+
     
 }
 
-void UCHUD_SkillSlot::UpdateSlotCoolTime(int a)
+void UCHUD_SkillSlot::ShowCoolTime(int a,int b)
+{
+    switch (a)
+    {
+    case 0:
+        mSlot->BindCoolDownText(b);
+        UE_LOG(LogTemp, Warning, TEXT("[SkillSlot::FSlotUpdate]"));
+        break;
+    case 1:
+        mSlot1->BindCoolDownText(b);
+        UE_LOG(LogTemp, Warning, TEXT("[SkillSlot::ESlotUpdate]"));
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    case 4:
+        break;
+
+    default:
+        break;
+    }
+}
+
+void UCHUD_SkillSlot::UpdateSlotCoolTime(int a, int b)
 {
     switch (a)
     {
     case 0: 
-        mSlot->BindCoolDownText(mSkill->GetInfo(0).CoolTime);
+        mSlot->UpdateCoolDownText(b);
         break;
     case 1: 
-        mSlot1->BindCoolDownText(mSkill->GetInfo(1).CoolTime);
+        mSlot1->UpdateCoolDownText(b);
         break;
     case 2:
         break;

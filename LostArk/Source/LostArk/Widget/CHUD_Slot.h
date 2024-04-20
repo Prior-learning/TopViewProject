@@ -16,6 +16,7 @@ public:
     void BindCoolDownText(float time);
     void SetCoolTextVisible();
     void SetCoolTextHidden();
+    void UpdateCoolDownText(int a);
 
 
 protected:
@@ -28,13 +29,20 @@ protected:
   UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
   class UTextBlock *mCoolDownText;
 
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+  class UProgressBar *mProgress;
+
+
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+  float mCoolTime;
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+  bool bCoolDown;
+
 
 protected:
     virtual void NativeOnInitialized() override;
     virtual void NativeConstruct() override;
     virtual void NativeTick(const FGeometry &MyGeometry, float InDeltaTime) override;
 
-    float mCoolTime;
-    bool bCoolDown;
 	
 };

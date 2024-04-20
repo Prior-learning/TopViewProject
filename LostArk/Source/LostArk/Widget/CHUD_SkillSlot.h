@@ -28,7 +28,12 @@ protected:
   virtual void NativeTick(const FGeometry &MyGeometry, float InDeltaTime) override;
 
 public:
-  void UpdateSlotCoolTime(int a);
+  UFUNCTION(BlueprintCallable)
+  void ShowCoolTime(int a,int b);
+
+  UFUNCTION(BlueprintCallable)
+  void UpdateSlotCoolTime(int a,int b);
+
 
 protected:
 

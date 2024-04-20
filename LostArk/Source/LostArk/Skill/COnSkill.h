@@ -5,8 +5,9 @@
 #include "CSkillData.h"
 #include "COnSkill.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnSkillUsed); // 델리게이트 추가
+DECLARE_MULTICAST_DELEGATE(FOnSkillUsed); 
 
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSkillUsed);
 
 UCLASS()
 class LOSTARK_API ACOnSkill : public AActor
@@ -24,7 +25,11 @@ public:
 
 	virtual void OnSkill() {}
 	virtual void Begin_OnSkill() {}
-    virtual void End_OnSkill(){OnSkillUsed.Broadcast();}
+    virtual void End_OnSkill()
+	{
+        if (OnSkillUsed.IsBound())
+		OnSkillUsed.Broadcast();
+	}
 
 protected:
 	virtual void BeginPlay() override;

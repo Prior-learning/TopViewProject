@@ -42,6 +42,7 @@ void ACOnSkill_TargetDown::End_OnSkill()
     mState->UnSetSniping();
     CoolTime=Datas[0].SkillCoolDown;
     IsCoolDown = true;
+    Super::End_OnSkill();
 }
 
 void ACOnSkill_TargetDown::BeginPlay()

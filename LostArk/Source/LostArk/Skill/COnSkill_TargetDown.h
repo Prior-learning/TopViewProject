@@ -27,7 +27,7 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-  private:
+private:
     int LeftShot;
     float CoolTime;
     bool IsCoolDown;

@@ -6,8 +6,8 @@
 #include "../Skill/CSkillData.h"
 #include "CPSkillComponent.generated.h"
 
-
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnSlotInfoChanged, int32); // 델리게이트 추가
+DECLARE_MULTICAST_DELEGATE_TwoParams(FSendSlotInfo, int32, int32);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FUpdateCoolTime, int32, int32);
 
 UENUM(BlueprintType)
 enum class ESkillButton : uint8
@@ -52,16 +52,22 @@ public:
   int GetSkillType()  {return CurrentSkilltype; }
 
   public:
+
+  UFUNCTION(BlueprintCallable)
   void OnFSkillUsed();
+  UFUNCTION(BlueprintCallable)
   void OnESkillUsed();
+  UFUNCTION(BlueprintCallable)
   void OnQSkillUsed();
+  UFUNCTION(BlueprintCallable)
   void OnRSkillUsed();
+  UFUNCTION(BlueprintCallable)
   void OnTSkillUsed();
 
 
-    FOnSlotInfoChanged OnSlotInfoChanged;
-
-
+  FSendSlotInfo SendSlotInfo;
+  FUpdateCoolTime UpdateCoolTime;
+  
 protected:
 	virtual void BeginPlay() override;
 public:	
