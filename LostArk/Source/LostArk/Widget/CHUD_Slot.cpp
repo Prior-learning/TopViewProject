@@ -49,7 +49,6 @@ void UCHUD_Slot::NativeOnInitialized()
 
 void UCHUD_Slot::NativeConstruct()
 {
-
 }
 
 void UCHUD_Slot::NativeTick(const FGeometry &MyGeometry, float InDeltaTime)

@@ -48,9 +48,7 @@ void UCHUD_SkillSlot::NativeConstruct()
 void UCHUD_SkillSlot::NativeTick(const FGeometry &MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
-    UE_LOG(LogTemp, Warning, TEXT("[text]"));
-
-    
+   
 }
 
 void UCHUD_SkillSlot::ShowCoolTime(int a,int b)

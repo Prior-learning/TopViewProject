@@ -9,6 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "../ActorComponent/CPlayerStateComponent.h"
+#include "../ActorComponent/CPlayerStatComponent.h"
 #include "../ActorComponent/CMontageComponent.h"
 #include "../ActorComponent/CPSkillComponent.h"
 
@@ -39,6 +40,7 @@ ACPlayer::ACPlayer()
 
    	CHelpers::CreateActorComponent<UCPSkillComponent>(this, &mPlayerSkill, "PlayerSkillComponent");
 	CHelpers::CreateActorComponent<UCPlayerStateComponent>(this, &mPlayerState, "PlayerStateComponent");
+    CHelpers::CreateActorComponent<UCPlayerStatComponent>(this, &mStat, "PlayerStatComponent");
     CHelpers::CreateActorComponent<UCMontageComponent>(this, &mMontages, "Montage");
     CurrentFirerate = 0;
 }
@@ -350,18 +352,7 @@ void ACPlayer::InitWidget()
             UE_LOG(LogTemp, Warning, TEXT("[TargetDown]Widget Null"));
         }
     }
-    /*  TargetDownWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("TargetDownWidget"));
-   static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/Widget/WB_TargetDown"));
-   TargetDownWidget->SetWidgetSpace(EWidgetSpace::Screen);
-
-   if (UI_HUD.Succeeded())
-   {
-       TargetDownWidget->SetWidgetClass(UI_HUD.Class);
-       TargetDownWidget->SetHiddenInGame(true);
-       UE_LOG(LogTemp, Warning, TEXT("[TargetDown]WidgetConstruct"));
-   }*/
 }
-
 
 void ACPlayer::Look_Mouse()
 {
@@ -376,7 +367,8 @@ void ACPlayer::Look_Mouse()
         SetActorRotation(LookRotation);
     }
 }
-        void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+
+void ACPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -396,7 +388,7 @@ void ACPlayer::Damaged(float Damage, FDamageEvent &Event, AController *controlle
                        const FVector hitLocation, UParticleSystem *particle)
 {
     TakeDamage(Damage, Event, controller, causer);
-
+    mStat->MinusHP(10.f);
     if (particle != nullptr)
     {
         AUParticlePooling *temp = ACParticleManager::Get().GetParticle();
