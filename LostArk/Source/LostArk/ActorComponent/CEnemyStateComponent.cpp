@@ -40,6 +40,7 @@ void UCEnemyStateComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void UCEnemyStateComponent::OperationSelect(const AActor* target)
 {
+    //ensureMsgf(target != nullptr, TEXT("Target is nullptr"));
     CheckNull(target);
  
     FVector ownerPos = GetOwner()->GetActorLocation();
@@ -47,7 +48,10 @@ void UCEnemyStateComponent::OperationSelect(const AActor* target)
     float x_ = (ownerPos.X - targetPos.X);
     float y_ = (ownerPos.Y - targetPos.Y);
     float distance = sqrt(x_ * x_ + y_ * y_);
-
+ /*   FString str = FString::SanitizeFloat(distance);
+    str += "   :    ";
+    str += FString::SanitizeFloat(mAttackRange);
+    CLog::Print(*str);*/
     if (distance <= mAttackRange)
         SetActionMode();
     else
@@ -138,7 +142,8 @@ void UCEnemyStateComponent::SetActionMode()
 
     if ( mCurrentCooltime <= 0)
     {
-        bool bChk = mHp / MaxHp <= 0.9f; // 반피 이하면 true
+        //CLog::Print("Called Attack");
+        bool bChk = mHp / MaxHp <= 0.6f; // 반피 이하면 true
         if (mMaxPhase && bChk)
         {
             mMaxPhase--;
