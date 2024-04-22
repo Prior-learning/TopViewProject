@@ -3,6 +3,7 @@
 #include "../Utilities/CLog.h"
 #include "Kismet/KismetMathLibrary.h"
 
+#include "../Attacker/CEnemy.h"
 DEFINE_LOG_CATEGORY_STATIC(Dungeon, Error, All)
 
 ACDungeon::ACDungeon()
@@ -53,7 +54,7 @@ void ACDungeon::Init()
     {
         
         UBoxComponent* temp = CreateDefaultSubobject<UBoxComponent>(Socket);
-        temp->SetBoxExtent({150, 100, 100});
+        temp->SetBoxExtent({150, 150, 100});
         temp->SetCollisionProfileName(TEXT("TriggerToPlayer"));
         temp->SetupAttachment(RootComponent, Socket);
         temp->ComponentTags.Add(Socket);
@@ -106,6 +107,13 @@ void ACDungeon::LoadAsset()
         enemyClassof = enemy_mesh.Class;
     }
     
+}
+
+void ACDungeon::DeadEvent(ACEnemy *enemy)
+{
+    enemies.Remove(enemy);
+    if (enemies.Num() == 0)
+        SetState(EDungeonState::COMPLETE);
 }
 
 void ACDungeon::SetState(EDungeonState val)
@@ -180,10 +188,11 @@ void ACDungeon::OnTriggerBeginOverlap(UPrimitiveComponent *OverlappedComponent, 
 
             FRotator lookrot = UKismetMathLibrary::FindLookAtRotation(loc, pivot_loc);
             FActorSpawnParameters param;
+            
             param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-            AActor *temp =
-                GetWorld()->SpawnActor<APawn>(enemyClassof, pivot_loc + FVector(Range, 50.f), lookrot, param);
+            ACEnemy *temp = GetWorld()->SpawnActor<ACEnemy>(enemyClassof, pivot_loc + FVector(Range, 50.f), lookrot, param);
             ensureMsgf(temp != nullptr, TEXT(" Enemy Spawn Fail"));
+            temp->mDungeon = this;
             enemies.Add(temp);
         }
     }

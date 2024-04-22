@@ -12,6 +12,7 @@
 
 
 #include "../ActorComponent/CDamageText.h"
+#include "../Dungeon/CDungeon.h"
 
 ACEnemy::ACEnemy()
 {
@@ -80,8 +81,14 @@ float ACEnemy::TakeDamage(float DamageAmount, FDamageEvent const &DamageEvent, A
     mStateComp->Take_Damage(DamageAmount);
     if (mStateComp->IsDeathMode())
     {
+        if (!!mDungeon)
+        {
+            mDungeon->DeadEvent(this);
+        }
+
         GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     }
+    
     if (!mStateComp->FlagCheck(ECurrentState::ATTACKINGSTATE) &&
         !mStateComp->FlagCheck(ECurrentState::DEATEH))
     {

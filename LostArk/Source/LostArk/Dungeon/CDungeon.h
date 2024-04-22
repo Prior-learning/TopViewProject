@@ -22,11 +22,13 @@ public:
 	
 	ACDungeon();
 
-protected:
+    void DeadEvent(class ACEnemy *enemy);
+
+  protected:
 	virtual void BeginPlay() override;
 	void Init();
     void LoadAsset();
-
+    
   private:
     void SetState(EDungeonState val);
     void OpenGate(bool bOpen = true);
@@ -39,6 +41,7 @@ protected:
     void CreateRoom(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
                                UPrimitiveComponent *OtherComp, int32 OtherBodylndex, bool bFromSweep,
                                const FHitResult &SweepResult);
+    
   private:
 
     UPROPERTY(VisibleAnywhere, Category = "Mesh", meta = (AllowPrivateAccess = true))
@@ -59,8 +62,8 @@ protected:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = true))
     bool bNoBattle;
     UPROPERTY(VisibleAnywhere, meta=(AllowPrivateAccess=true))
-    TSubclassOf<APawn> enemyClassof;
+    TSubclassOf<class ACEnemy> enemyClassof;
 
-    UPROPERTY()
-    TArray<AActor *> enemies;
+    UPROPERTY(VisibleAnywhere)
+    TArray<class ACEnemy *> enemies;
 };

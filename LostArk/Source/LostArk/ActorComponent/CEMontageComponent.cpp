@@ -6,17 +6,17 @@
 void UCEMontageComponent::BeginPlay()
 {
     Super::BeginPlay();
-    CheckTrue(mPhaseDataTable.Num() == 0);
     DataTableInit();
+    
 }
 
 void UCEMontageComponent::PlayAnimMontage(EMontage_State InState)
 {
     
     ACharacter *character = Cast<ACharacter>(GetOwner());
-
+    CLog::Print("Called Montage");
     CheckTrue(Datas2[(int8)InState].Num() == 0);
-  
+    CLog::Print("is not empty Montage");
     int idx = rand() % Datas2[(int8)InState].Num();
     const FMontageData *data = Datas2[(int8)InState][idx];
 
@@ -28,6 +28,8 @@ void UCEMontageComponent::PlayAnimMontage(EMontage_State InState)
             
         }
     }
+    else
+        CLog::Print("data is empty ");
 
     if (InState == EMontage_State::Skill)
     {
@@ -41,10 +43,8 @@ void UCEMontageComponent::PlayAnimMontage(EMontage_State InState)
 void UCEMontageComponent::DataTableInit()
 {
 
-    CheckNull(mPhaseDataTable[mPhase]);
-
+ 
     TArray<FMontageData *> datas;
-
     mPhaseDataTable[mPhase]->GetAllRows<FMontageData>("", datas);
     // 데이터가 들어있는 만큼 검사를하고
        

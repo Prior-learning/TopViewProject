@@ -46,13 +46,13 @@ void ACAIController::OnPossess(APawn* InPawn)
     mOwner = Cast<ACEnemy>(InPawn);
     ensureMsgf(mOwner != nullptr ,TEXT("mOwner is Nullptr"));
     mState = CHelpers::GetComponent<UCEnemyStateComponent>(mOwner);
-    ensureMsgf(Blackboard != nullptr, TEXT("Blackboard is Nullptr"));
-
+   
 	CHelpers::GetAssetDynamic<UBehaviorTree>(&mBehaviorTree,
                                       TEXT("BehaviorTree'/Game/AActor/Enemy/Ai_Controller/BT_Chase.BT_Chase'"));
     CHelpers::GetAssetDynamic<UBlackboardData>(&mBlackBoard,
                                         TEXT("BlackboardData'/Game/AActor/Enemy/Ai_Controller/BB_Chase.BB_Chase'"));
 
+	
   /*  Blackboard->SetValueAsVector("HomePos", mOwner->GetActorLocation());
     Blackboard->SetValueAsObject("Self", InPawn);*/
 	RunAI();
@@ -108,13 +108,12 @@ void ACAIController::SetPerception()
 void ACAIController::OnTargetDetected(AActor* Actor, FAIStimulus Stimulus)
 {
 	
-	
+	CheckNull(Actor);
 	if (Stimulus.WasSuccessfullySensed())
 	{
-        CheckNull(mOwner);
-        
 		Blackboard->SetValueAsObject("Target", Actor);
-		Blackboard->SetValueAsVector("MovePos", mOwner->GetActorLocation());
+		Blackboard->SetValueAsVector("MovePos", GetPawn()->GetActorLocation());
+        Blackboard->SetValueAsObject("Self", GetPawn());
         target = Actor;
 	}
 	
@@ -124,9 +123,11 @@ ETeamAttitude::Type ACAIController::GetTeamAttitudeTowards(const AActor &Other) 
 {
 
 	const IGenericTeamAgentInterface *combat = Cast<IGenericTeamAgentInterface>(&Other);
-    if (combat == nullptr)
-        return ETeamAttitude::Friendly;
-    if (mOwner->GetGenericTeamId() == combat->GetGenericTeamId())
+    const IGenericTeamAgentInterface *AI = Cast<IGenericTeamAgentInterface>(GetPawn());
+    if (combat == nullptr || AI == nullptr)
+        return ETeamAttitude::Hostile;
+
+    if (AI->GetGenericTeamId() == combat->GetGenericTeamId())
         return ETeamAttitude::Friendly;
     else
         return ETeamAttitude::Hostile;

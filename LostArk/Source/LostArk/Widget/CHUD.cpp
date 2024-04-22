@@ -6,5 +6,5 @@ void ACHUD::AddViewEnemyHpbar()
 {
     BossBar = CreateWidget<UUserWidget>(GetOwningPlayerController(), classof, FName("BossBar"));
     UCEnemyHpWidget::instance = Cast<UCEnemyHpWidget>( BossBar);
-
+    UCEnemyHpWidget::instance->AddToViewport(0);
 }

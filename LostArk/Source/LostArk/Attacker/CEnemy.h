@@ -59,4 +59,7 @@ class LOSTARK_API ACEnemy : public ACharacter, public IICombat, public IGenericT
     void InitInfo();
 
     FGenericTeamId mTeamID = 1;
+
+    UPROPERTY()
+    class ACDungeon *mDungeon = nullptr;
 };
